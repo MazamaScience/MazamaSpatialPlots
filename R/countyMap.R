@@ -1,24 +1,26 @@
 #' @title County level thematic map
 #' @description Uses the \pkg{tmap} package to generate a thematic map at the
 #' county level. Input consists of a dataframe with county identifiers.
-#' @param data TODO
-#' @param countySPDF TODO
-#' @param stateSPDF TODO
-#' @param paletteName TODO
-#' @param breaks TODO
-#' @param conusOnly TODO
-#' @param stateCode TODO
-#' @param projection TODO
-#' @param stateBorderColor TODO
-#' @param countyBorderColor TODO
+#' @param import dplyr tmap MazamaSpatialUtils sp 
+#' @param data A dataframe containing values to plot a county map. At a minimum
+#' there will be stateCode, countyName, and countyFips.
+#' @param county_SPDF Vector of US counties.
+#' @param state_SPDF Vector of US States. 
+#' @param paletteName A palette name or a vector of colors based on RColorBrewer.
+#' @param style A method that can be specified to cut the color scale.
+#' @param breaks If style is fixed, breaks can be specified. 
+#' @param conusOnly Logical specifying CONtinental US state codes.  
+#' @param stateCode Vector of state codes.
+#' @param projection Specified method to represent surface of Earth.
+#' @param stateBorderColor The color of the state border to display.
+#' @param countyBorderColor The color of the county borders to display.
 #' @return A ggplot object.
 #' @rdname countyMap
 #' @examples
 #' \donttest{
 #' library(MazamaSpatialPlots)
 #' 
-#' # TODO:  Load package internal example_countyDF
-#' 
+#' countyDF <- 'https://data.edd.ca.gov/api/geospatial/grn2-ffzq?method=export&format=Shapefile'
 #' countyMap(countyDF, "USCensusCounties_05")
 #' 
 #' }
@@ -27,9 +29,10 @@
 
 countyMap <- function(
   data = NULL,
-  countySPDF = "USCensusCounties",
-  stateSPDF = "USCensusStates",
+  county_SPDF = "USCensusCounties",
+  state_SPDF = "USCensusStates",
   paletteName = "YlOrBr",
+  style = ifelse(is.null(breaks), "pretty", "fixed"),
   breaks = NULL,
   conusOnly = TRUE,
   stateCode = NULL,
@@ -48,6 +51,11 @@ countyMap <- function(
   # TODO:   * If 'is.null(projection)', use the projection associated with 'SPDF'.
   # TODO:   * If '!is.null(stateCode)', subset the 'SPDF'.
   
+  # Check existence of dataset
+  if ( !exists(data) ) {
+    stop("Missing dataset. Please loadSpatialData(\"",dataset,"\")",
+         call. = FALSE)
+  }
   
   # ----- Merge data with SPDF -------------------------------------------------
   
