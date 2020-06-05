@@ -3,11 +3,10 @@
 #' county level. Input consists of a dataframe with county identifiers.
 #' @param import dplyr tmap MazamaSpatialUtils sp 
 #' @param data A dataframe containing values to plot a county map. At a minimum
-#' there will be stateCode, countyName, and countyFips.
+#' there will be stateCode, countyName, and countyFIPS.
 #' @param county_SPDF Vector of US counties.
-#' @param state_SPDF Vector of US States. 
+#' @param state_SPDF ector of US States. 
 #' @param paletteName A palette name or a vector of colors based on RColorBrewer.
-#' @param style A method that can be specified to cut the color scale.
 #' @param breaks If style is fixed, breaks can be specified. 
 #' @param conusOnly Logical specifying CONtinental US state codes.  
 #' @param stateCode Vector of state codes.
@@ -20,7 +19,6 @@
 #' \donttest{
 #' library(MazamaSpatialPlots)
 #' 
-#' countyDF <- 'https://data.edd.ca.gov/api/geospatial/grn2-ffzq?method=export&format=Shapefile'
 #' countyMap(countyDF, "USCensusCounties_05")
 #' 
 #' }
@@ -32,7 +30,7 @@ countyMap <- function(
   county_SPDF = "USCensusCounties",
   state_SPDF = "USCensusStates",
   paletteName = "YlOrBr",
-  style = ifelse(is.null(breaks), "pretty", "fixed"),
+  #style = ifelse(is.null(breaks), "pretty", "fixed"),
   breaks = NULL,
   conusOnly = TRUE,
   stateCode = NULL,
@@ -45,6 +43,17 @@ countyMap <- function(
   
   MazamaCoreUtils::stopIfNull(data)
   
+    if(!is.null(sp::proj4string(projection))){
+      SPDF <- projection
+      SPDF@proj4string <-sp::CRS("+proj=longlat +ellps=GRS80 +datum=NAD83 +no_defs")
+    }
+      # can it just be if(!is.null(projection))
+      #                   proj4string(SPDF) <- projection 
+  
+    if(!is.null(stateCode)){
+      SPDF <-SPDF[SPDF$stateCode %in% stateCode,]
+    }
+  
   # TODO:  Accept SPDF as character string or as object
   
   # TODO:  Validate everything and set appropriate defaults. Examples:
@@ -55,6 +64,13 @@ countyMap <- function(
   if ( !exists(data) ) {
     stop("Missing dataset. Please loadSpatialData(\"",dataset,"\")",
          call. = FALSE)
+  }
+  
+  # Do we have the required columns? 
+  requiredFields <- c("stateCode", "countyName", "countyFIPS")
+  missingFields <- setdiff(requiredFields, names(SPDF))
+  if ( length(missingFields) > 0 ) {
+    stop(paste0('Missing fields in SPDF: ', missingFields))
   }
   
   # ----- Merge data with SPDF -------------------------------------------------
