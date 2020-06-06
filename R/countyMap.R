@@ -43,6 +43,23 @@ countyMap <- function(
   
   MazamaCoreUtils::stopIfNull(data)
   
+  # Check if data exists or is null 
+  if (!is.null(data) || !exists(data)) {
+    stop("Missing data. Please specify.")
+  }
+  
+  # Do we have the required columns? 
+  requiredFields <- c("stateCode", "countyName", "countyFIPS")
+  missingFields <- setdiff(requiredFields, names(SPDF))
+  if (length(missingFields) > 0 ) {
+    stop(paste0('Missing fields in SPDF: ', missingFields))
+  }
+
+  
+  # TODO:  Accept SPDF as character string or as object
+  SPDF <- get(data) # need to work on this
+  
+  # TODO:   * If 'is.null(projection)', use the projection associated with 'SPDF'.
     if(!is.null(sp::proj4string(projection))){
       SPDF <- projection
       SPDF@proj4string <-sp::CRS("+proj=longlat +ellps=GRS80 +datum=NAD83 +no_defs")
@@ -50,29 +67,19 @@ countyMap <- function(
       # can it just be if(!is.null(projection))
       #                   proj4string(SPDF) <- projection 
   
+  # TODO:   * If '!is.null(stateCode)', subset the 'SPDF'.
     if(!is.null(stateCode)){
-      SPDF <-SPDF[SPDF$stateCode %in% stateCode,]
+      SPDF <-subset(SPDF, stateCode %in% stateCode)
     }
   
-  # TODO:  Accept SPDF as character string or as object
-  
-  # TODO:  Validate everything and set appropriate defaults. Examples:
-  # TODO:   * If 'is.null(projection)', use the projection associated with 'SPDF'.
-  # TODO:   * If '!is.null(stateCode)', subset the 'SPDF'.
-  
-  # Check existence of dataset
-  if ( !exists(data) ) {
-    stop("Missing dataset. Please loadSpatialData(\"",dataset,"\")",
-         call. = FALSE)
+  # Breaks Need to add in style in order to make this work? 
+  if (!is.null(data)) {
+    stop("Please specify breaks.")
   }
   
-  # Do we have the required columns? 
-  requiredFields <- c("stateCode", "countyName", "countyFIPS")
-  missingFields <- setdiff(requiredFields, names(SPDF))
-  if ( length(missingFields) > 0 ) {
-    stop(paste0('Missing fields in SPDF: ', missingFields))
+  if(conusOnly){
+    county_SPDF <- subset(county_SPDF, stateCode %in% MazamaSpatialUtils::CONUS)
   }
-  
   # ----- Merge data with SPDF -------------------------------------------------
   
   # TODO:  Should have a way to support either 'countyFIPS' or
