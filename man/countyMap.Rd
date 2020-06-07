@@ -6,8 +6,8 @@
 \usage{
 countyMap(
   data = NULL,
-  countySPDF = "USCensusCounties",
-  stateSPDF = "USCensusStates",
+  county_SPDF = "USCensusCounties",
+  state_SPDF = "USCensusStates",
   paletteName = "YlOrBr",
   breaks = NULL,
   conusOnly = TRUE,
@@ -18,25 +18,26 @@ countyMap(
 )
 }
 \arguments{
-\item{data}{TODO}
+\item{data}{A dataframe containing values to plot a county map. At a minimum
+there will be stateCode, countyName, and countyFIPS.}
 
-\item{countySPDF}{TODO}
+\item{county_SPDF}{Vector of US counties.}
 
-\item{stateSPDF}{TODO}
+\item{state_SPDF}{ector of US States.}
 
-\item{paletteName}{TODO}
+\item{paletteName}{A palette name or a vector of colors based on RColorBrewer.}
 
-\item{breaks}{TODO}
+\item{breaks}{If style is fixed, breaks can be specified.}
 
-\item{conusOnly}{TODO}
+\item{conusOnly}{Logical specifying CONtinental US state codes.}
 
-\item{stateCode}{TODO}
+\item{stateCode}{Vector of state codes.}
 
-\item{projection}{TODO}
+\item{projection}{Specified method to represent surface of Earth.}
 
-\item{stateBorderColor}{TODO}
+\item{stateBorderColor}{The color of the state border to display.}
 
-\item{countyBorderColor}{TODO}
+\item{countyBorderColor}{The color of the county borders to display.}
 }
 \value{
 A ggplot object.
@@ -48,8 +49,6 @@ county level. Input consists of a dataframe with county identifiers.
 \examples{
 \donttest{
 library(MazamaSpatialPlots)
-
-# TODO:  Load package internal example_countyDF
 
 countyMap(countyDF, "USCensusCounties_05")
 
