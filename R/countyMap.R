@@ -14,6 +14,9 @@
 #' @param countyBorderColor The color of the county borders to display.
 #' @return A ggplot object.
 #' @rdname countyMap
+#' @description
+#' @details 
+#' @notes
 #' @examples
 #' \donttest{
 #' library(MazamaSpatialPlots)
@@ -47,19 +50,13 @@ countyMap <- function(
   if ( !is.null(data) && !exists("data") )
     stop("Parameter 'data' is empty.")
   
-  # TODO:  Accept SPDF as character string or as object
+  # TODO:  Accept county SPDF as character string or as object
   if ( is.character(county_SPDF) ) 
     county_SPDF <- get(county_SPDF)
   
-  # TINA:  As a style issue, I often omit the curly braces for simple, one-line
-  # TINA:  error messages. I find it makes the code easier to read.
-  
-  # TINA:  Please not the use of extra spaces in the 'git diff'. We mostly
-  # TINA:  the Hadley Wickham guidelines except that I like an additional space
-  # TINA:  around logical statements in "if (<space>...<space>)". This makes it
-  # TINA:  easier to copy-paste the logical statement when debugging the code.
-  # TINA:  You can have Rstudio alert you about spacing by going to 
-  # TINA:  RStudio > Preferences > Code > Diagnostices > [ ] Provide R style diagnostics
+  # TODO:  Accept state SPDF as character string or as object
+  if ( is.character(state_SPDF) ) 
+    state_SPDF <- get(state_SPDF)
   
   # Do we have the required columns? 
   requiredFields <- c("stateCode", "countyName", "countyFIPS")
@@ -67,33 +64,46 @@ countyMap <- function(
   if ( length(missingFields) > 0 )
     stop(paste0("Missing fields in 'county_SPDF': ", paste0(missingFields, collapse = ", ")))
   
-  requiredFields <- c("stateCode", "countyName", "countyFIPS")
+  # requiredFields <- c("stateCode", "countyName", "countyFIPS")
   missingFields <- setdiff(requiredFields, names(data))
   if ( length(missingFields) > 0 )
     stop(paste0("Missing fields in 'data': ", paste0(missingFields, collapse = ", ")))
 
   # ----- Prepare data ---------------------------------------------------------
   
-  # TODO:   * If 'is.null(projection)', use the projection associated with 'SPDF'.
-    if ( !is.null(sp::proj4string(projection)) ) {
-      SPDF <- projection
-      SPDF@proj4string <- sp::CRS("+proj=longlat +ellps=GRS80 +datum=NAD83 +no_defs")
-    }
-      # can it just be if(!is.null(projection))
-      #                   proj4string(SPDF) <- projection 
+  # PROJECTION
   
-  # TODO:   * If '!is.null(stateCode)', subset the 'SPDF'.
-    if ( !is.null(stateCode) ) {
-      SPDF <- subset(SPDF, stateCode %in% stateCode)
-    }
-
-  # Breaks Need to add in style in order to make this work? 
-  if ( !is.null(data) ) {
-    stop("Please specify breaks.")
+  # TODO:   * If 'is.null(projection)', use the projection associated with 'SPDF'.
+  if ( !is.null(sp::proj4string(projection)) ) {
+    county_SPDF <- projection
+    county_SPDF@proj4string <- sp::CRS("+proj=longlat +ellps=GRS80 +datum=NAD83 +no_defs")
   }
+  
+  if ( !is.null(sp::proj4string(projection)) ) {
+    state_SPDF <- projection
+    state_SPDF@proj4string <- sp::CRS("+proj=longlat +ellps=GRS80 +datum=NAD83 +no_defs")
+  }
+  
+  # SUBSETTING COLUMNS
+  # TODO:   * If '!is.null(stateCode)', subset the 'SPDF'.
+  
+  if ( !is.null(countyName) ) {
+    county_SPDF <- subset(county_SPDF, countyName %in% countyName)
+  }
+  
+  if ( !is.null(stateCode) ) {
+    state_SPDF <- subset(state_SPDF, stateCode %in% stateCode)
+  }
+  
+  # CONUS specification 
   
   if ( conusOnly ) {
     county_SPDF <- subset(county_SPDF, stateCode %in% MazamaSpatialUtils::CONUS)
+  }
+  
+  # Breaks Need to add in style in order to make this work? 
+  if ( !is.null(data) ) {
+    stop("Please specify breaks.")
   }
   
   # ----- Merge data with SPDF -------------------------------------------------
