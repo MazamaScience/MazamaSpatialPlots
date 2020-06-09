@@ -1,4 +1,4 @@
-#' @title County level thematic map
+#' @title State level thematic map
 #' @description Uses the \pkg{tmap} package to generate a thematic map at the
 #' county level. Input consists of a dataframe with county identifiers.
 #' 
@@ -15,13 +15,13 @@
 #' @param countyBorderColor The color of the county borders to display.
 #' @return A ggplot object.
 #' 
-#' @rdname countyMap
+#' @rdname stateMap
 #' 
 #' @examples
 #' \donttest{
 #' library(MazamaSpatialPlots)
 #' 
-#' countyMap(countyDF, "USCensusCounties_05")
+#' stateMap(countyDF, "USCensusCounties_05")
 #' 
 #' }
 #' @export 
@@ -30,7 +30,7 @@
 #' @importFrom rlang .data
 #' 
 
-countyMap <- function(
+stateMap <- function(
   data = NULL,
   county_SPDF = "USCensusCounties",
   state_SPDF = "USCensusStates",
