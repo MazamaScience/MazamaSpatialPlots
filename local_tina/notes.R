@@ -4,6 +4,8 @@
 # Define county_SPDF and state_SPDF - should they have SPDF from USCensusStates + USCensusCounties?
 # Have to merge USCensusStates$FIPS with USCensusCounties$countyFIPS! Should be length 5 but we should decide
 
+# Update: countyFIPS should be 5-digits. In that case, we want to add that together 
+
 
 
 
@@ -52,7 +54,8 @@ ca <- USCensusCounties_05@data %>%
 data <- left_join(data, ca, by = c("countryCode", "stateCode", "countyName"))
 
 
-
+# This is what we'll probably imagine what they'll submit as part of their dataset
+# but let's reassign more columns so that I can left join with a SPDF
 
 
 

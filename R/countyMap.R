@@ -50,7 +50,7 @@ countyMap <- function(
   if ( !is.null(data) && !exists("data") )
     stop("Parameter 'data' is empty.")
   
-  # TODO:  Accept county SPDF as character string or as object
+  # TODO:  Accept county SPDF as character string or as object 
   if ( is.character(county_SPDF) ) 
     county_SPDF <- get(county_SPDF)
   
@@ -98,6 +98,8 @@ countyMap <- function(
   if ( !is.logical(conusOnly) ) 
     conusOnly <- TRUE
     state_SPDF <- subset(state_SPDF, stateCode %in% MazamaSpatialUtils::CONUS)
+    conus_proj <- sp::CRS("+proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=37.5 +lon_0=-96 +x_0=0 +y_0=0 +datum=NAD83 +units=m +no_defs")
+    
   
   # Breaks Need to add in style in order to make this work? 
   if ( !is.null(breaks) ) {
@@ -116,11 +118,11 @@ countyMap <- function(
   
   # stateCode should be length 2 and countyFIPS should be 3?
   
-  if ( stringr::str_length(data$stateCode) != "2" )
-    stop("Length of stateCode should be [2].")
+#  if ( stringr::str_length(data$stateCode) != 2 )
+#    stop("Length of stateCode should be [2].")
   
-  if ( stringr::str_length(data$countyFIPS) != "3" )
-    stop("Length of countyFIPS should be [3].")
+#  if ( stringr::str_length(data$countyFIPS) != "5" )
+#    stop("Length of countyFIPS should be [5].")
   
   # For the below, is Jon asking that
 
@@ -133,14 +135,16 @@ countyMap <- function(
   # TODO:  Using 'local_jon/JHU_deths.R' as an example, put together an 
   # TODO:  attractive map.
   
-  # Test when specified with breaks 
+  # Most basic map
+  # tm_shape(data) +
+  #  tm_polygons()
   
-  tm_shape(data, projection = conus_proj) +
+ gg <-
+    tm_shape(data) +
     tm_polygons(
-      breaks = breaks,
-      #style = "jenks",
-      palette = "Greys",
-      border.col = "black"
+      projection = conus_proj,
+      paletteName = "Blues",
+      countyBorderColor = "Black"
     ) +
     tm_shape(USCensusStates, projection = conus_proj) +
     tm_polygons(
@@ -154,6 +158,8 @@ countyMap <- function(
       frame = FALSE
     )
 
+    tmap_save(gg, "test_county.png")
+    
   # ----- Return ---------------------------------------------------------------
   
   return(gg)
