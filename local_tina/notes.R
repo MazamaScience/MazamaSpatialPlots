@@ -1,10 +1,17 @@
 # Notes + Questions:
   
 # Missing documentation for MazamaSpatialPlots
-# Define county_SPDF and state_SPDF
-# For stateCode, we need to make sure it's going to follow all the same 
-# guidelines as what we have for our stateCodes. 
-# For countyFIPS, same thing as above but county.
+# Define county_SPDF and state_SPDF - should they have SPDF from USCensusStates + USCensusCounties?
+# Have to merge USCensusStates$FIPS with USCensusCounties$countyFIPS! Should be length 5 but we should decide
+
+
+
+
+
+# I'd imagine we need to set a list of guidelines 
+#   For eg., no extra characters for stateCode (Make sure no quotes are between characters -- CA not "CA")
+#   countyFIPS is length 5
+
 
 # ----------------------------------------------------------------------
 
@@ -19,9 +26,46 @@ dataDir <- ("~/Data/Spatial")
 url <- 'https://data.chhs.ca.gov/dataset/6882c390-b2d7-4b9a-aefa-2068cee63e47/resource/6cd8d424-dfaa-4bdd-9410-a3d656e1176e/download/covid19data.csv'
 filePath <- file.path(dataDir,basename(url))
 utils::download.file(url,filePath) #cool, this is just a csv file 
-covid19data <- read.csv(filePath, header = TRUE) 
+#covid19data <- read.csv(filePath, header = TRUE) # don't use read.csv!!!! 
+covid19data <- readr::read_csv(filePath) 
+
+dplyr::glimpse(covid19data) #this is nicer than using head for some reason
+
 data <- covid19data %>% 
-  select("County.Name", "Most.Recent.Date")
+  dplyr::filter(`Most Recent Date` == "06/07/2020") %>%
+  # NOTE:  See: WHOA! below
+  dplyr::filter(`County Name` != "Unassigned") %>%
+  dplyr::mutate(
+    countryCode = "US",
+    stateCode = "CA",
+    countyName = `County Name`
+  ) %>%
+  select("countryCode", "stateCode", "countyName")
+
+dplyr::glimpse(data) 
+
+ca <- USCensusCounties_05@data %>%
+  dplyr::filter(stateCode == "CA") %>%
+  select("countryCode", "stateCode", "countyName", "countyFIPS")
+
+
+data <- left_join(data, ca, by = c("countryCode", "stateCode", "countyName"))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#data <- covid19data %>% 
+#  select("County.Name", "Most.Recent.Date")
 
 # June 8: Some questions cleared up. I think I'm going to actually edit that data abit so that I can 
 # use it to test out countyMap. Or at least to check if the errors then makes sense. 
@@ -44,6 +88,14 @@ data$stateCode <- "CA"
 
 # 'USCensusStates' not found. I suppose I should load 'USCensusStates' beforehand?
 loadSpatialData("USCensusStates")
+loadSpatialData("USCensusCounties")
+
+
+# Hmm, trying to figure out whether I should match the vectors from US_52 to those in state_SPDF
+
+all(data$stateCode %in% MazamaSpatialUtils::US_52)
+
+
 
 
 # 0. For more information on R packages, visit here: https://r-pkgs.org/intro.html

@@ -25,7 +25,7 @@
 #' 
 #' }
 #' @export 
-#' @importFrom sp CRS
+#' @importFrom sp CRS stringr 
 #' 
 
 countyMap <- function(
@@ -72,14 +72,13 @@ countyMap <- function(
   # ----- Prepare data ---------------------------------------------------------
   
   # PROJECTION
-  
   # TODO:   * If 'is.null(projection)', use the projection associated with 'SPDF'.
-  if ( !is.null(sp::proj4string(projection)) ) {
+  if ( !is.null(projection) ) {
     county_SPDF <- projection
     county_SPDF@proj4string <- sp::CRS("+proj=longlat +ellps=GRS80 +datum=NAD83 +no_defs")
   }
   
-  if ( !is.null(sp::proj4string(projection)) ) {
+  if ( !is.null(projection) ) {
     state_SPDF <- projection
     state_SPDF@proj4string <- sp::CRS("+proj=longlat +ellps=GRS80 +datum=NAD83 +no_defs")
   }
@@ -87,27 +86,44 @@ countyMap <- function(
   # SUBSETTING COLUMNS
   # TODO:   * If '!is.null(stateCode)', subset the 'SPDF'.
   
-  if ( !is.null(countyName) ) {
+  if ( !is.null(county_SPDF$countyName) ) {
     county_SPDF <- subset(county_SPDF, countyName %in% countyName)
   }
   
-  if ( !is.null(stateCode) ) {
+  if ( !is.null(state_SPDF$stateCode) ) {
     state_SPDF <- subset(state_SPDF, stateCode %in% stateCode)
   }
   
   # CONUS specification 
-  
-  if ( conusOnly ) {
-    county_SPDF <- subset(county_SPDF, stateCode %in% MazamaSpatialUtils::CONUS)
-  }
+  if ( !is.logical(conusOnly) ) 
+    conusOnly <- TRUE
+    state_SPDF <- subset(state_SPDF, stateCode %in% MazamaSpatialUtils::CONUS)
   
   # Breaks Need to add in style in order to make this work? 
-  if ( !is.null(data) ) {
+  if ( !is.null(breaks) ) {
     stop("Please specify breaks.")
   }
   
   # ----- Merge data with SPDF -------------------------------------------------
   
+  # For US state code, can find if it matches MazamaSpatialUtils::US_52 (Vector of 52 elements) 
+  
+  all(data$stateCode %in% MazamaSpatialUtils::US_52) 
+  
+  setdiff(data$countyName, county_SPDF$countyName)
+  setdiff(data$countyFIPS, county_SPDF$countyFIPS) # Interesting... length 3 vs length 5
+  setdiff(data$stateCode, state_SPDF$stateCode)
+  
+  # stateCode should be length 2 and countyFIPS should be 3?
+  
+  if ( stringr::str_length(data$stateCode) != "2" )
+    stop("Length of stateCode should be [2].")
+  
+  if ( stringr::str_length(data$countyFIPS) != "3" )
+    stop("Length of countyFIPS should be [3].")
+  
+  # For the below, is Jon asking that
+
   # TODO:  Should have a way to support either 'countyFIPS' or
   # TODO:  'stateCode'+'countyName'. We will soon have utility functions in
   # TODO:  MazamaSpatialUtils to help with this.
@@ -117,14 +133,30 @@ countyMap <- function(
   # TODO:  Using 'local_jon/JHU_deths.R' as an example, put together an 
   # TODO:  attractive map.
   
-  # gg <-
-  #   tmap::tm_shape(...) +
-  #   tmap::tm_polygons(...) + 
-  #   ...
+  # Test when specified with breaks 
   
+  tm_shape(data, projection = conus_proj) +
+    tm_polygons(
+      breaks = breaks,
+      #style = "jenks",
+      palette = "Greys",
+      border.col = "black"
+    ) +
+    tm_shape(USCensusStates, projection = conus_proj) +
+    tm_polygons(
+      alpha = 0,
+      border.col = "gray50"
+    ) +
+    tm_layout(
+      title = paste0("Cumulative COVID-19 Deaths per County"),
+      title.size = 1.1,
+      title.position = c("center", "top"),
+      frame = FALSE
+    )
+
   # ----- Return ---------------------------------------------------------------
   
-  #return(gg)
+  return(gg)
   
 }
 
