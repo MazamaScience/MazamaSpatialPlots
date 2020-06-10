@@ -5,16 +5,52 @@
 # Do we need to have FIPS as one of the necessary columns? Or would stateName + stateCode suffice?
 
 # Need to figure out a way for people to add in different colors as well!
+
+# I tried adding "USCensusStates" into utils and mazama_initialize. I 'checked' but nothing broke
+# but USCensusStates didn't initialize. Need to come back to this.
 #############################################################
+
 # State Map --------------------------------------------------
 
 library(MazamaSpatialPlots)
 library(MazamaSpatialUtils)
 
+# mazama_initialize()
+# path also need to be set
+
 loadSpatialData("USCensusCounties_05") # for it to be faster. will fix later 
 loadSpatialData("USCensusStates")
 
+# using data from state_obesity 
+library(dplyr)
 
+fileUrl <- "http://data-lakecountyil.opendata.arcgis.com/datasets/3e0c1eb04e5c48b3be9040b0589d3ccf_8.csv"
+obesity_DF <- readr::read_csv(fileUrl)
+col_names <- c("FID", "stateName", "obesityRate", "SHAPE_Length", "SHAPE_Area")
+col_types = "icddd"
+outputColumns <- c("countryCode", "stateCode", "stateFIPS", "stateName", 
+                   "obesityRate")
+obesity_DF <-
+  readr::read_csv(
+    file = fileUrl,
+    skip = 1,                    # Skip the header line
+    col_names = col_names,
+    col_types = col_types
+  ) %>%
+  dplyr::mutate(
+    countryCode = "US",
+    stateCode = MazamaSpatialUtils::US_stateNameToCode(stateName),
+    stateFIPS = MazamaSpatialUtils::US_stateNameToFIPS(stateName),
+    stateName = stateName
+  ) %>%
+  dplyr::select(!!outputColumns)
+
+# Now we have a dataset called 'obesity_DF'. Change it to data.
+data <- obesity_DF
+
+# To call function, type in:
+
+stateMap(data = state_SPDF)
 
 # Error in `$<-.data.frame`(`*tmp*`, "geometry", value = list(list(list( : 
 # replacement has 49 rows, data has 56
