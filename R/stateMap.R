@@ -32,7 +32,7 @@
 
 stateMap <- function(
   data = NULL,
-  county_SPDF = "USCensusCounties",
+  county_SPDF = "USCensusCounties_05",
   state_SPDF = "USCensusStates",
   paletteName = "YlOrBr",
   #style = ifelse(is.null(breaks), "pretty", "fixed"),
@@ -61,7 +61,7 @@ stateMap <- function(
     state_SPDF <- get(state_SPDF)
   
   # Does 'data' have the required columns? 
-  requiredFields <- c("stateCode", "countyName", "countyFIPS")
+  requiredFields <- c("stateCode", "stateName")
   missingFields <- setdiff(requiredFields, names(data))
   
   if ( length(missingFields) > 0 ) {
@@ -74,87 +74,39 @@ stateMap <- function(
   
   # ----- Prepare data ---------------------------------------------------------
   
-  # * Subset spatial data -----
-  
-  # Use stateCode if defined
-  # Else use conusOnly if defined
-  # Else use everything
-  
   if ( !is.null(stateCode) ) {
-    
     county_SPDF <- subset(county_SPDF, county_SPDF$stateCode %in% stateCode)
     state_SPDF <- subset(state_SPDF, state_SPDF$stateCode %in% stateCode)
     data <- data %>% dplyr::filter(.data$stateCode %in% stateCode)
-    
   } else if ( conusOnly ) {
-    
     county_SPDF <- subset(county_SPDF, county_SPDF$stateCode %in% MazamaSpatialUtils::CONUS)
     state_SPDF <- subset(state_SPDF, state_SPDF$stateCode %in% MazamaSpatialUtils::CONUS)
     data <- data %>% dplyr::filter(.data$stateCode %in% MazamaSpatialUtils::CONUS)
-    
+  } else {
+    county_SPDF <- county_SPDF 
+    state_SPDF <- state_SPDF
+    data <- data
   }
-  
-  # Else keep all  states
-  
   
   # * Project data -----
   
-  # Use profj if defined
-  # Else use CONUS default projection
-  # Else use county_SPDF internal projrection
-  
   if ( !is.null(proj) ) {
-    
-    # TODO:  project county_SPDF and state_SPDF
-    
-  } else if ( conusOnly ) {
-    
-    # TODO:
-    
-  }
-  
-  
-  ##############################################################################  
-  ##############################################################################  
-  ##############################################################################  
-  
-  
-  
-  
-  
-  
-  if ( !is.null(county_SPDF$countyName) ) {
-    county_SPDF <- subset(county_SPDF, countyName %in% countyName)
-  }
-  
-  if ( !is.null(state_SPDF$stateCode) ) {
-    state_SPDF <- subset(state_SPDF, stateCode %in% stateCode)
-  }
-  
-  # CONUS specification 
-  if ( !is.logical(conusOnly) ) {
-    conusOnly <- TRUE
-    state_SPDF <- subset(state_SPDF, stateCode %in% MazamaSpatialUtils::CONUS)
+    county_SPDF@proj4string <- sp::CRS("+proj=longlat +ellps=GRS80 +datum=NAD83 +no_defs")
+    state_SPDF@proj4string <- sp::CRS("+proj=longlat +ellps=GRS80 +datum=NAD83 +no_defs")
+    } else if ( conusOnly ) {
     conus_proj <- sp::CRS("+proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=37.5 +lon_0=-96 +x_0=0 +y_0=0 +datum=NAD83 +units=m +no_defs")
-  }
-  
-  
-  # PROJECTION
-  # TODO:   * If 'is.null(projection)', use the projection associated with 'SPDF'.
-  if ( !is.null(projection) ) {
-    county_SPDF <- projection
+    } else {
     county_SPDF@proj4string <- sp::CRS("+proj=longlat +ellps=GRS80 +datum=NAD83 +no_defs")
   }
-  
-  if ( !is.null(projection) ) {
-    state_SPDF <- projection
-    state_SPDF@proj4string <- sp::CRS("+proj=longlat +ellps=GRS80 +datum=NAD83 +no_defs")
-  }
-  
+
   # Breaks Need to add in style in order to make this work? 
   if ( !is.null(breaks) ) {
     stop("Please specify breaks.")
   }
+  
+  #############################################################
+  #############################################################
+  #############################################################
   
   # ----- Merge data with SPDF -------------------------------------------------
   
@@ -168,8 +120,8 @@ stateMap <- function(
   
   # stateCode should be length 2 and countyFIPS should be 3?
   
-  #  if ( stringr::str_count(data$stateCode) != 2 )
-  #    stop("Length of stateCode should be [2].")
+    if ( stringr::str_count(data$stateCode) != "2" )
+      stop("Length of stateCode should be [2].")
   
   #  if ( stringr::str_count(data$countyFIPS) != "5" )
   #    stop("Length of countyFIPS should be [5].")

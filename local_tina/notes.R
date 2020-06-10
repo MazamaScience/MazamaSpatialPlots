@@ -1,5 +1,11 @@
 # Notes + Questions:
 
+#############################################################
+
+# Do we need to have FIPS as one of the necessary columns? Or would stateName + stateCode suffice?
+
+
+#############################################################
 # State Map --------------------------------------------------
 
 library(MazamaSpatialPlots)
@@ -8,6 +14,7 @@ library(MazamaSpatialUtils)
 loadSpatialData("USCensusCounties_05") # for it to be faster. will fix later 
 loadSpatialData("USCensusStates")
 
+data <- example_US_stateObesity
 
 
 
