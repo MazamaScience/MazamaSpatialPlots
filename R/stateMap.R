@@ -113,12 +113,27 @@
   
   # ----- Create plot ----------------------------------------------------------
   
-  # Most basic map
-  # tm_shape(data) +
-  #  tm_polygons()
+  
+  
   #############################################################
   # making corrections right now to join datasets - wip 
-  #############################################################
+
+  state_DF <- dplyr::left_join(
+    USCensusStates@data,
+    data,
+    by = c("stateCode", "stateName")
+  )
+  state_SPDF@data <- state_DF
+  
+  # Most basic map
+   tm_shape(state_SPDF) +
+    tm_polygons() 
+  # Error in `$<-.data.frame`(`*tmp*`, "geometry", value = list(list(list( : 
+  # replacement has 49 rows, data has 56
+  # probably when I did data <- data, it didn't match back up. Let's see. OR somehow 
+  # only be able to match back to both state code and state name to SPDF.
+  ############################################################# 
+   
   stateMap <-
     tm_shape(data) +
     tm_polygons(
