@@ -21,7 +21,7 @@
 #' \donttest{
 #' library(MazamaSpatialPlots)
 #' 
-#' stateMap(countyDF, "USCensusCounties_05")
+#' stateMap(stateDF, "USCensusCounties_05")
 #' 
 #' }
 #' @export 

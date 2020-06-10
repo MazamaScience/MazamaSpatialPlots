@@ -50,7 +50,7 @@ county level. Input consists of a dataframe with county identifiers.
 \donttest{
 library(MazamaSpatialPlots)
 
-stateMap(countyDF, "USCensusCounties_05")
+stateMap(stateDF, "USCensusCounties_05")
 
 }
 }

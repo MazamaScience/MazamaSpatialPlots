@@ -1,4 +1,24 @@
 # Notes + Questions:
+
+# State Map --------------------------------------------------
+
+library(MazamaSpatialPlots)
+library(MazamaSpatialUtils)
+
+loadSpatialData("USCensusCounties_05") # for it to be faster. will fix later 
+loadSpatialData("USCensusStates")
+
+
+
+
+
+
+
+
+
+
+
+
   
 # Missing documentation for MazamaSpatialPlots
 # Define county_SPDF and state_SPDF - should they have SPDF from USCensusStates + USCensusCounties?
@@ -122,4 +142,9 @@ all(data$stateCode %in% MazamaSpatialUtils::US_52)
 
 # create countyMap() function 
 #local_jon/JHU_deaths.R
+
+
+
+
+# What is !! 
 
