@@ -119,45 +119,39 @@
   # making corrections right now to join datasets - wip 
 
   state_DF <- dplyr::left_join(
-    USCensusStates@data,
     data,
+    USCensusStates@data,
     by = c("stateCode", "stateName")
   )
-  state_SPDF@data <- state_DF
   
-  # Most basic map
-   tm_shape(state_SPDF) +
-    tm_polygons() 
-  # Error in `$<-.data.frame`(`*tmp*`, "geometry", value = list(list(list( : 
-  # replacement has 49 rows, data has 56
-  # probably when I did data <- data, it didn't match back up. Let's see. OR somehow 
-  # only be able to match back to both state code and state name to SPDF.
-  ############################################################# 
-   
-  stateMap <-
-    tm_shape(data) +
+  #############################################################
+  
+  # New name to go in as 'data'-> Will fix but for now.
+  state_SPDF@data <- data
+  
+  # Make it more user-friendly to be able to join...
+  
+  #############################################################
+  
+  # Test
+  new_map <-
+    tm_shape(state_SPDF) +
     tm_polygons(
+      "obesityRate",
       projection = conus_proj,
-      paletteName = "Blues",
-      countyBorderColor = "Black"
-    ) +
-    tm_shape(USCensusStates, projection = conus_proj) +
-    tm_polygons(
-      alpha = 0,
-      border.col = "gray50"
+      paletteName = "Blues", # didn't run here. need to debug or make a call 
+      stateBorderColor = "Red" # didn't run here. need to debug 
     ) +
     tm_layout(
-      title = paste0("Cumulative COVID-19 Deaths per County"),
+      title = paste0("Obesity Rate by State"),
       title.size = 1.1,
       title.position = c("center", "top"),
       frame = FALSE
     )
   
-  #tmap_save(stateMap, "test_county.png")
-  
   # ----- Return ---------------------------------------------------------------
   
-  return(invisible(stateMap))
+  return(invisible(new_map))
   
 }
 

@@ -70,4 +70,5 @@ obesity_DF <-
 #   conusOnly = TRUE
 # )
 
-
+obesity_DF %>% 
+  select("stateCode", "stateName", "obesityRate")
