@@ -6,22 +6,18 @@
 \usage{
 stateMap(
   data = NULL,
-  county_SPDF = "USCensusCounties",
   state_SPDF = "USCensusStates",
   paletteName = "YlOrBr",
   breaks = NULL,
   conusOnly = TRUE,
   stateCode = NULL,
   projection = NULL,
-  stateBorderColor = "gray50",
-  countyBorderColor = "white"
+  stateBorderColor = "gray50"
 )
 }
 \arguments{
 \item{data}{A dataframe containing values to plot a county map. At a minimum
 there will be stateCode, countyName, and countyFIPS.}
-
-\item{county_SPDF}{Vector of US counties.}
 
 \item{state_SPDF}{ector of US States.}
 
@@ -36,8 +32,6 @@ there will be stateCode, countyName, and countyFIPS.}
 \item{projection}{Specified method to represent surface of Earth.}
 
 \item{stateBorderColor}{The color of the state border to display.}
-
-\item{countyBorderColor}{The color of the county borders to display.}
 }
 \value{
 A ggplot object.
