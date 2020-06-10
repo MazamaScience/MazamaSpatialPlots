@@ -118,13 +118,20 @@ stateMap <- function(
   setdiff(data$countyFIPS, county_SPDF$countyFIPS) # Interesting... length 3 vs length 5
   setdiff(data$stateCode, state_SPDF$stateCode)
   
-  # stateCode should be length 2 and countyFIPS should be 3?
+  # Check to see if stateCode is length 2. If not, which 
+  if ( !any(stringr::str_count(data$stateCode) == "2") ) {
+    stop("Length of stateCode should be [2].")
+  } else {
+    setdiff(data$stateCode, state_SPDF$stateCode)
+  }
   
-    if ( stringr::str_count(data$stateCode) != "2" )
-      stop("Length of stateCode should be [2].")
   
-  #  if ( stringr::str_count(data$countyFIPS) != "5" )
-  #    stop("Length of countyFIPS should be [5].")
+  if ( !data$stateName %in% state_SPDF$stateName) {
+    stop("State names do not match up.")
+  }else{
+    setdiff(data$stateName, state_SPDF$stateName)
+  }
+  
   
   # For the below, is Jon asking that
   
@@ -141,7 +148,7 @@ stateMap <- function(
   # tm_shape(data) +
   #  tm_polygons()
   
-  gg <-
+  stateMap <-
     tm_shape(data) +
     tm_polygons(
       projection = conus_proj,
@@ -160,11 +167,11 @@ stateMap <- function(
       frame = FALSE
     )
   
-  tmap_save(gg, "test_county.png")
+  #tmap_save(stateMap, "test_county.png")
   
   # ----- Return ---------------------------------------------------------------
   
-  return(gg)
+  return(invisible(stateMap))
   
 }
 

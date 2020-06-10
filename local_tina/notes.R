@@ -4,7 +4,6 @@
 
 # Do we need to have FIPS as one of the necessary columns? Or would stateName + stateCode suffice?
 
-
 #############################################################
 # State Map --------------------------------------------------
 
