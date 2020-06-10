@@ -6,7 +6,7 @@
 \usage{
 stateMap(
   data = NULL,
-  county_SPDF = "USCensusCounties",
+  county_SPDF = "USCensusCounties_05",
   state_SPDF = "USCensusStates",
   paletteName = "YlOrBr",
   breaks = NULL,
