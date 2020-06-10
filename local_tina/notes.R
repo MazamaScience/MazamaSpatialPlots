@@ -4,6 +4,7 @@
 
 # Do we need to have FIPS as one of the necessary columns? Or would stateName + stateCode suffice?
 
+# Need to figure out a way for people to add in different colors as well!
 #############################################################
 # State Map --------------------------------------------------
 
@@ -13,9 +14,14 @@ library(MazamaSpatialUtils)
 loadSpatialData("USCensusCounties_05") # for it to be faster. will fix later 
 loadSpatialData("USCensusStates")
 
-data <- example_US_stateObesity
 
 
+# Error in `$<-.data.frame`(`*tmp*`, "geometry", value = list(list(list( : 
+# replacement has 49 rows, data has 56
+# probably when I did data <- data, it didn't match back up. Let's see. OR somehow 
+# only be able to match back to both state code and state name to SPDF.
+
+# To fix this concern, I changed the parameters for left join, having it be data onto SPDF.
 
 
 
