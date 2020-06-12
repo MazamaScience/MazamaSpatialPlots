@@ -24,6 +24,7 @@ MazamaSpatialUtils::loadSpatialData("EEZCountries")
 MazamaSpatialUtils::loadSpatialData("OSMTimezones")
 MazamaSpatialUtils::loadSpatialData("NaturalEarthAdm1")
 MazamaSpatialUtils::loadSpatialData("USCensusCounties")
+MazamaSpatialUtils::loadSpatialData("USCensusStates")
 }
 }
 \examples{

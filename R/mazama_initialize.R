@@ -10,6 +10,8 @@
 #' MazamaSpatialUtils::loadSpatialData("OSMTimezones")
 #' MazamaSpatialUtils::loadSpatialData("NaturalEarthAdm1")
 #' MazamaSpatialUtils::loadSpatialData("USCensusCounties")
+#' MazamaSpatialUtils::loadSpatialData("USCensusStates")
+
 #' }
 #' @param spatialDataDir Directory where spatial datasets are found, 
 #' Default: "~/Data/Spatial"
@@ -52,6 +54,8 @@ mazama_initialize <- function(
       MazamaSpatialUtils::loadSpatialData("OSMTimezones")
       MazamaSpatialUtils::loadSpatialData("NaturalEarthAdm1")
       MazamaSpatialUtils::loadSpatialData("USCensusCounties")
+      MazamaSpatialUtils::loadSpatialData("USCensusStates")
+      
     }, silent = TRUE)
     
     if ( "try-error" %in% class(result) ) {

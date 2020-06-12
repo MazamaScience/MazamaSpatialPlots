@@ -11,7 +11,8 @@ validateMazamaSpatialUtils <- function() {
   if ( !exists("EEZCountries") ||
        !exists("OSMTimezones") ||
        !exists("NaturalEarthAdm1") ||
-       !exists("USCensusCounties") ) {
+       !exists("USCensusCounties") ||
+       !exists("USCensusStates") ) {
     
     stop(paste0(
       "\n\nYou must have the MazamaSpatialUtils package ",
@@ -24,7 +25,9 @@ validateMazamaSpatialUtils <- function() {
       "  MazamaSpatialUtils::loadSpatialData(\"EEZCountries\")\n",
       "  MazamaSpatialUtils::loadSpatialData(\"OSMTimezones\")\n",
       "  MazamaSpatialUtils::loadSpatialData(\"NaturalEarthAdm1\")\n",
-      "  MazamaSpatialUtils::loadSpatialData(\"USCensusCounties\")\n"
+      "  MazamaSpatialUtils::loadSpatialData(\"USCensusCounties\")\n",
+      "  MazamaSpatialUtils::loadSpatialData(\"USCensusStates\")\n"
+      
     ))
     
   }

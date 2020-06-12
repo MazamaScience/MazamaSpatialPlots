@@ -26,6 +26,7 @@
 #' @importFrom sp CRS
 #' @importFrom stringr str_length
 #' @importFrom rlang .data
+#' @importFrom dplyr filter left_join
 #' 
 
   stateMap <- function(
@@ -127,7 +128,7 @@
   #############################################################
   
   # New name to go in as 'data'-> Will fix but for now.
-  state_SPDF@data <- data
+  state_SPDF@data <- state_DF
   
   # Make it more user-friendly to be able to join...
   
@@ -139,8 +140,8 @@
     tm_polygons(
       "obesityRate",
       projection = conus_proj,
-      paletteName = "Blues", # didn't run here. need to debug or make a call 
-      stateBorderColor = "Red" # didn't run here. need to debug 
+      paletteName = "Blues", 
+      stateBorderColor = "Red" 
     ) +
     tm_layout(
       title = paste0("Obesity Rate by State"),
@@ -148,36 +149,36 @@
       title.position = c("center", "top"),
       frame = FALSE
     )
+
+    # ----- Return ---------------------------------------------------------------
   
-  # ----- Return ---------------------------------------------------------------
-  
-  return(invisible(new_map))
+  return(new_map)
   
 }
 
 # ===== DEBUGGING ==============================================================
 
-  if ( FALSE ) {
-    
-    library(MazamaSpatialPlots)
-    mazama_initialize()
-    
-    loadSpatialData("USCensusCounties_05")
-    
-    # Set up required variables so we can walk through the code
-    data = USCensusCounties@data
-    state_SPDF = "USCensusStates"
-    paletteName = "YlOrBr"
-    #style = ifelse(is.null(breaks), "pretty", "fixed"),
-    breaks = NULL
-    conusOnly = TRUE
-    stateCode = NULL
-    projection = NULL
-    stateBorderColor = "gray50"
-    countyBorderColor = "white"
-    
-    # Run the code above and then start walking through the lines of code in the
-    # function.
-    
-  }
-  
+  # if ( FALSE ) {
+  #   
+  #   library(MazamaSpatialPlots)
+  #   mazama_initialize()
+  #   
+  #   loadSpatialData("USCensusCounties_05")
+  #   
+  #   # Set up required variables so we can walk through the code
+  #   data = USCensusCounties@data
+  #   state_SPDF = "USCensusStates"
+  #   paletteName = "YlOrBr"
+  #   #style = ifelse(is.null(breaks), "pretty", "fixed"),
+  #   breaks = NULL
+  #   conusOnly = TRUE
+  #   stateCode = NULL
+  #   projection = NULL
+  #   stateBorderColor = "gray50"
+  #   countyBorderColor = "white"
+  #   
+  #   # Run the code above and then start walking through the lines of code in the
+  #   # function.
+  #   
+  # }
+  # 
