@@ -42,7 +42,7 @@
 #' @format A tibble with 52 rows and 3 columns of data.
 #' @description The \code{example_US_countyCovid} dataset provides a small
 #' county dataset to use in code examples. The code for creating it provides an
-#' example for how to create a dataest that is compatible with \code{stateMap()}.
+#' example for how to create a dataest that is compatible with \code{countyMap()}.
 #' 
 #' This dataset was generated on 2020-06-12 by running:
 #'
