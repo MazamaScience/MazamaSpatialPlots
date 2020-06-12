@@ -7,9 +7,6 @@
 \format{
 A tibble with 52 rows and 3 columns of data.
 }
-\source{
-https://www.purpleair.com/json
-}
 \usage{
 example_US_stateObesity
 }
@@ -18,13 +15,11 @@ The \code{example_US_stateObesity} dataset provides a small
 state dataset to use in code examples. The code for creating it provides an
 example for how to create a dataest that is compatible with \code{stateMap()}.
 
-This dataset was generatedon 2020-06-09 by running:
+This dataset was generated on 2020-06-09 by running:
 
 \preformatted{
 library(dplyr)
 library(MazamaSpatialUtils)
-
-initializeMazamaSpatialUtils()
 
 fileUrl <- paste0("http://data-lakecountyil.opendata.arcgis.com/datasets/",
                   "3e0c1eb04e5c48b3be9040b0589d3ccf_8.csv")
@@ -44,15 +39,11 @@ example_US_stateObesity <-
     col_types = col_types
   ) %>%
   dplyr::mutate(
-    stateCode = MazamaSpatialUtils::US_stateNameToCode(stateName),
-    stateName = stateName
+    stateCode = MazamaSpatialUtils::US_stateNameToCode(stateName)
   ) %>%
   dplyr::select(!!outputColumns)
 
 save(example_US_stateObesity, file = "data/example_US_stateObesity.rda")
 }
-}
-\seealso{
-example_pas_raw
 }
 \keyword{datasets}
