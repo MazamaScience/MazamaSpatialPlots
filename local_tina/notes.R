@@ -45,12 +45,9 @@ obesity_DF <-
   ) %>%
   dplyr::select(!!outputColumns)
 
-# Now we have a dataset called 'obesity_DF'. Change it to data.
-data <- obesity_DF
+# Now we have a dataset called 'obesity_DF'. Change it to data. data <- obesity_DF
 
-# To call function, type in:
-
-stateMap(data = state_SPDF)
+# To call function, type in: stateMap(data = data)
 
 # Error in `$<-.data.frame`(`*tmp*`, "geometry", value = list(list(list( : 
 # replacement has 49 rows, data has 56
