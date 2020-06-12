@@ -4,13 +4,11 @@
 #' state dataset to use in code examples. The code for creating it provides an
 #' example for how to create a dataest that is compatible with \code{stateMap()}.
 #' 
-#' This dataset was generatedon 2020-06-09 by running:
+#' This dataset was generated on 2020-06-09 by running:
 #'
 #' \preformatted{
 #' library(dplyr)
 #' library(MazamaSpatialUtils)
-#' 
-#' initializeMazamaSpatialUtils()
 #' 
 #' fileUrl <- paste0("http://data-lakecountyil.opendata.arcgis.com/datasets/",
 #'                   "3e0c1eb04e5c48b3be9040b0589d3ccf_8.csv")
@@ -30,15 +28,51 @@
 #'     col_types = col_types
 #'   ) %>%
 #'   dplyr::mutate(
-#'     stateCode = MazamaSpatialUtils::US_stateNameToCode(stateName),
-#'     stateName = stateName
+#'     stateCode = MazamaSpatialUtils::US_stateNameToCode(stateName)
 #'   ) %>%
 #'   dplyr::select(!!outputColumns)
 #' 
 #' save(example_US_stateObesity, file = "data/example_US_stateObesity.rda")
 #' }
 #'
-#' @seealso example_pas_raw
-#' @source https://www.purpleair.com/json
 "example_US_stateObesity"
 
+
+#' @title Example county Covid dataset
+#' @format A tibble with 52 rows and 3 columns of data.
+#' @description The \code{example_US_countyCovid} dataset provides a small
+#' county dataset to use in code examples. The code for creating it provides an
+#' example for how to create a dataest that is compatible with \code{stateMap()}.
+#' 
+#' This dataset was generated on 2020-06-12 by running:
+#'
+#' \preformatted{
+#' library(dplyr)
+#' library(MazamaSpatialUtils)
+#' 
+#' fileUrl <- "https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-counties.csv"
+#' 
+#' col_names <- c("date", "countyName", "stateName", "countyFIPS", "cases", "deaths")
+#' col_types = "Dcccii"
+#' 
+#' outputColumns <- c("stateCode", "stateName", "countyFIPS", "countyName", "cases", "deaths")
+#' 
+#' # A couple of iterations and I end up with this:
+#' 
+#' example_US_countyCovid <-
+#'   readr::read_csv(
+#'     file = fileUrl,
+#'     skip = 1,                    # Skip the header line
+#'     col_names = col_names,
+#'     col_types = col_types
+#'   ) %>%
+#'   dplyr::mutate(
+#'     stateCode = MazamaSpatialUtils::US_stateNameToCode(stateName),
+#'   ) %>%
+#'   dplyr::filter(.data$date == lubridate::ymd("2020-06-01")) %>%
+#'   dplyr::select(!!outputColumns)
+#' 
+#' save(example_US_countyCovid, file = "data/example_US_countyCovid.rda")
+#' }
+#'
+"example_US_countyCovid"

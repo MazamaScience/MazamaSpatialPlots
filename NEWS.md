@@ -1,4 +1,9 @@
 
+# MazamaSpatialPlots 0.0.3
+
+* Added `example_US_stateObesity` dataset.
+* Added `example_US_countyCovid` dataset.
+
 # MazamaSpatialPlots 0.0.2
 
 * Minor code style changes to `countyMap.R`.
