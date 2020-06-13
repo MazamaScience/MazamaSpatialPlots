@@ -11,11 +11,11 @@
 #' \item{\code{breaks}}
 #' }
 #' 
-#' @param data A dataframe containing values to plot a state map. This dataframe
+#' @param data Dataframe containing values to plot a state map. This dataframe
 #' must contain a column named \code{stateCode} with the 2-character state code.
-#' @param state_SPDF ector of US States. 
 #' @param parameter Name of the column of data in \code{state_SPDF} to use fo
 #' coloring the map.
+#' @param state_SPDF SpatialPolygonsDataFrame with US States. 
 #' @param palette A palette name or a vector of colors based on RColorBrewer.
 #' @param breaks Numeric vector of break points. Must be 1 greater than \code{n}. 
 #' @param conusOnly Logical specifying CONtinental US state codes.  
@@ -25,14 +25,22 @@
 #' @param title Text string to use as the plot title.
 #' @return A ggplot object.
 #' 
-#' @rdname jons_stateMap
+#' @rdname stateMap
 #' 
 #' @examples
 #' \donttest{
 #' library(MazamaSpatialPlots)
-#' 
-#' jons_stateMap(example_US_stateObesity)
-#' 
+#' setSpatialDataDir("~/Data/Spatial")
+#' loadSpatialData("USCensusStates_02")
+#'
+#' stateMap(
+#'   data = example_US_stateObesity, 
+#'   parameter = "obesityRate", 
+#'   state_SPDF = "USCensusStates_02",
+#'   palette = "BuPu",
+#'   stateBorderColor = "white",
+#'   title = "2018 Obesity by State"
+#' )
 #' }
 #' @export 
 #' @importFrom sp CRS
@@ -41,10 +49,10 @@
 #' @importFrom tmap tm_shape tm_fill tm_polygons tm_layout
 #' 
 
-jons_stateMap <- function(
+stateMap <- function(
   data = NULL,
-  state_SPDF = "USCensusStates",
   parameter = NULL,
+  state_SPDF = "USCensusStates_02",
   palette = "YlOrBr",
   breaks = NULL,
   conusOnly = TRUE,
@@ -71,7 +79,14 @@ jons_stateMap <- function(
   
   # Accept state SPDF as character string or as object
   if ( is.character(state_SPDF) ) {
-    state_SPDF <- get(state_SPDF)
+    if ( exists(state_SPDF) ) {
+      state_SPDF <- get(state_SPDF)
+    } else {
+      stop(sprintf("State dataset '%s' is not loaded.
+  Please load it with MazamaSpatialtUtils::loadSpatialData()",
+                   state_SPDF
+      ))
+    }
   }
   
   # Does 'data' have the required columns? 
@@ -159,34 +174,6 @@ jons_stateMap <- function(
   
   # ----- Create plot ----------------------------------------------------------
 
-  ##############################################################################  
-  # TINA:  I developed this a piece at a time like this:
-  # TINA:  Remove this if (FALSE) chunk
-  
-  if ( FALSE) {
-  
-    # Attempt 1) get anything plotting
-    tmap::tm_shape(state_SPDF) +
-      tmap::tm_polygons()
-    
-    # Attempt 2) get chloropleth map
-    tmap::tm_shape(state_SPDF, projection = projection) +
-      tmap::tm_fill(
-        col = parameter,    # just this at first
-        palette = palette,  # then added this
-        breaks = breaks     # then added this
-      )
-    
-    # I had tried using the 'n' parameter to tm_fill() but couldn't get it to
-    # work so I just bailed on that and let tm_fill() do it's default thing.
-    
-    # Attempt 3-6 added in the projection, state borders and title to get
-    # the code you see below
-      
-  }
-  ##############################################################################  
-  
-  
   gg <-
     tmap::tm_shape(state_SPDF, projection = projection) +
     tmap::tm_fill(
@@ -207,8 +194,6 @@ jons_stateMap <- function(
     )
   
   # ----- Return ---------------------------------------------------------------
-  
-  # TINA:  Don't return(invisible(gg)) because we want it to plot by default
   
   return(gg)
   
@@ -241,7 +226,7 @@ if ( FALSE ) {
   #
   # You can also source this file and run the function now
   
-  jons_stateMap(
+  stateMap(
     data = data,
     state_SPDF = state_SPDF,
     parameter = parameter,
@@ -256,7 +241,7 @@ if ( FALSE ) {
   
   # Here is how I would use this function in real life:
   
-  jons_stateMap(
+  stateMap(
     data, 
     parameter = "obesityRate", 
     state_SPDF = state_SPDF
@@ -264,7 +249,7 @@ if ( FALSE ) {
   
   # Not bad
   
-  jons_stateMap(
+  stateMap(
     data, 
     parameter = "obesityRate", 
     state_SPDF = state_SPDF,
@@ -274,7 +259,7 @@ if ( FALSE ) {
   
   # Better but still need a title
   
-  jons_stateMap(
+  stateMap(
     data, 
     parameter = "obesityRate", 
     state_SPDF = state_SPDF,

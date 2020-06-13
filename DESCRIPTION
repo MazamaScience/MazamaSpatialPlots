@@ -1,6 +1,6 @@
 Type: Package
 Package: MazamaSpatialPlots
-Version: 0.0.3
+Version: 0.0.4
 Title: Thematic plots for MazamaSpatialUtils datasets
 Authors@R: c(
     person("Jonathan", "Callahan", email="jonathan.s.callahan@gmail.com", role=c("aut","cre")),

@@ -1,4 +1,9 @@
 
+# MazamaSpatialPlots 0.0.4
+
+* Added `stateMap()` with basic functionality.
+* Removed prototype `countyMap()`.
+
 # MazamaSpatialPlots 0.0.3
 
 * Added `example_US_stateObesity` dataset.
