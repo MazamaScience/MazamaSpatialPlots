@@ -14,17 +14,14 @@ Default: "~/Data/Spatial"}
 No return value.
 }
 \description{
-Convenience function to initialize spatial data. Wraps the 
-following setup lines:
+Convenience function to initialize spatial data for US state
+and county maps. Wraps the following setup lines:
 
 \preformatted{
 MazamaSpatialUtils::setSpatialDataDir(spatialDataDir)
 
-MazamaSpatialUtils::loadSpatialData("EEZCountries")
-MazamaSpatialUtils::loadSpatialData("OSMTimezones")
-MazamaSpatialUtils::loadSpatialData("NaturalEarthAdm1")
-MazamaSpatialUtils::loadSpatialData("USCensusCounties")
-MazamaSpatialUtils::loadSpatialData("USCensusStates")
+MazamaSpatialUtils::loadSpatialData("USCensusCounties_02")
+MazamaSpatialUtils::loadSpatialData("USCensusStates_02")
 }
 }
 \examples{
@@ -35,12 +32,14 @@ library(MazamaSpatialPlots)
 spatialDataDir <- tempdir() # typically "~/Data/Spatial"
 MazamaSpatialUtils::setSpatialDataDir(spatialDataDir)
 
-# Install core spatial datasets (168 MB download)
-MazamaSpatialUtils::installSpatialData()
+# TODO:  Restore example when data download functions support new data.
 
-exists("NaturalEarthAdm1")
-mazama_initialize(spatialDataDir)
-exists("NaturalEarthAdm1")
-class(NaturalEarthAdm1)
+#### Install core spatial datasets (168 MB download)
+###MazamaSpatialUtils::installSpatialData()
+###
+###exists("USCensusStates_02")
+###mazama_initialize(spatialDataDir)
+###exists("USCensusStates_02")
+###class(USCensusStates)
 }
 }

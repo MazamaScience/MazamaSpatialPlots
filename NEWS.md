@@ -1,4 +1,8 @@
 
+# MazamaSpatialPlots 0.0.5
+
+* Added `countyMap()` with basic functionality.
+
 # MazamaSpatialPlots 0.0.4
 
 * Added `stateMap()` with basic functionality.

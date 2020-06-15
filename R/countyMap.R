@@ -1,6 +1,6 @@
-#' @title State level thematic map
+#' @title County level thematic map
 #' @description Uses the \pkg{tmap} package to generate a thematic map at the
-#' county level. Input consists of a dataframe with \code{stateCode} identifiers.
+#' state level. Input consists of a dataframe with \code{countyFIPS} identifiers.
 #' 
 #' @details See \code{tmap::tm_fill()} for a more detailed description of
 #' the following parameters:
@@ -12,32 +12,33 @@
 #' }
 #' 
 #' @param data Dataframe containing values to plot. This dataframe
-#' must contain a column named \code{stateCode} with the 2-character state code.
-#' @param parameter Name of the column of data in \code{state_SPDF} to use for
+#' must contain a column named \code{countyFIPS} with the 5-digit FIPS code.
+#' @param parameter Name of the column of data in \code{county_SPDF} to use for
 #' coloring the map.
 #' @param state_SPDF SpatialPolygonsDataFrame with US states. 
+#' @param county_SPDF SpatialPolygonsDataFrame with US counties. 
 #' @param palette Palette name or a vector of colors based on RColorBrewer.
 #' @param breaks Numeric vector of break points. Must be 1 greater than \code{n}. 
 #' @param conusOnly Logical specifying CONtinental US state codes.  
 #' @param stateCode Vector of state codes.
 #' @param projection Specified method to represent surface of Earth.
 #' @param stateBorderColor Color used for state borders.
+#' @param countyBorderColor Color used for county borders.
 #' @param title Text string to use as the plot title.
 #' @return A ggplot object.
 #' 
-#' @rdname stateMap
+#' @rdname countyMap
 #' 
 #' @examples
 #' \donttest{
 #' library(MazamaSpatialPlots)
 #' mazama_initialize()
 #'
-#' stateMap(
-#'   data = example_US_stateObesity, 
-#'   parameter = "obesityRate", 
-#'   palette = "BuPu",
-#'   stateBorderColor = "white",
-#'   title = "2018 Obesity by State"
+#' countyMap(
+#'   data = example_US_countyCovid, 
+#'   parameter = "cases",
+#'   breaks = c(0,100,200,500,1000,2000,5000,10000,20000,50000,1e6),
+#'   title = "Covid cases by county -- June 01, 2020"
 #' )
 #' }
 #' @export 
@@ -47,16 +48,18 @@
 #' @importFrom tmap tm_shape tm_fill tm_polygons tm_layout
 #' 
 
-stateMap <- function(
+countyMap <- function(
   data = NULL,
   parameter = NULL,
   state_SPDF = "USCensusStates_02",
+  county_SPDF = "USCensusCounties_02",
   palette = "YlOrBr",
   breaks = NULL,
   conusOnly = TRUE,
   stateCode = NULL,
   projection = NULL,
   stateBorderColor = "gray50",
+  countyBorderColor = "white",
   title = NULL
 ) {
   
@@ -87,8 +90,20 @@ stateMap <- function(
     }
   }
   
+  # Accept county SPDF as character string or as object
+  if ( is.character(county_SPDF) ) {
+    if ( exists(county_SPDF) ) {
+      county_SPDF <- get(county_SPDF)
+    } else {
+      stop(sprintf("County dataset '%s' is not loaded.
+  Please load it with MazamaSpatialtUtils::loadSpatialData()",
+                   county_SPDF
+      ))
+    }
+  }
+  
   # Does 'data' have the required columns? 
-  requiredFields <- c("stateCode")
+  requiredFields <- c("countyFIPS")
   missingFields <- setdiff(requiredFields, names(data))
   if ( length(missingFields) > 0 ) {
     stop(paste0("Missing fields in 'data': ", 
@@ -134,9 +149,11 @@ stateMap <- function(
     # NOTE:  Subset doesn't work properly unless we change the name here
     incomingStateCode <- stateCode
     state_SPDF <- subset(state_SPDF, state_SPDF$stateCode %in% incomingStateCode)
+    county_SPDF <- subset(county_SPDF, county_SPDF$stateCode %in% incomingStateCode)
     data <- data %>% dplyr::filter(.data$stateCode %in% incomingStateCode)
   } else if ( conusOnly ) {
     state_SPDF <- subset(state_SPDF, state_SPDF$stateCode %in% MazamaSpatialUtils::CONUS)
+    county_SPDF <- subset(county_SPDF, county_SPDF$stateCode %in% MazamaSpatialUtils::CONUS)
     data <- data %>% dplyr::filter(.data$stateCode %in% MazamaSpatialUtils::CONUS)
   } else {
     # use existing 
@@ -169,27 +186,32 @@ stateMap <- function(
   
   # ----- Merge data with SPDF -------------------------------------------------
   
-  # NOTE:  We can use left_join() because 'stateCode' is guaranteed to be in
+  # NOTE:  We can use left_join() because 'countyFIPS' is guaranteed to be in
   # NOTE:  both dataframes. We use "matrix style" subsetting of 'data' to
-  # NOTE:  specify that we want all rows and just the columns with "stateCode"
+  # NOTE:  specify that we want all rows and just the columns with "countyFIPS"
   # NOTE:  and the parameter of interest.
   
-  # Add the incoming data$parameter to 'state_SPDF@data'.
-  state_SPDF@data <-
+  # Add the incoming data$parameter to 'county_SPDF@data'.
+  county_SPDF@data <-
     dplyr::left_join(
-      state_SPDF@data,
-      data[, c("stateCode", parameter)],
-      by = "stateCode"
+      county_SPDF@data,
+      data[, c("countyFIPS", parameter)],
+      by = "countyFIPS"
     )
   
   # ----- Create plot ----------------------------------------------------------
 
   gg <-
-    tmap::tm_shape(state_SPDF, projection = projection) +
+    tmap::tm_shape(county_SPDF, projection = projection) +
     tmap::tm_fill(
       col = parameter,
       palette = palette,
       breaks = breaks
+    ) +
+    tmap::tm_shape(county_SPDF, projection = projection) +
+    tmap::tm_polygons(
+      alpha = 0,
+      border.col = countyBorderColor
     ) +
     tmap::tm_shape(state_SPDF, projection = projection) +
     tmap::tm_polygons(
@@ -219,69 +241,75 @@ if ( FALSE ) {
   mazama_initialize()
   
   state_SPDF <- USCensusStates_02
+  county_SPDF <- USCensusCounties_02
   
   # Set up required variables so we can walk through the code
-  data = example_US_stateObesity
-  parameter = "obesityRate"
+  data = example_US_countyCovid
+  parameter = "cases"
   palette = "YlOrBr"
   breaks = NULL
   conusOnly = TRUE
   stateCode = NULL
   projection = NULL
   stateBorderColor = "white"
-  title <- "Obesity Rate by state"
+  countyBorderColor = "gray90"
+  title = "Covid cases by county -- June 01, 2020"
   
   # Run the code above and then start walking through the lines of code in the
   # function.
   #
   # You can also source this file and run the function now
   
-  stateMap(
+  countyMap(
     data = data,
     parameter = parameter,
     state_SPDF = state_SPDF,
+    county_SPDF = county_SPDF,
     palette = palette,
     breaks = breaks,
     conusOnly = conusOnly,
     stateCode = stateCode,
     projection = projection,
     stateBorderColor = stateBorderColor,
+    countyBorderColor = countyBorderColor,
     title = title
   )
   
   ##############################################################################
   # Here is how I would use this function in real life:
   
-  stateMap(
+  countyMap(
     data, 
+    parameter = "cases", 
     state_SPDF = state_SPDF,
-    parameter = "obesityRate"
+    county_SPDF = county_SPDF
   )
   
-  # Not bad
+  # Not bad be, because we are plotting raw numbers rather than the rate,
+  # we should probably use an exponential set of breaks.
   
-  stateMap(
+  countyMap(
     data, 
+    parameter = "cases", 
     state_SPDF = state_SPDF,
-    parameter = "obesityRate", 
-    palette = "BuPu",
-    stateBorderColor = "black"
+    county_SPDF = county_SPDF,
+    breaks = c(0,100,200,500,1000,2000,5000,10000,20000,50000,1e6)
   )
   
-  # Better but still need a title
+  # A few more tweaks with manual tmap additions
+  # See: ?tmap::tm_layout
   
-  stateMap(
+  countyMap(
     data, 
+    parameter = "cases", 
     state_SPDF = state_SPDF,
-    parameter = "obesityRate", 
-    palette = "BuPu",
-    stateBorderColor = "black"
+    county_SPDF = county_SPDF,
+    breaks = c(0,100,200,500,1000,2000,5000,10000,20000,50000,1e6)
   ) +
     tmap::tm_layout(
-      title = "Obesity rate by state",
+      title = "Covid cases by county -- June 01, 2020",
       title.size = 2,
-      title.fontface = "bold",
-      frame = TRUE
+      title.fontface = "bold"
     )
   
   # Very nice!
