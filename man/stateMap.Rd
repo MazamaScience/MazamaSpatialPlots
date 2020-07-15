@@ -21,16 +21,16 @@ stateMap(
 \item{data}{Dataframe containing values to plot. This dataframe
 must contain a column named \code{stateCode} with the 2-character state code.}
 
-\item{parameter}{Name of the column of data in \code{state_SPDF} to use for
-coloring the map.}
+\item{parameter}{Name of the column in \code{data} to use for coloring the map.}
 
-\item{state_SPDF}{SpatialPolygonsDataFrame with US states.}
+\item{state_SPDF}{SpatialPolygonsDataFrame with US states. The data slot must
+contain a column named \code{stateCode} with the 2-character state code.}
 
 \item{palette}{Palette name or a vector of colors based on RColorBrewer.}
 
-\item{breaks}{Numeric vector of break points. Must be 1 greater than \code{n}.}
+\item{breaks}{Numeric vector of break points.}
 
-\item{conusOnly}{Logical specifying CONtinental US state codes.}
+\item{conusOnly}{Logical specifying Continental US state codes.}
 
 \item{stateCode}{Vector of state codes.}
 
@@ -45,7 +45,7 @@ A ggplot object.
 }
 \description{
 Uses the \pkg{tmap} package to generate a thematic map at the
-county level. Input consists of a dataframe with \code{stateCode} identifiers.
+state level. Input consists of a dataframe with \code{stateCode} identifiers.
 }
 \details{
 See \code{tmap::tm_fill()} for a more detailed description of
@@ -53,7 +53,6 @@ the following parameters:
 
 \itemize{
 \item{\code{palette}}
-\item{\code{n}}
 \item{\code{breaks}}
 }
 }
@@ -69,5 +68,40 @@ stateMap(
   stateBorderColor = "white",
   title = "2018 Obesity by State"
 )
+
+ # Example of customization using tm_layout and breaks parameter
+stateMap(
+  data = example_US_stateObesity, 
+  parameter = "obesityRate", 
+  breaks = seq(20,38,3), 
+  stateBorderColor = 'black'
+) +
+  tmap::tm_layout(
+    frame = TRUE,
+    frame.double.line = TRUE,
+    main.title = 'Obesity Rate by State',
+    main.title.position = c("center", "top"), 
+    fontfamily = "serif",
+    bg.color = "grey85", 
+    inner.margins  = .05
+  )
+
+# Example using stateCode
+stateMap(
+  data = example_US_stateObesity, 
+  parameter = "obesityRate", 
+  stateCode = c('ME', 'NH', 'VT', 'MA', 'RI', 'CT'),
+  stateBorderColor = 'black',
+  title = 'Obesity Rates in New England'
+) +
+  tmap::tm_layout(
+    frame = TRUE,
+    frame.double.line = TRUE,
+    title.size = 1.2,
+    title.fontface = 2,
+    fontfamily = "serif",
+    bg.color = "grey85", 
+    inner.margins  = .08
+  )
 }
 }
