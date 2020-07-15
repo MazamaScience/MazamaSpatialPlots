@@ -1,24 +1,23 @@
 #' @title State level thematic map
 #' @description Uses the \pkg{tmap} package to generate a thematic map at the
-#' county level. Input consists of a dataframe with \code{stateCode} identifiers.
+#' state level. Input consists of a dataframe with \code{stateCode} identifiers.
 #' 
 #' @details See \code{tmap::tm_fill()} for a more detailed description of
 #' the following parameters:
 #' 
 #' \itemize{
 #' \item{\code{palette}}
-#' \item{\code{n}}
 #' \item{\code{breaks}}
 #' }
 #' 
 #' @param data Dataframe containing values to plot. This dataframe
 #' must contain a column named \code{stateCode} with the 2-character state code.
-#' @param parameter Name of the column of data in \code{state_SPDF} to use for
-#' coloring the map.
-#' @param state_SPDF SpatialPolygonsDataFrame with US states. 
+#' @param parameter Name of the column in \code{data} to use for coloring the map.
+#' @param state_SPDF SpatialPolygonsDataFrame with US states. The data slot must
+#' contain a column named \code{stateCode} with the 2-character state code.
 #' @param palette Palette name or a vector of colors based on RColorBrewer.
-#' @param breaks Numeric vector of break points. Must be 1 greater than \code{n}. 
-#' @param conusOnly Logical specifying CONtinental US state codes.  
+#' @param breaks Numeric vector of break points. 
+#' @param conusOnly Logical specifying Continental US state codes.
 #' @param stateCode Vector of state codes.
 #' @param projection Specified method to represent surface of Earth.
 #' @param stateBorderColor Color used for state borders.
@@ -39,6 +38,41 @@
 #'   stateBorderColor = "white",
 #'   title = "2018 Obesity by State"
 #' )
+#' 
+#'  # Example of customization using tm_layout and breaks parameter
+#' stateMap(
+#'   data = example_US_stateObesity, 
+#'   parameter = "obesityRate", 
+#'   breaks = seq(20,38,3), 
+#'   stateBorderColor = 'black'
+#' ) +
+#'   tmap::tm_layout(
+#'     frame = TRUE,
+#'     frame.double.line = TRUE,
+#'     main.title = 'Obesity Rate by State',
+#'     main.title.position = c("center", "top"), 
+#'     fontfamily = "serif",
+#'     bg.color = "grey85", 
+#'     inner.margins  = .05
+#'   )
+#' 
+#' # Example using stateCode
+#' stateMap(
+#'   data = example_US_stateObesity, 
+#'   parameter = "obesityRate", 
+#'   stateCode = c('ME', 'NH', 'VT', 'MA', 'RI', 'CT'),
+#'   stateBorderColor = 'black',
+#'   title = 'Obesity Rates in New England'
+#' ) +
+#'   tmap::tm_layout(
+#'     frame = TRUE,
+#'     frame.double.line = TRUE,
+#'     title.size = 1.2,
+#'     title.fontface = 2,
+#'     fontfamily = "serif",
+#'     bg.color = "grey85", 
+#'     inner.margins  = .08
+#'   )
 #' }
 #' @export 
 #' @importFrom sp CRS
@@ -146,14 +180,14 @@ stateMap <- function(
   
   if ( is.null(projection) ) {
     if ( !is.null(stateCode) ) {
-      # TODO:  1) Get boundaries from stateSPDF
+      # 1) Get boundaries from stateSPDF
       bbox <- sp::bbox(state_SPDF)
-      # TODO:  2) Calculate lat lo/mid/hi and lon mid
-      lat_1 <- 40 # TODO:  git it from bbox
-      lat_2 <- 50 # TODO:  git it from bbox
-      lat_0 <- 45 # TODO:  git it from bbox
-      lon_0 <- -122 # TODO:  git it from bbox
-      # TODO:  3) Create the proj4string text from these using sprintf()
+      # Calculate lat lo/mid/hi and lon mid
+      lat_1 <- bbox[2]
+      lat_2 <- bbox[4] 
+      lat_0 <- (lat_1 + lat_2)/2 
+      lon_0 <- (bbox[1] + bbox[3])/2 
+      # 3) Create the proj4string text from these using sprintf()
       projString <- sprintf("+proj=aea +lat_1=%.1f +lat_2=%.1f +lat_0=%.1f +lon_0=%.1f +x_0=0 +y_0=0 +datum=NAD83 +units=m +no_defs",
                             lat_1, lat_2, lat_0, lon_0)
       projection <- sp::CRS(projString)
@@ -166,6 +200,7 @@ stateMap <- function(
   } else {
     # use as provided
   }
+
   
   # ----- Merge data with SPDF -------------------------------------------------
   
@@ -285,5 +320,69 @@ if ( FALSE ) {
     )
   
   # Very nice!
+  
+  # Example using tmap style "classic"
+  stateMap(
+    data = example_US_stateObesity, 
+    parameter = "obesityRate", 
+    breaks = seq(20,40,4),
+  ) +
+    tmap::tm_style(
+      'classic'
+    ) +
+    tmap::tm_layout(
+      title = 'Obesity Rate by State',
+      title.position = c("center", "top"),
+      title.size = 1.2,
+      inner.margins  = .08
+    ) +
+    tmap::tm_compass() 
+  
+  # Example using tmap style "cobalt"
+  stateMap(
+    data = example_US_stateObesity, 
+    parameter = "obesityRate", 
+    palette = "BuPu",
+    breaks = seq(20,40,4)
+  ) +
+    tmap::tm_style(
+      'cobalt'
+    ) +
+    tmap::tm_layout(
+      title = 'Obesity Rate by State',
+      title.position = c("center", "top"),
+      title.size = 1.2,
+      inner.margins  = .08
+    ) +
+    tmap::tm_compass() 
+  
+  # the previous two examples show how to leverage a preexisting style to create
+  # nice plots with few manual specifications
+  
+  # Example using projection with conusOnly=FALSE
+  # define desired projection
+  projString <- sprintf("+proj=aea +lat_1=%.1f +lat_2=%.1f +lat_0=%.1f +lon_0=%.1f +x_0=0 +y_0=0 +datum=NAD83 +units=m +no_defs",
+                        17, 71, 44, -100)
+  # plot
+  stateMap(
+    data = example_US_stateObesity, 
+    parameter = "obesityRate",
+    breaks = seq(20,38,3), #increasing color detail
+    conusOnly = FALSE ,
+    projection = projString,
+    stateBorderColor = 'black',
+  ) +
+    tmap::tm_layout(
+      frame = TRUE,
+      main.title = 'Obesity Rates in U.S. States and Territories',
+      title.fontface = 2,
+      fontfamily = "serif",
+      bg.color = "grey85", 
+      inner.margins  = .05,
+      legend.position = c('left', 'bottom')
+    ) 
+  
+  # notice if you comment out the "projection = projString" parameter, the default 
+  # orientation is bad because of the Alaskan Islands in the the eastern hemisphere
   
 }
