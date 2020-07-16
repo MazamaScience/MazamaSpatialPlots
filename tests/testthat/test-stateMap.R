@@ -10,7 +10,7 @@ setup_spatial_data <- function() {
   spatialDataDir <- try(getSpatialDataDir(), silent = TRUE)
   
   # load USCensusStates_02 (default state_SPDF)
-  if (!exists('USCensusStates_02')) {
+  if ( !exists('USCensusStates_02') ) {
     tryCatch(getSpatialDataDir(), 
              error = function(error) {
                setSpatialDataDir("~/Data/Spatial") 
@@ -20,12 +20,12 @@ setup_spatial_data <- function() {
                message("Could not load USCensusStates_02")
              })
   }
-  if (!exists("USCensusStates_02")) {
+  if ( !exists("USCensusStates_02") ) {
     skip("Could not load USCensusStates_02")
   }
   
   #load example_US_stateObesity (example data frame)
-  if (!exists('example_US_stateObesity')) {
+  if ( !exists('example_US_stateObesity') ) {
     tryCatch(getSpatialDataDir(), 
              error = function(error) {
                setSpatialDataDir("~/Data/Spatial") 
@@ -35,7 +35,7 @@ setup_spatial_data <- function() {
                message("Could not load example_US_stateObesity")
              })
   }
-  if (!exists("example_US_stateObesity")) {
+  if ( !exists("example_US_stateObesity") ) {
     skip("Could not load example_US_stateObesity")
   }
   
@@ -89,7 +89,7 @@ testthat::test_that("handles errors correctly", {
   testthat::expect_error(stateMap(example_US_stateObesity, 'obesityRate', projection = '+bad projection'))
                          
   # Teardown
-  if (class(spatialDataDir) == "character") {
+  if ( "character" %in% class(spatialDataDir) ) {
     setSpatialDataDir(spatialDataDir)
   } else {
     removeSpatialDataDir()
@@ -106,14 +106,14 @@ testthat::test_that("subsets by stateCode correctly", {
   spatialDataDir <- setup_spatial_data()
   
   stateCodeList <- c('WA','OR')
-  plot_states <- stateMap(example_US_stateObesity, 'obesityRate', stateCode = stateCodeList)$tm_shape$shp@data$stateCode
+  plottedStates <- stateMap(example_US_stateObesity, 'obesityRate', stateCode = stateCodeList)$tm_shape$shp@data$stateCode
   
-  testthat::expect_match(length(plot_states), length(stateCodeList))
-  testthat::expect_true('WA' %in% plot_states)
-  testthat::expect_true('OR' %in% plot_states)
+  testthat::expect_equal(length(plottedStates), length(stateCodeList))
+  testthat::expect_true('WA' %in% plottedStates)
+  testthat::expect_true('OR' %in% plottedStates)
   
   # Teardown
-  if (class(spatialDataDir) == "character") {
+  if ( "character" %in% class(spatialDataDir) ) {
     setSpatialDataDir(spatialDataDir)
   } else {
     removeSpatialDataDir()
@@ -132,7 +132,7 @@ testthat::test_that("returns correct object type", {
   testthat::expect_true(class(stateMap(example_US_stateObesity, 'obesityRate')) == 'tmap')
   
   # Teardown
-  if (class(spatialDataDir) == "character") {
+  if ( "character" %in% class(spatialDataDir) ) {
     setSpatialDataDir(spatialDataDir)
   } else {
     removeSpatialDataDir()
