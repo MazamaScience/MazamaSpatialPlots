@@ -17,8 +17,9 @@
 #' contain a column named \code{stateCode} with the 2-character state code.
 #' @param palette Palette name or a vector of colors based on RColorBrewer.
 #' @param breaks Numeric vector of break points. 
-#' @param conusOnly Logical specifying Continental US state codes.
-#' @param stateCode Vector of state codes.
+#' @param conusOnly Logical specifying Continental US state codes. Ignored when 
+#' stateCode is specified.
+#' @param stateCode Vector of state codes to include in the plot.
 #' @param projection Specified method to represent surface of Earth.
 #' @param stateBorderColor Color used for state borders.
 #' @param title Text string to use as the plot title.
@@ -39,7 +40,7 @@
 #'   title = "2018 Obesity by State"
 #' )
 #' 
-#'  # Example of customization using tm_layout and breaks parameter
+#' # Example of customization using tm_layout and breaks parameter
 #' stateMap(
 #'   data = example_US_stateObesity, 
 #'   parameter = "obesityRate", 
@@ -129,6 +130,15 @@ stateMap <- function(
                 paste0(missingFields, collapse = ", ")))
   }
   
+  #RC added
+  # Does 'state_SPDF' have the required columns? 
+  requiredSPDFFields <- c("stateCode")
+  missingSPDFFields <- setdiff(requiredSPDFFields, names(state_SPDF@data))
+  if ( length(missingSPDFFields) > 0 ) {
+    stop(paste0("Missing fields in 'state_SPDF': ", 
+                paste0(missingSPDFFields, collapse = ", ")))
+  }
+  
   # Validate breaks
   if ( !is.null(breaks) && !is.numeric(breaks) ) {
     stop("Parameter 'breaks' must be a numeric vector.")
@@ -177,16 +187,45 @@ stateMap <- function(
   }
   
   # * Project data -----
+  # 
+  # if ( is.null(projection) ) {
+  #   if ( !is.null(stateCode) ) {
+  #     # 1) Get boundaries from stateSPDF
+  #     bbox <- sp::bbox(state_SPDF)
+  #     # Calculate lat lo/mid/hi and lon mid
+  #     lat_1 <- bbox[2]
+  #     lat_2 <- bbox[4] 
+  #     lat_0 <- (lat_1 + lat_2)/2 
+  #     lon_0 <- (bbox[1] + bbox[3])/2 
+  #     # 3) Create the proj4string text from these using sprintf()
+  #     projString <- sprintf("+proj=aea +lat_1=%.1f +lat_2=%.1f +lat_0=%.1f +lon_0=%.1f +x_0=0 +y_0=0 +datum=NAD83 +units=m +no_defs",
+  #                           lat_1, lat_2, lat_0, lon_0)
+  #     projection <- sp::CRS(projString)
+  #   } else if ( conusOnly ) {
+  #     projection <- sp::CRS("+proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=37.5 +lon_0=-96 +x_0=0 +y_0=0 +datum=NAD83 +units=m +no_defs")
+  #   } else {
+  #     # Use native projection
+  #     projection <- state_SPDF@proj4string
+  #   }
+  # } else {
+  #   # use as provided
+  # }
+
   
+  # RC added -- this improves plots that include Alaska by assuming the east most longitude cannot
+  # be greater than -66.97626 (which is the farthest east longitude in the continental US)
+  # this wouldnt work if someone wants to include guam
   if ( is.null(projection) ) {
+    # 1) Get boundaries from stateSPDF
+    bbox <- sp::bbox(state_SPDF)
+    # 2) Calculate lat lo/mid/hi and lon mid
+    lat_1 <- bbox[2]
+    lat_2 <- bbox[4] 
+    lat_0 <- (lat_1 + lat_2)/2 
+    lon_1 <- bbox[1]
+    lon_2 <- min(bbox[3], -66.97626) # this is the east most longitude to use
+    lon_0 <- (lon_1 + lon_2)/2 
     if ( !is.null(stateCode) ) {
-      # 1) Get boundaries from stateSPDF
-      bbox <- sp::bbox(state_SPDF)
-      # Calculate lat lo/mid/hi and lon mid
-      lat_1 <- bbox[2]
-      lat_2 <- bbox[4] 
-      lat_0 <- (lat_1 + lat_2)/2 
-      lon_0 <- (bbox[1] + bbox[3])/2 
       # 3) Create the proj4string text from these using sprintf()
       projString <- sprintf("+proj=aea +lat_1=%.1f +lat_2=%.1f +lat_0=%.1f +lon_0=%.1f +x_0=0 +y_0=0 +datum=NAD83 +units=m +no_defs",
                             lat_1, lat_2, lat_0, lon_0)
@@ -194,13 +233,13 @@ stateMap <- function(
     } else if ( conusOnly ) {
       projection <- sp::CRS("+proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=37.5 +lon_0=-96 +x_0=0 +y_0=0 +datum=NAD83 +units=m +no_defs")
     } else {
-      # Use native projection
-      projection <- state_SPDF@proj4string
+      projString <- sprintf("+proj=aea +lat_1=%.1f +lat_2=%.1f +lat_0=%.1f +lon_0=%.1f +x_0=0 +y_0=0 +datum=NAD83 +units=m +no_defs",
+                            lat_1, lat_2, lat_0, lon_0)
+      projection <- sp::CRS(projString)
     }
   } else {
     # use as provided
   }
-
   
   # ----- Merge data with SPDF -------------------------------------------------
   
@@ -321,6 +360,9 @@ if ( FALSE ) {
   
   # Very nice!
   
+  ##############################################################################
+  # More examples
+  
   # Example using tmap style "classic"
   stateMap(
     data = example_US_stateObesity, 
@@ -360,10 +402,8 @@ if ( FALSE ) {
   # nice plots with few manual specifications
   
   # Example using projection with conusOnly=FALSE
-  # define desired projection
   projString <- sprintf("+proj=aea +lat_1=%.1f +lat_2=%.1f +lat_0=%.1f +lon_0=%.1f +x_0=0 +y_0=0 +datum=NAD83 +units=m +no_defs",
                         17, 71, 44, -100)
-  # plot
   stateMap(
     data = example_US_stateObesity, 
     parameter = "obesityRate",

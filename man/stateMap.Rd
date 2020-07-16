@@ -30,9 +30,10 @@ contain a column named \code{stateCode} with the 2-character state code.}
 
 \item{breaks}{Numeric vector of break points.}
 
-\item{conusOnly}{Logical specifying Continental US state codes.}
+\item{conusOnly}{Logical specifying Continental US state codes. Ignored when 
+stateCode is specified.}
 
-\item{stateCode}{Vector of state codes.}
+\item{stateCode}{Vector of state codes to include in the plot.}
 
 \item{projection}{Specified method to represent surface of Earth.}
 
@@ -69,7 +70,7 @@ stateMap(
   title = "2018 Obesity by State"
 )
 
- # Example of customization using tm_layout and breaks parameter
+# Example of customization using tm_layout and breaks parameter
 stateMap(
   data = example_US_stateObesity, 
   parameter = "obesityRate", 
