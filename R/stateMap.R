@@ -212,21 +212,21 @@ stateMap <- function(
   
   if ( is.null(projection) ) {
     
-    # 1) Get boundaries from stateSPDF
-    bbox <- sp::bbox(state_SPDF)
-    
-    # 2) Calculate lat lo/mid/hi and lon mid
-    lat_1 <- bbox[2]
-    lat_2 <- bbox[4] 
-    lat_0 <- (lat_1 + lat_2)/2 
-    lon_1 <- bbox[1]
-    lon_2 <- min(bbox[3], -66.97626) # this is the east most longitude to use
-    lon_0 <- (lon_1 + lon_2)/2 
-    
-    # 3) Create the proj4string text
     # NOTE:  Specifying stateCode takes precedence over specifying conusOnly
     if ( !is.null(stateCode) ) {
       
+      # 1) Get boundaries from stateSPDF
+      bbox <- sp::bbox(state_SPDF)
+      
+      # 2) Calculate lat lo/mid/hi and lon mid
+      lat_1 <- bbox[2]
+      lat_2 <- bbox[4] 
+      lat_0 <- (lat_1 + lat_2)/2 
+      lon_1 <- bbox[1]
+      lon_2 <- min(bbox[3], -66.97626) # this is the east most longitude to use
+      lon_0 <- (lon_1 + lon_2)/2 
+      
+      # 3) Create the proj4string text
       projString <- sprintf("+proj=aea +lat_1=%.1f +lat_2=%.1f +lat_0=%.1f +lon_0=%.1f +x_0=0 +y_0=0 +datum=NAD83 +units=m +no_defs",
                             lat_1, lat_2, lat_0, lon_0)
       projection <- sp::CRS(projString)
@@ -241,10 +241,8 @@ stateMap <- function(
       # TODO:  artifical projection that places Alaska and Hawaii in the lower
       # TODO:  left corner. Jon has seen such a projection in an example but
       # TODO:  can't remember exactly where.
- 
-      projString <- sprintf("+proj=aea +lat_1=%.1f +lat_2=%.1f +lat_0=%.1f +lon_0=%.1f +x_0=0 +y_0=0 +datum=NAD83 +units=m +no_defs",
-                            lat_1, lat_2, lat_0, lon_0)
-      projection <- sp::CRS(projString)
+      
+      projection <- sp::CRS("+proj=laea +lat_0=45 +lon_0=-100 +x_0=0 +y_0=0 +a=6370997 +b=6370997 +units=m +no_defs")
       
     }
     
@@ -414,15 +412,12 @@ if ( FALSE ) {
   # the previous two examples show how to leverage a preexisting style to create
   # nice plots with few manual specifications
   
-  # Example using projection with conusOnly=FALSE
-  projString <- sprintf("+proj=aea +lat_1=%.1f +lat_2=%.1f +lat_0=%.1f +lon_0=%.1f +x_0=0 +y_0=0 +datum=NAD83 +units=m +no_defs",
-                        17, 71, 44, -100)
+  # Example with conusOnly=FALSE
   stateMap(
     data = example_US_stateObesity, 
     parameter = "obesityRate",
     breaks = seq(20,38,3), #increasing color detail
     conusOnly = FALSE ,
-    projection = projString,
     stateBorderColor = 'black',
   ) +
     tmap::tm_layout(
@@ -432,10 +427,7 @@ if ( FALSE ) {
       fontfamily = "serif",
       bg.color = "grey85", 
       inner.margins  = .05,
-      legend.position = c('left', 'bottom')
+      legend.position = c('right', 'top')
     ) 
-  
-  # notice if you comment out the "projection = projString" parameter, the default 
-  # orientation is bad because of the Alaskan Islands in the the eastern hemisphere
   
 }
