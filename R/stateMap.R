@@ -2,6 +2,13 @@
 #' @description Uses the \pkg{tmap} package to generate a thematic map at the
 #' state level. Input consists of a dataframe with \code{stateCode} identifiers.
 #' 
+#' Data to plot is specified with \code{parameter} argument. If \code{parameter}
+#' is mult-valued, mutliple plots will be generated and displayed in a 
+#' "small multiples" matrix.
+#' 
+#' The returned object is a \pkg{tmap} ggplot object which can be further 
+#' modified with ggplot options.
+#' 
 #' @details See \code{tmap::tm_fill()} for a more detailed description of
 #' the following parameters:
 #' 
@@ -105,10 +112,22 @@ stateMap <- function(
     stop("Parameter 'data' is empty.")
   }
   
+  # * Validate 'data' -----
+  
   # Does 'parameter' exist in the incoming dataframe?
-  if ( !parameter %in% colnames(data) ) {
+  if ( !all(parameter %in% colnames(data)) ) {
     stop(sprintf("'%s' is not found in the incoming 'data' dataframe.", parameter))
   }
+  
+  # Does 'data' have the required columns? 
+  requiredFields <- c("stateCode")
+  missingFields <- setdiff(requiredFields, names(data))
+  if ( length(missingFields) > 0 ) {
+    stop(paste0("Missing fields in 'data': ", 
+                paste0(missingFields, collapse = ", ")))
+  }
+
+  # * Validate 'SPDF' -----
   
   # Accept state SPDF as character string or as object
   if ( is.character(state_SPDF) ) {
@@ -121,16 +140,7 @@ stateMap <- function(
       ))
     }
   }
-  
-  # Does 'data' have the required columns? 
-  requiredFields <- c("stateCode")
-  missingFields <- setdiff(requiredFields, names(data))
-  if ( length(missingFields) > 0 ) {
-    stop(paste0("Missing fields in 'data': ", 
-                paste0(missingFields, collapse = ", ")))
-  }
-  
-  #RC added
+    
   # Does 'state_SPDF' have the required columns? 
   requiredSPDFFields <- c("stateCode")
   missingSPDFFields <- setdiff(requiredSPDFFields, names(state_SPDF@data))
@@ -138,6 +148,8 @@ stateMap <- function(
     stop(paste0("Missing fields in 'state_SPDF': ", 
                 paste0(missingSPDFFields, collapse = ", ")))
   }
+  
+  # * Validate other -----
   
   # Validate breaks
   if ( !is.null(breaks) && !is.numeric(breaks) ) {
@@ -170,54 +182,39 @@ stateMap <- function(
     }
   }
   
-  # ----- Prepare data ---------------------------------------------------------
-  
-  # * Subset data -----
+  # ----- Subset the SPDF ------------------------------------------------------
   
   if ( !is.null(stateCode) ) {
+    
     # NOTE:  Subset doesn't work properly unless we change the name here
     incomingStateCode <- stateCode
     state_SPDF <- subset(state_SPDF, state_SPDF$stateCode %in% incomingStateCode)
     data <- data %>% dplyr::filter(.data$stateCode %in% incomingStateCode)
+    
   } else if ( conusOnly ) {
+    
     state_SPDF <- subset(state_SPDF, state_SPDF$stateCode %in% MazamaSpatialUtils::CONUS)
     data <- data %>% dplyr::filter(.data$stateCode %in% MazamaSpatialUtils::CONUS)
+    
   } else {
-    # use existing 
+    
+    # use existing SPDF
+    
   }
   
-  # * Project data -----
-  # 
-  # if ( is.null(projection) ) {
-  #   if ( !is.null(stateCode) ) {
-  #     # 1) Get boundaries from stateSPDF
-  #     bbox <- sp::bbox(state_SPDF)
-  #     # Calculate lat lo/mid/hi and lon mid
-  #     lat_1 <- bbox[2]
-  #     lat_2 <- bbox[4] 
-  #     lat_0 <- (lat_1 + lat_2)/2 
-  #     lon_0 <- (bbox[1] + bbox[3])/2 
-  #     # 3) Create the proj4string text from these using sprintf()
-  #     projString <- sprintf("+proj=aea +lat_1=%.1f +lat_2=%.1f +lat_0=%.1f +lon_0=%.1f +x_0=0 +y_0=0 +datum=NAD83 +units=m +no_defs",
-  #                           lat_1, lat_2, lat_0, lon_0)
-  #     projection <- sp::CRS(projString)
-  #   } else if ( conusOnly ) {
-  #     projection <- sp::CRS("+proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=37.5 +lon_0=-96 +x_0=0 +y_0=0 +datum=NAD83 +units=m +no_defs")
-  #   } else {
-  #     # Use native projection
-  #     projection <- state_SPDF@proj4string
-  #   }
-  # } else {
-  #   # use as provided
-  # }
-
+  # ----- Create a projection --------------------------------------------------
   
-  # RC added -- this improves plots that include Alaska by assuming the east most longitude cannot
-  # be greater than -66.97626 (which is the farthest east longitude in the continental US)
-  # this wouldnt work if someone wants to include guam
+  # NOTE:  Setting the est most longitude improves plots that include Alaska by 
+  # NOTE:  assuming the east most longitude cannot be greater than -66.97626 
+  # NOTE:  (which is the farthest east longitude in the continental US).
+  # NOTE:  This wouldnt work if someone wants to include Guam but this function
+  # NOTE:  is designed primarily for CONUS.
+  
   if ( is.null(projection) ) {
+    
     # 1) Get boundaries from stateSPDF
     bbox <- sp::bbox(state_SPDF)
+    
     # 2) Calculate lat lo/mid/hi and lon mid
     lat_1 <- bbox[2]
     lat_2 <- bbox[4] 
@@ -225,20 +222,36 @@ stateMap <- function(
     lon_1 <- bbox[1]
     lon_2 <- min(bbox[3], -66.97626) # this is the east most longitude to use
     lon_0 <- (lon_1 + lon_2)/2 
+    
+    # 3) Create the proj4string text
+    # NOTE:  Specifying stateCode takes precedence over specifying conusOnly
     if ( !is.null(stateCode) ) {
-      # 3) Create the proj4string text from these using sprintf()
+      
       projString <- sprintf("+proj=aea +lat_1=%.1f +lat_2=%.1f +lat_0=%.1f +lon_0=%.1f +x_0=0 +y_0=0 +datum=NAD83 +units=m +no_defs",
                             lat_1, lat_2, lat_0, lon_0)
       projection <- sp::CRS(projString)
+      
     } else if ( conusOnly ) {
+      
       projection <- sp::CRS("+proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=37.5 +lon_0=-96 +x_0=0 +y_0=0 +datum=NAD83 +units=m +no_defs")
+      
     } else {
+      
+      # TODO:  The 'conusOnly = FALSE' option needs to be replaced with the 
+      # TODO:  artifical projection that places Alaska and Hawaii in the lower
+      # TODO:  left corner. Jon has seen such a projection in an example but
+      # TODO:  can't remember exactly where.
+ 
       projString <- sprintf("+proj=aea +lat_1=%.1f +lat_2=%.1f +lat_0=%.1f +lon_0=%.1f +x_0=0 +y_0=0 +datum=NAD83 +units=m +no_defs",
                             lat_1, lat_2, lat_0, lon_0)
       projection <- sp::CRS(projString)
+      
     }
+    
   } else {
-    # use as provided
+    
+    # Use projection found in SPDF
+    
   }
   
   # ----- Merge data with SPDF -------------------------------------------------

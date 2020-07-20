@@ -47,6 +47,13 @@ A ggplot object.
 \description{
 Uses the \pkg{tmap} package to generate a thematic map at the
 state level. Input consists of a dataframe with \code{stateCode} identifiers.
+
+Data to plot is specified with \code{parameter} argument. If \code{parameter}
+is mult-valued, mutliple plots will be generated and displayed in a 
+"small multiples" matrix.
+
+The returned object is a \pkg{tmap} ggplot object which can be further 
+modified with ggplot options.
 }
 \details{
 See \code{tmap::tm_fill()} for a more detailed description of
