@@ -1,55 +1,20 @@
 # -----------------------------------------------------------------------------
 testthat::context("stateMap()")
 
-setup_spatial_data <- function() {
+testthat::test_that("make sure data exists", {
   
   skip_on_cran()
   skip_on_travis()
   
-  # try to set up spatial data. Skip if fails.  
-  spatialDataDir <- try(getSpatialDataDir(), silent = TRUE)
-  
-  # load USCensusStates_02 (default state_SPDF)
-  if ( !exists('USCensusStates_02') ) {
-    tryCatch(getSpatialDataDir(), 
-             error = function(error) {
-               setSpatialDataDir("~/Data/Spatial") 
-             })
-    tryCatch(loadSpatialData("USCensusStates_02"),
-             error = function(error) {
-               message("Could not load USCensusStates_02")
-             })
-  }
-  if ( !exists("USCensusStates_02") ) {
-    skip("Could not load USCensusStates_02")
-  }
-  
-  #load example_US_stateObesity (example data frame)
-  if ( !exists('example_US_stateObesity') ) {
-    tryCatch(getSpatialDataDir(), 
-             error = function(error) {
-               setSpatialDataDir("~/Data/Spatial") 
-             })
-    tryCatch(loadSpatialData("example_US_stateObesity"),
-             error = function(error) {
-               message("Could not load example_US_stateObesity")
-             })
-  }
-  if ( !exists("example_US_stateObesity") ) {
-    skip("Could not load example_US_stateObesity")
-  }
-  
-  return (spatialDataDir)
-  
-}
+  testthat::expect_true(exists("USCensusStates_02"))
+  testthat::expect_true(exists("example_US_stateObesity"))
+
+})
 
 testthat::test_that("handles errors correctly", {
   
   skip_on_cran()
   skip_on_travis()
-  
-  # Setup
-  spatialDataDir <- setup_spatial_data()
   
   testthat::expect_error(stateMap())
   testthat::expect_error(stateMap(example_US_stateObesity))
@@ -87,13 +52,6 @@ testthat::test_that("handles errors correctly", {
   # if its a character but not valid it still tries to convert to CRS. 
   #There's still an error bc of this. Is that ok? Or should this be in validate parameters section of stateMap()?
   testthat::expect_error(stateMap(example_US_stateObesity, 'obesityRate', projection = '+bad projection'))
-                         
-  # Teardown
-  if ( "character" %in% class(spatialDataDir) ) {
-    setSpatialDataDir(spatialDataDir)
-  } else {
-    removeSpatialDataDir()
-  }
   
 })
 
@@ -102,22 +60,12 @@ testthat::test_that("subsets by stateCode correctly", {
   skip_on_cran()
   skip_on_travis()
   
-  # Setup
-  spatialDataDir <- setup_spatial_data()
-  
   stateCodeList <- c('WA','OR')
   plottedStates <- stateMap(example_US_stateObesity, 'obesityRate', stateCode = stateCodeList)$tm_shape$shp@data$stateCode
   
   testthat::expect_equal(length(plottedStates), length(stateCodeList))
   testthat::expect_true('WA' %in% plottedStates)
   testthat::expect_true('OR' %in% plottedStates)
-  
-  # Teardown
-  if ( "character" %in% class(spatialDataDir) ) {
-    setSpatialDataDir(spatialDataDir)
-  } else {
-    removeSpatialDataDir()
-  }
   
 })
 
@@ -126,17 +74,7 @@ testthat::test_that("returns correct object type", {
   skip_on_cran()
   skip_on_travis()
   
-  # Setup
-  spatialDataDir <- setup_spatial_data()
-  
   testthat::expect_true(class(stateMap(example_US_stateObesity, 'obesityRate')) == 'tmap')
-  
-  # Teardown
-  if ( "character" %in% class(spatialDataDir) ) {
-    setSpatialDataDir(spatialDataDir)
-  } else {
-    removeSpatialDataDir()
-  }
   
 })
 
