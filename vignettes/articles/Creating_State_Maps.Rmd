@@ -2,9 +2,11 @@
 title: "Creating State Maps"
 author: "Rachel Carroll, Mazama Science"
 date: "July 25, 2020"
-output:
-  html_document:
-    df_print: paged
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{stateMap function}
+  %\VignetteEngine{knitr::knitr}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r setup, include=FALSE}

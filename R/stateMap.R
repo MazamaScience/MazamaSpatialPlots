@@ -123,9 +123,14 @@ stateMap <- function(
   requiredFields <- c("stateCode")
   missingFields <- setdiff(requiredFields, names(data))
   if ( length(missingFields) > 0 ) {
-    stop(paste0("Missing fields in 'data': ", 
-                paste0(missingFields, collapse = ", ")))
-  }
+    if ( "state name" %in% tolower(names(data)) ) {
+      columnIndex <- which("state name" == tolower(names(data)))
+      data$stateCode <- MazamaSpatialUtils::US_stateNameToCode(data[, columnIndex])
+    } else {
+      stop(paste0("Missing fields in 'data': ",
+                  paste0(missingFields, collapse = ", ")))
+      }
+    }
 
   # * Validate 'SPDF' -----
   
@@ -144,9 +149,14 @@ stateMap <- function(
   # Does 'state_SPDF' have the required columns? 
   requiredSPDFFields <- c("stateCode")
   missingSPDFFields <- setdiff(requiredSPDFFields, names(state_SPDF@data))
-  if ( length(missingSPDFFields) > 0 ) {
-    stop(paste0("Missing fields in 'state_SPDF': ", 
-                paste0(missingSPDFFields, collapse = ", ")))
+  if ( length(missingSPDFFields) > 0 ) { 
+    if ( "state name" %in% tolower(names(state_SPDF@data)) ) {  # if statecode not found, try to create it
+      columnIndex <- which("state name" == tolower(names(state_SPDF@data)))
+      state_SPDF@data$stateCode <- MazamaSpatialUtils::US_stateNameToCode(state_SPDF@data[, columnIndex])
+    } else {
+      stop(paste0("Missing fields in 'state_SPDF': ", 
+                  paste0(missingSPDFFields, collapse = ", ")))
+    }
   }
   
   # * Validate other -----
@@ -282,9 +292,9 @@ stateMap <- function(
       border.col = stateBorderColor
     ) +
     tmap::tm_layout(
-      title = title,
-      title.size = 1.1,
-      title.position = c("center", "top"),
+      main.title = title,
+      main.title.size = .9,
+      main.title.position = c("center", "top"),
       frame = FALSE
     )
   
@@ -423,6 +433,7 @@ if ( FALSE ) {
     tmap::tm_layout(
       frame = TRUE,
       main.title = 'Obesity Rates in U.S. States and Territories',
+      main.title.position = c("center", "top"),
       title.fontface = 2,
       fontfamily = "serif",
       bg.color = "grey85", 

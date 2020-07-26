@@ -87,7 +87,7 @@
 #' compatible with \code{stateMap()}. See the MazamaSpatialUtils package for the 
 #' function convertUSCensusStates() that creates this SPDF. 
 #' 
-#' This dataset was generated on 2020-07-20 by running:
+#' This dataset was generated on 2020-25-20 by running:
 #'
 #' \preformatted{
 #' library(MazamaSpatialUtils)
