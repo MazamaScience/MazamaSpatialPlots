@@ -1,0 +1,289 @@
+---
+title: "Creating State Maps"
+author: "Rachel Carroll, Mazama Science"
+date: "July 25, 2020"
+output:
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Objective
+
+The goal of this document is to introduce the _stateMap()_ function in the __MazamaSpatialPlots package__. This document will serve a a tutorial for collecting data and creating customizable maps of U.S. states and territories. 
+
+## Getting State-level Data
+
+The _stateMap()_ function requires two forms of state-level data. First is a Spatial Polygon Data Frame(SPDF) containing state level polygons. The SPDF must include the variable "stateCode" in it's data slot. The default SPDF is "USCensusStates_02", which is contained in the package data. Higher or lower resolution Census state SPDFs can be generated and loaded using _MazamaSpatialUtils::convertUSCensusStates()_. 
+
+The second required form of data is a regular dataframe that contains the variable "stateCode" as well as a variable of interest. The variable of interest from this dataset is indicated using the "parameter" input. It is used to color states in the generated map.   
+
+Below, there are three examples of obtaining, summarizing, and mapping state-level data. The first two use package dataframes and the last uses _MazamaCoreUtils::html_getTable()_ to easily pull data from a website.
+
+
+#### Using package dataframe "example_US_stateObesity"
+In this example, the state-level package dataframe, "example_US_stateObesity", is used directly:
+
+```{r plot_obesity, warning = FALSE, message=FALSE }
+library(MazamaSpatialPlots)
+
+stateMap(
+  data = example_US_stateObesity,
+  parameter = 'obesityRate',
+  title = "Obesity Rate in U.S. States"
+)
+```
+
+#### Using package dataframe "example_US_countyCovid"
+In this example, the county-level package dataframe, "example_US_countyCovid", is aggregated by state and then used:
+
+```{r plot_covid, warning = FALSE, message=FALSE }
+library(dplyr)
+
+example_US_stateCovid <- example_US_countyCovid %>%
+  dplyr::group_by(stateCode) %>%
+  dplyr::summarise(stateCases = sum(cases), stateDeaths = sum(deaths)) %>%
+  dplyr::mutate(stateDeathRate = 100*stateDeaths/stateCases ) %>%
+  dplyr::select(c("stateCode", "stateCases", "stateDeaths", "stateDeathRate"))
+
+stateMap(
+  data = example_US_stateCovid,
+  parameter = 'stateDeathRate', 
+  title =  "COVID State Death Rates (%)"
+)
+```
+
+#### Using data found online
+State-level data of interest can be found online and easily scraped using _MazamaCoreUtils::html_getTable()_ to parse all table elements from a website. Using _html_getTable()_ in conjunction with _stateMap()_ makes it very easy to extract and visualize data from the internet.
+
+```{r html_getTable_and_stateMap, warning = FALSE, message=FALSE }
+
+URL <- "https://www.patriotsoftware.com/blog/accounting/average-cost-living-by-state/"
+livingCostData <- MazamaCoreUtils::html_getTable(URL)
+
+livingCostData <- livingCostData %>%
+  dplyr::mutate(
+    stateCode = MazamaSpatialUtils::US_stateNameToCode(.data$"State"),
+    avgAnnualWage = as.numeric(gsub('[$,]', '', .data$"Annual Mean Wage (All Occupations)")),
+    avgMonthlyRent = as.numeric(gsub('[$,]', '', .data$"Median Monthly Rent")),
+    rentWagePercent = 100*12*avgMonthlyRent/avgAnnualWage,
+    .keep = "none"
+    ) 
+
+stateMap(
+  data = livingCostData,
+  parameter = 'rentWagePercent',
+  title = "Average Percentage of Income Spent on Rent"
+)
+```
+
+
+## Customizing with Function Inputs
+
+In the section above examples, the _stateMap()_ inputs "data", "parameter", "state_SPDF", and "title" are used to create maps. This section will demonstrate how to use the other input parameters to customize your map. 
+
+
+#### Using palette, breaks, and stateBorderColor
+
+The "palette", "breaks", and "stateBorderColor" parameters dictate the coloring of your map. The shade(s) are defined with "palette" and the distribution of color across the map is defined with "breaks". As expected, "stateBorderColor" defines the state border color. 
+
+To make the most of these parameters, see the following references for R colors and palettes:
+
+  * <http://sape.inf.usi.ch/quick-reference/ggplot2/colour>
+  
+  * <https://www.r-graph-gallery.com/38-rcolorbrewers-palettes.html>
+
+In this example, "breaks" is used to create a coarser coloring scheme and "palette" is used to customize the exact color for each obesity rate level.
+
+```{r plotColors, warning = FALSE, message=FALSE }
+
+stateMap(
+  data = example_US_stateObesity,
+  parameter = 'obesityRate',
+  palette = c("lightblue", "orange", "red"),
+  breaks = c(20, 27, 34, 40),
+  stateBorderColor = "black",
+  title = "Obesity Rate in U.S. States"
+)
+
+```
+
+In this example, "breaks" is used to create a more detailed coloring scheme and the blue to purple color palette is chosen.
+
+```{r plotStates, warning = FALSE, message=FALSE }
+
+stateMap(
+  data = example_US_stateObesity,
+  parameter = 'obesityRate',
+  palette = 'BuPu',
+  breaks = seq(20, 38, 3),
+  stateBorderColor = 'white',
+  title = "Obesity Rate in U.S. States"
+)
+
+```
+
+
+#### Using conusOnly and stateCode
+
+The "conusOnly" and "stateCode" parameters define which states will be included in the map. If "stateCode" is defined, then "conusOnly" becomes irrelevant. If "stateCode" is not defined, then "conusOnly" specifies if only the continental US will be displayed. When "conusOnly" = FALSE, the continental U.S., Alaska, Hawaii, and U.S. Territories will be included. 
+
+This example builds upon the previous example and includes "statesCode" specifications to create a map of Western states. 
+
+```{r use_stateCode, warning = FALSE, message=FALSE }
+
+stateMap(
+  data = example_US_stateObesity,
+  parameter = 'obesityRate',
+  palette = 'PuBuGn',
+  breaks = seq(23, 31, 2),
+  stateCode = c("CA", "NV", "OR", "WA", "ID"),
+  stateBorderColor = 'black',
+  title = "Obesity Rate in Western U.S."
+)
+
+
+```
+
+The following example uses "conusOnly = FALSE".
+
+```{r use_conusOnly, warning = FALSE, message=FALSE }
+
+stateMap(
+  data = example_US_stateObesity,
+  parameter = 'obesityRate',
+  palette = 'YlOrRd',
+  breaks = seq(20, 38, 3),
+  conusOnly = FALSE,
+  stateBorderColor = 'black',
+  title = "Obesity Rate in U.S."
+)
+
+
+```
+
+
+#### Using projection
+
+In general, the default projections in _stateMap()_ are appropriate for common state groupings. However, the projection parameter can be used to override the default projections as needed. 
+
+Below is an unusual group of states with the default projections.
+
+```{r defaultprojection, warning = FALSE, message=FALSE }
+northStates <- c("AK", "WA", "ID", "MT", "ND", "MN", "WI", "MI", "OH", "PA", "NY","VT", "NH", "ME")
+
+stateMap(
+  data = example_US_stateObesity,
+  parameter = 'obesityRate',
+  palette = 'YlOrRd',
+  breaks = seq(23, 33, 2),
+  stateCode = northStates,
+  stateBorderColor = 'black',
+  title = "Obesity Rate in Northern U.S. States"
+)
+
+```
+
+The projection is oddly rotated in this case. To remedy this, a manual projection can be defined: 
+
+```{r manualprojection, warning = FALSE, message=FALSE }
+
+myproj <- "+proj=lcc +lat_1=32.5 +lat_2=71.4 +lat_0=51.9 +lon_0=-102.9 +x_0=0 +y_0=0 +datum=NAD83 +units=m +no_defs"
+stateMap(
+  data = example_US_stateObesity,
+  parameter = 'obesityRate',
+  palette = 'YlOrRd',
+  breaks = seq(23, 33, 2),
+  stateCode = northStates,
+  projection = myproj,
+  stateBorderColor = 'black',
+  title = "Obesity Rate in Northern U.S. States"
+)
+
+```
+
+
+## Customizing with the __tmap__ Package
+
+One benefit of using _stateMap()_ is that the output is a __tmap__ object. Therefore maps can be further customized using functionality from the __tmap__ package. Many visual adjustments including legend and title locations, fonts, and background colors can be made by simply appending your _stateMap()_ plot with arguments in _tmap::tm_layout()_. Furthermore _tmap::tm_style()_ can be used to leverage built in styles and _tmap::tm_compass()_ can be used to add a compass to your map. The three examples below demonstrate how to build customized visualizations using both _stateMap()_ parameters and __tmap__ functionality.
+
+#### Using tmap::tm_layout
+
+```{r tmapStyling1, warning = FALSE, warning = FALSE, message=FALSE }
+
+stateMap(
+  data = example_US_stateObesity, 
+  parameter = "obesityRate",
+  breaks = seq(20,38,3), #increasing color detail
+  conusOnly = FALSE ,
+  stateBorderColor = 'black',
+) +
+  tmap::tm_layout(
+    frame = TRUE,
+    main.title = 'Obesity Rates in U.S. States and Territories',
+    main.title.position = c("center", "top"),
+    title.fontface = 2,
+    fontfamily = "serif",
+    bg.color = "grey85", 
+    inner.margins  = .05,
+    legend.position = c('right', 'top')
+  ) 
+
+```
+
+#### Using tmap style "classic" and a compass
+
+```{r tmapStyling2, warning = FALSE, message=FALSE }
+
+stateMap(
+  data = example_US_stateObesity, 
+  parameter = "obesityRate", 
+  breaks = seq(20,40,4),
+) +
+  tmap::tm_style(
+    'classic'
+  ) +
+  tmap::tm_layout(
+    title = 'Obesity Rate by State',
+    title.position = c("center", "top"),
+    title.size = 1.2,
+    inner.margins  = .08
+  ) +
+  tmap::tm_compass() 
+  
+
+```
+
+#### Polishing New England regional map
+
+```{r tmapStyling3, warning = FALSE, message=FALSE }
+  
+stateMap(
+ data = example_US_stateObesity,
+ parameter = "obesityRate",
+ stateCode = c('ME', 'NH', 'VT', 'MA', 'RI', 'CT'),
+ stateBorderColor = 'black',
+ title = 'Obesity Rates in New England'
+) +
+ tmap::tm_layout(
+   frame = TRUE,
+   frame.double.line = TRUE,
+   title.size = 1.2,
+   title.fontface = 2,
+   fontfamily = "serif",
+   bg.color = "grey85",
+   inner.margins  = .08
+ )
+
+```
+
+## Conclusion
+
+The _stateMap()_ function allows us to create attractive maps very efficiently. When used alongside _MazamaCoreUtils::html_getTable()_, U.S. state data can be procured and visualized in very few lines of code. Additionally, the combination of these two functions provides a great deal of flexibility. The _html_getTable()_ function opens up an endless source of data from the internet while _stateMap()_ can create highly customized visualizations through direct inputs and by harnessing the functionality of the __tmap__ package. 
+
+
+
+
