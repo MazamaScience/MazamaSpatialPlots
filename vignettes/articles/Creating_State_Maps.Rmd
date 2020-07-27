@@ -5,7 +5,7 @@ date: "July 25, 2020"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{stateMap function}
-  %\VignetteEngine{knitr::knitr}
+  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
