@@ -1,4 +1,9 @@
 
+# MazamaSpatialPlots 0.0.6
+
+* Added "Creating State Maps" article.
+* Added `stateMap()` support for datasets with "State Name" columns.
+
 # MazamaSpatialPlots 0.0.5
 
 * Added `countyMap()` with basic functionality.

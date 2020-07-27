@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>State level thematic map — stateMap • MazamaSpatialPlots</title>
+<title>County level thematic map — countyMap • MazamaSpatialPlots</title>
 
 
 <!-- jquery -->
@@ -35,14 +35,9 @@
 
 
 
-<meta property="og:title" content="State level thematic map — stateMap" />
+<meta property="og:title" content="County level thematic map — countyMap" />
 <meta property="og:description" content="Uses the tmap package to generate a thematic map at the
-state level. Input consists of a dataframe with stateCode identifiers.
-Data to plot is specified with parameter argument. If parameter
-is mult-valued, mutliple plots will be generated and displayed in a 
-&quot;small multiples&quot; matrix.
-The returned object is a tmap ggplot object which can be further 
-modified with ggplot options." />
+state level. Input consists of a dataframe with countyFIPS identifiers." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -129,31 +124,28 @@ modified with ggplot options." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>State level thematic map</h1>
-    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/MazamaSpatialPlots/blob/master/R/stateMap.R'><code>R/stateMap.R</code></a></small>
-    <div class="hidden name"><code>stateMap.Rd</code></div>
+    <h1>County level thematic map</h1>
+    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/MazamaSpatialPlots/blob/master/R/countyMap.R'><code>R/countyMap.R</code></a></small>
+    <div class="hidden name"><code>countyMap.Rd</code></div>
     </div>
 
     <div class="ref-description">
     <p>Uses the <span class="pkg">tmap</span> package to generate a thematic map at the
-state level. Input consists of a dataframe with <code>stateCode</code> identifiers.</p>
-<p>Data to plot is specified with <code>parameter</code> argument. If <code>parameter</code>
-is mult-valued, mutliple plots will be generated and displayed in a 
-"small multiples" matrix.</p>
-<p>The returned object is a <span class="pkg">tmap</span> ggplot object which can be further 
-modified with ggplot options.</p>
+state level. Input consists of a dataframe with <code>countyFIPS</code> identifiers.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>stateMap</span>(
+    <pre class="usage"><span class='fu'>countyMap</span>(
   <span class='kw'>data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>parameter</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>state_SPDF</span> <span class='kw'>=</span> <span class='st'>"USCensusStates_02"</span>,
+  <span class='kw'>county_SPDF</span> <span class='kw'>=</span> <span class='st'>"USCensusCounties_02"</span>,
   <span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"YlOrBr"</span>,
   <span class='kw'>breaks</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>conusOnly</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>stateCode</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>projection</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>stateBorderColor</span> <span class='kw'>=</span> <span class='st'>"gray50"</span>,
+  <span class='kw'>countyBorderColor</span> <span class='kw'>=</span> <span class='st'>"white"</span>,
   <span class='kw'>title</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
 )</pre>
 
@@ -163,16 +155,20 @@ modified with ggplot options.</p>
     <tr>
       <th>data</th>
       <td><p>Dataframe containing values to plot. This dataframe
-must contain a column named <code>stateCode</code> with the 2-character state code.</p></td>
+must contain a column named <code>countyFIPS</code> with the 5-digit FIPS code.</p></td>
     </tr>
     <tr>
       <th>parameter</th>
-      <td><p>Name of the column in <code>data</code> to use for coloring the map.</p></td>
+      <td><p>Name of the column of data in <code>county_SPDF</code> to use for
+coloring the map.</p></td>
     </tr>
     <tr>
       <th>state_SPDF</th>
-      <td><p>SpatialPolygonsDataFrame with US states. The data slot must
-contain a column named <code>stateCode</code> with the 2-character state code.</p></td>
+      <td><p>SpatialPolygonsDataFrame with US states.</p></td>
+    </tr>
+    <tr>
+      <th>county_SPDF</th>
+      <td><p>SpatialPolygonsDataFrame with US counties.</p></td>
     </tr>
     <tr>
       <th>palette</th>
@@ -180,16 +176,15 @@ contain a column named <code>stateCode</code> with the 2-character state code.</
     </tr>
     <tr>
       <th>breaks</th>
-      <td><p>Numeric vector of break points.</p></td>
+      <td><p>Numeric vector of break points. Must be 1 greater than <code>n</code>.</p></td>
     </tr>
     <tr>
       <th>conusOnly</th>
-      <td><p>Logical specifying Continental US state codes. Ignored when 
-stateCode is specified.</p></td>
+      <td><p>Logical specifying CONtinental US state codes.</p></td>
     </tr>
     <tr>
       <th>stateCode</th>
-      <td><p>Vector of state codes to include in the plot.</p></td>
+      <td><p>Vector of state codes.</p></td>
     </tr>
     <tr>
       <th>projection</th>
@@ -198,6 +193,10 @@ stateCode is specified.</p></td>
     <tr>
       <th>stateBorderColor</th>
       <td><p>Color used for state borders.</p></td>
+    </tr>
+    <tr>
+      <th>countyBorderColor</th>
+      <td><p>Color used for county borders.</p></td>
     </tr>
     <tr>
       <th>title</th>
@@ -214,6 +213,7 @@ stateCode is specified.</p></td>
 the following parameters:</p>
 <ul>
 <li><p><code>palette</code></p></li>
+<li><p><code>n</code></p></li>
 <li><p><code>breaks</code></p></li>
 </ul>
 
@@ -221,47 +221,27 @@ the following parameters:</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>MazamaSpatialPlots</span>)
-
-<span class='fu'>stateMap</span>(
-  <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>example_US_stateObesity</span>,
-  <span class='kw'>parameter</span> <span class='kw'>=</span> <span class='st'>"obesityRate"</span>,
-  <span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"BuPu"</span>,
-  <span class='kw'>stateBorderColor</span> <span class='kw'>=</span> <span class='st'>"white"</span>,
-  <span class='kw'>title</span> <span class='kw'>=</span> <span class='st'>"2018 Obesity by State"</span>
-)</div><div class='img'><img src='stateMap-1.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># Example of customization using tm_layout and breaks parameter</span>
-<span class='fu'>stateMap</span>(
-  <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>example_US_stateObesity</span>,
-  <span class='kw'>parameter</span> <span class='kw'>=</span> <span class='st'>"obesityRate"</span>,
-  <span class='kw'>breaks</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>20</span>,<span class='fl'>38</span>,<span class='fl'>3</span>),
-  <span class='kw'>stateBorderColor</span> <span class='kw'>=</span> <span class='st'>'black'</span>
-) +
-  <span class='kw pkg'>tmap</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/tmap/man/tm_layout.html'>tm_layout</a></span>(
-    <span class='kw'>frame</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-    <span class='kw'>frame.double.line</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-    <span class='kw'>main.title</span> <span class='kw'>=</span> <span class='st'>'Obesity Rate by State'</span>,
-    <span class='kw'>main.title.position</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"center"</span>, <span class='st'>"top"</span>),
-    <span class='kw'>fontfamily</span> <span class='kw'>=</span> <span class='st'>"serif"</span>,
-    <span class='kw'>bg.color</span> <span class='kw'>=</span> <span class='st'>"grey85"</span>,
-    <span class='kw'>inner.margins</span>  <span class='kw'>=</span> <span class='fl'>.05</span>
-  )</div><div class='img'><img src='stateMap-2.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># Example using stateCode</span>
-<span class='fu'>stateMap</span>(
-  <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>example_US_stateObesity</span>,
-  <span class='kw'>parameter</span> <span class='kw'>=</span> <span class='st'>"obesityRate"</span>,
-  <span class='kw'>stateCode</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>'ME'</span>, <span class='st'>'NH'</span>, <span class='st'>'VT'</span>, <span class='st'>'MA'</span>, <span class='st'>'RI'</span>, <span class='st'>'CT'</span>),
-  <span class='kw'>stateBorderColor</span> <span class='kw'>=</span> <span class='st'>'black'</span>,
-  <span class='kw'>title</span> <span class='kw'>=</span> <span class='st'>'Obesity Rates in New England'</span>
-) +
-  <span class='kw pkg'>tmap</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/tmap/man/tm_layout.html'>tm_layout</a></span>(
-    <span class='kw'>frame</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-    <span class='kw'>frame.double.line</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-    <span class='kw'>title.size</span> <span class='kw'>=</span> <span class='fl'>1.2</span>,
-    <span class='kw'>title.fontface</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-    <span class='kw'>fontfamily</span> <span class='kw'>=</span> <span class='st'>"serif"</span>,
-    <span class='kw'>bg.color</span> <span class='kw'>=</span> <span class='st'>"grey85"</span>,
-    <span class='kw'>inner.margins</span>  <span class='kw'>=</span> <span class='fl'>.08</span>
-  )</div><div class='img'><img src='stateMap-3.png' alt='' width='700' height='433' /></div><div class='input'># }
+<span class='fu'><a href='mazama_initialize.html'>mazama_initialize</a></span>()</div><div class='output co'>#&gt; <span class='error'>Error in validateMazamaSpatialUtils(): </span>
+#&gt; <span class='error'></span>
+#&gt; <span class='error'>You must have the MazamaSpatialUtils package as well as core datasets installed.</span>
+#&gt; <span class='error'></span>
+#&gt; <span class='error'>Install core datasets with:</span>
+#&gt; <span class='error'></span>
+#&gt; <span class='error'>  MazamaSpatialUtils::setSpatialDataDir("YOUR_DATA_DIR")</span>
+#&gt; <span class='error'>  MazamaSpatialUtils::installSpatialData()</span>
+#&gt; <span class='error'></span>
+#&gt; <span class='error'>Once installed, initialize spatial data with:</span>
+#&gt; <span class='error'></span>
+#&gt; <span class='error'>  MazamaSpatialUtils::setSpatialDataDir("YOUR_DATA_DIR")</span>
+#&gt; <span class='error'>  MazamaSpatialUtils::loadSpatialData("USCensusCounties_02")</span>
+#&gt; <span class='error'>  MazamaSpatialUtils::loadSpatialData("USCensusStates_02")</span></div><div class='input'>
+<span class='fu'>countyMap</span>(
+  <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>example_US_countyCovid</span>,
+  <span class='kw'>parameter</span> <span class='kw'>=</span> <span class='st'>"cases"</span>,
+  <span class='kw'>breaks</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>,<span class='fl'>100</span>,<span class='fl'>200</span>,<span class='fl'>500</span>,<span class='fl'>1000</span>,<span class='fl'>2000</span>,<span class='fl'>5000</span>,<span class='fl'>10000</span>,<span class='fl'>20000</span>,<span class='fl'>50000</span>,<span class='fl'>1e6</span>),
+  <span class='kw'>title</span> <span class='kw'>=</span> <span class='st'>"Covid cases by county -- June 01, 2020"</span>
+)</div><div class='output co'>#&gt; <span class='error'>Error in countyMap(data = example_US_countyCovid, parameter = "cases",     breaks = c(0, 100, 200, 500, 1000, 2000, 5000, 10000, 20000,         50000, 1e+06), title = "Covid cases by county -- June 01, 2020"): County dataset 'USCensusCounties_02' is not loaded.</span>
+#&gt; <span class='error'>  Please load it with MazamaSpatialtUtils::loadSpatialData()</span></div><div class='input'># }
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

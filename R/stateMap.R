@@ -37,7 +37,6 @@
 #' @examples
 #' \donttest{
 #' library(MazamaSpatialPlots)
-#' mazama_initialize()
 #'
 #' stateMap(
 #'   data = example_US_stateObesity, 
