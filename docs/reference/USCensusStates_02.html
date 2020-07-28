@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Validate proper setup of MazamaSpatialUtils — validateMazamaSpatialUtils • MazamaSpatialPlots</title>
+<title>US Census State SpatialPolygonsDataFrame — USCensusStates_02 • MazamaSpatialPlots</title>
 
 
 <!-- jquery -->
@@ -35,10 +35,26 @@
 
 
 
-<meta property="og:title" content="Validate proper setup of MazamaSpatialUtils — validateMazamaSpatialUtils" />
-<meta property="og:description" content="The MazamaSpatialUtils package mus be properly installed
-and initialized before using functions from the MazamaSpatialPlots 
-package. Functions can test for this" />
+<meta property="og:title" content="US Census State SpatialPolygonsDataFrame — USCensusStates_02" />
+<meta property="og:description" content="The USCensusStates_02 SPDF provides a SPDF of US states to 
+use in code examples. It is created from converting a US state borders 
+shapefile to a SpatialPolygonsDataFrame with additional columns of data. The 
+code for creating it provides an example for how to create a SPDF that is 
+compatible with stateMap(). See the MazamaSpatialUtils package for the 
+function convertUSCensusStates() that creates this SPDF.
+This dataset was generated on 2020-25-20 by running:
+
+library(MazamaSpatialUtils)
+
+setSpatialDataDir(&quot;~/Data/Spatial&quot;)
+
+MazamaSpatialUtils::convertUSCensusStates()
+
+MazamaSpatialUtils::loadSpatialData(&quot;USCensusStates_02&quot;)
+
+save(USCensusStates_02, file = &quot;data/USCensusStates_02.rda&quot;)
+
+" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -125,29 +141,45 @@ package. Functions can test for this" />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Validate proper setup of MazamaSpatialUtils</h1>
-    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/MazamaSpatialPlots/blob/master/R/utils-validation.R'><code>R/utils-validation.R</code></a></small>
-    <div class="hidden name"><code>validateMazamaSpatialUtils.Rd</code></div>
+    <h1>US Census State SpatialPolygonsDataFrame</h1>
+    <small class="dont-index">Source: <a href='https://github.com/MazamaScience/MazamaSpatialPlots/blob/master/R/data.R'><code>R/data.R</code></a></small>
+    <div class="hidden name"><code>USCensusStates_02.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>The <span class="pkg">MazamaSpatialUtils</span> package mus be properly installed
-and initialized before using functions from the <span class="pkg">MazamaSpatialPlots</span> 
-package. Functions can test for this</p>
+    <p>The <code>USCensusStates_02</code> SPDF provides a SPDF of US states to 
+use in code examples. It is created from converting a US state borders 
+shapefile to a SpatialPolygonsDataFrame with additional columns of data. The 
+code for creating it provides an example for how to create a SPDF that is 
+compatible with <code><a href='stateMap.html'>stateMap()</a></code>. See the MazamaSpatialUtils package for the 
+function convertUSCensusStates() that creates this SPDF.</p>
+<p>This dataset was generated on 2020-25-20 by running:</p>
+<pre>
+library(MazamaSpatialUtils)
+
+setSpatialDataDir("~/Data/Spatial")
+
+MazamaSpatialUtils::convertUSCensusStates()
+
+MazamaSpatialUtils::loadSpatialData("USCensusStates_02")
+
+save(USCensusStates_02, file = "data/USCensusStates_02.rda")
+</pre>
+
     </div>
 
-    <pre class="usage"><span class='fu'>validateMazamaSpatialUtils</span>()</pre>
+    <pre class="usage"><span class='no'>USCensusStates_02</span></pre>
 
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
-    <p>Invisibly returns <code>TRUE</code> if no error message has been generated.</p>
+    <p>A SpatialPolygonsDataFrame(SPDF) with 52 observations and 8 variables.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#value">Value</a></li>
+      <li><a href="#format">Format</a></li>
     </ul>
 
   </div>

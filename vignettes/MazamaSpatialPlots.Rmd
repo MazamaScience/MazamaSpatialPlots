@@ -1,0 +1,31 @@
+---
+title: "Introduction to MazamaSpatialPlots"
+author: "Rachel Carroll, Mazama Science"
+date: "July 25, 2020"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{MazamaSpatialPlots}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  warning = FALSE,
+  message = FALSE,
+  fig.width = 7,
+  fig.height = 7
+)
+```
+
+The **MazamaSpatialPlots** package provides plotting functionality to create 
+production-ready maps for US state and county-level data. It builds on the 
+**tmap** package, integrating the data with spatial datasets from 
+**MazamaSpatialUtils**. High-level plotting functions make it easy for users to 
+create beautiful chloropleth maps. Since these high-level functions are built 
+using **ggplot2**,  users familiar with **ggplot2** can easily enhance the
+returned plot objects to create custom plots. 
+
+
