@@ -48,7 +48,7 @@ head(SPDF@data)
 stateMap(
   data = livingCostData,
   state_SPDF = SPDF,
-  parameter = 'rentWagePercent',
+  parameter = 'rentWagePercent'
 )
 
 # make sure error is there without "state name" or "stateCode"
@@ -58,6 +58,6 @@ stateMap(
     SPDF, 
     select = -which(names(SPDF@data) %in% "state name")
     ),
-  parameter = 'rentWagePercent',
+  parameter = 'rentWagePercent'
 )
 
