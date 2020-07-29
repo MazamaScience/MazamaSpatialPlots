@@ -23,17 +23,18 @@ must contain a column named \code{stateCode} with the 2-character state code.}
 
 \item{parameter}{Name of the column in \code{data} to use for coloring the map.}
 
-\item{state_SPDF}{SpatialPolygonsDataFrame with US states. The data slot must
-contain a column named \code{stateCode} with the 2-character state code.}
+\item{state_SPDF}{SpatialPolygonsDataFrame with US states. It's data 
+\code{@slot} must contain a column named \code{stateCode} with the 
+2-character state code.}
 
 \item{palette}{Palette name or a vector of colors based on RColorBrewer.}
 
 \item{breaks}{Numeric vector of break points.}
 
 \item{conusOnly}{Logical specifying Continental US state codes. Ignored when 
-stateCode is specified.}
+the \code{stateCode} argument is specified.}
 
-\item{stateCode}{Vector of state codes to include in the plot.}
+\item{stateCode}{Vector of state codes to include on the map.}
 
 \item{projection}{Specified method to represent surface of Earth.}
 

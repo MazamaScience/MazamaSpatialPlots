@@ -23,20 +23,23 @@ countyMap(
 \item{data}{Dataframe containing values to plot. This dataframe
 must contain a column named \code{countyFIPS} with the 5-digit FIPS code.}
 
-\item{parameter}{Name of the column of data in \code{county_SPDF} to use for
+\item{parameter}{Name of the column of data in \code{data} to use for
 coloring the map.}
 
-\item{state_SPDF}{SpatialPolygonsDataFrame with US states.}
+\item{state_SPDF}{SpatialPolygonsDataFrame with US states. It's data 
+\code{@slot} must contain a column named \code{stateCode}}
 
-\item{county_SPDF}{SpatialPolygonsDataFrame with US counties.}
+\item{county_SPDF}{SpatialPolygonsDataFrame with US counties. It's data 
+\code{@slot} must contain a column named \code{stateCode} and \code{countyFIPS}}
 
 \item{palette}{Palette name or a vector of colors based on RColorBrewer.}
 
-\item{breaks}{Numeric vector of break points. Must be 1 greater than \code{n}.}
+\item{breaks}{Numeric vector of break points.}
 
-\item{conusOnly}{Logical specifying CONtinental US state codes.}
+\item{conusOnly}{Logical specifying Continental US state codes. Ignored when 
+the \code{stateCode} argument is specified.}
 
-\item{stateCode}{Vector of state codes.}
+\item{stateCode}{Vector of state codes to include on the map.}
 
 \item{projection}{Specified method to represent surface of Earth.}
 
@@ -51,7 +54,7 @@ A ggplot object.
 }
 \description{
 Uses the \pkg{tmap} package to generate a thematic map at the
-state level. Input consists of a dataframe with \code{countyFIPS} identifiers.
+county level. Input consists of a dataframe with \code{countyFIPS} identifiers.
 }
 \details{
 See \code{tmap::tm_fill()} for a more detailed description of
@@ -59,7 +62,6 @@ the following parameters:
 
 \itemize{
 \item{\code{palette}}
-\item{\code{n}}
 \item{\code{breaks}}
 }
 }

@@ -18,7 +18,7 @@ code for creating it provides an example for how to create a SPDF that is
 compatible with \code{stateMap()}. See the MazamaSpatialUtils package for the 
 function convertUSCensusStates() that creates this SPDF. 
 
-This dataset was generated on 2020-25-20 by running:
+This dataset was generated on 2020-07-25 by running:
 
 \preformatted{
 library(MazamaSpatialUtils)

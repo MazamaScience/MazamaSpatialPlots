@@ -1,26 +1,28 @@
 #' @title County level thematic map
 #' @description Uses the \pkg{tmap} package to generate a thematic map at the
-#' state level. Input consists of a dataframe with \code{countyFIPS} identifiers.
+#' county level. Input consists of a dataframe with \code{countyFIPS} identifiers.
 #' 
 #' @details See \code{tmap::tm_fill()} for a more detailed description of
 #' the following parameters:
 #' 
 #' \itemize{
 #' \item{\code{palette}}
-#' \item{\code{n}}
 #' \item{\code{breaks}}
 #' }
 #' 
-#' @param data Dataframe containing values to plot. This dataframe
+#' @param data Dataframe containing values to plot. This dataframe              
 #' must contain a column named \code{countyFIPS} with the 5-digit FIPS code.
-#' @param parameter Name of the column of data in \code{county_SPDF} to use for
+#' @param parameter Name of the column of data in \code{data} to use for
 #' coloring the map.
-#' @param state_SPDF SpatialPolygonsDataFrame with US states. 
-#' @param county_SPDF SpatialPolygonsDataFrame with US counties. 
+#' @param state_SPDF SpatialPolygonsDataFrame with US states. It's data 
+#' \code{@slot} must contain a column named \code{stateCode} 
+#' @param county_SPDF SpatialPolygonsDataFrame with US counties. It's data 
+#' \code{@slot} must contain a column named \code{stateCode} and \code{countyFIPS}
 #' @param palette Palette name or a vector of colors based on RColorBrewer.
-#' @param breaks Numeric vector of break points. Must be 1 greater than \code{n}. 
-#' @param conusOnly Logical specifying CONtinental US state codes.  
-#' @param stateCode Vector of state codes.
+#' @param breaks Numeric vector of break points. 
+#' @param conusOnly Logical specifying Continental US state codes. Ignored when 
+#' the \code{stateCode} argument is specified. 
+#' @param stateCode Vector of state codes to include on the map.
 #' @param projection Specified method to represent surface of Earth.
 #' @param stateBorderColor Color used for state borders.
 #' @param countyBorderColor Color used for county borders.
@@ -73,10 +75,22 @@ countyMap <- function(
     stop("Parameter 'data' is empty.")
   }
   
+  # * Validate 'data' -----
+  
   # Does 'parameter' exist in the incoming dataframe?
   if ( !parameter %in% colnames(data) ) {
     stop(sprintf("'%s' is not found in the incoming 'data' dataframe.", parameter))
   }
+  
+  # Does 'data' have the required columns? 
+  requiredFields <- c("countyFIPS")
+  missingFields <- setdiff(requiredFields, names(data))
+  if ( length(missingFields) > 0 ) {
+    stop(paste0("Missing fields in 'data': ", 
+                paste0(missingFields, collapse = ", ")))
+  }
+  
+  # * Validate state_SPDF -----
   
   # Accept state SPDF as character string or as object
   if ( is.character(state_SPDF) ) {
@@ -90,6 +104,20 @@ countyMap <- function(
     }
   }
   
+  # Does 'state_SPDF' have the required columns? 
+  # NOTE: state_SPDF@data does not require stateCode column if conusOnly = FALSE
+  # NOTE: and stateCode argument is not specified
+  if ( conusOnly == TRUE | !is.null(stateCode) ){ 
+    requiredSPDFFields <- c("stateCode")
+    missingSPDFFields <- setdiff(requiredSPDFFields, names(state_SPDF@data))
+    if ( length(missingSPDFFields) > 0 ) { 
+      stop(paste0("Missing fields in 'state_SPDF': ",
+                  paste0(missingSPDFFields, collapse = ", ")))
+    }
+  }
+  
+  # * Validate county_SPDF -----
+  
   # Accept county SPDF as character string or as object
   if ( is.character(county_SPDF) ) {
     if ( exists(county_SPDF) ) {
@@ -102,13 +130,15 @@ countyMap <- function(
     }
   }
   
-  # Does 'data' have the required columns? 
-  requiredFields <- c("countyFIPS")
-  missingFields <- setdiff(requiredFields, names(data))
-  if ( length(missingFields) > 0 ) {
-    stop(paste0("Missing fields in 'data': ", 
-                paste0(missingFields, collapse = ", ")))
+  # Does 'county_SPDF' have the required columns? 
+  requiredSPDFFields <- c("countyFIPS")
+  missingSPDFFields <- setdiff(requiredSPDFFields, names(county_SPDF@data))
+  if ( length(missingSPDFFields) > 0 ) { 
+    stop(paste0("Missing fields in 'county_SPDF': ",
+                paste0(missingSPDFFields, collapse = ", ")))
   }
+  
+  # * Validate other -----
   
   # Validate breaks
   if ( !is.null(breaks) && !is.numeric(breaks) ) {
@@ -141,48 +171,100 @@ countyMap <- function(
     }
   }
   
-  # ----- Prepare data ---------------------------------------------------------
-  
-  # * Subset data -----
-  
+  # ----- Subset the SPDF ---------------------------------------------------------
+
   if ( !is.null(stateCode) ) {
+    
     # NOTE:  Subset doesn't work properly unless we change the name here
     incomingStateCode <- stateCode
     state_SPDF <- subset(state_SPDF, state_SPDF$stateCode %in% incomingStateCode)
     county_SPDF <- subset(county_SPDF, county_SPDF$stateCode %in% incomingStateCode)
     data <- data %>% dplyr::filter(.data$stateCode %in% incomingStateCode)
+    
   } else if ( conusOnly ) {
+    
     state_SPDF <- subset(state_SPDF, state_SPDF$stateCode %in% MazamaSpatialUtils::CONUS)
     county_SPDF <- subset(county_SPDF, county_SPDF$stateCode %in% MazamaSpatialUtils::CONUS)
     data <- data %>% dplyr::filter(.data$stateCode %in% MazamaSpatialUtils::CONUS)
+    
   } else {
-    # use existing 
+    
+    # use existing SPDF
+    
   }
   
-  # * Project data -----
+  # ----- Create a projection --------------------------------------------------
+  
+  # NOTE:  Setting the est most longitude improves plots that include Alaska by 
+  # NOTE:  assuming the east most longitude cannot be greater than -66.97626 
+  # NOTE:  (which is the farthest east longitude in the continental US).
+  # NOTE:  This wouldn't work if someone wants to include Guam but this function
+  # NOTE:  is designed primarily for CONUS.
   
   if ( is.null(projection) ) {
+    
+    # NOTE:  Specifying stateCode takes precedence over specifying conusOnly
     if ( !is.null(stateCode) ) {
-      # TODO:  1) Get boundaries from stateSPDF
+      
+      # 1) Get boundaries from stateSPDF
       bbox <- sp::bbox(state_SPDF)
-      # TODO:  2) Calculate lat lo/mid/hi and lon mid
-      lat_1 <- 40 # TODO:  git it from bbox
-      lat_2 <- 50 # TODO:  git it from bbox
-      lat_0 <- 45 # TODO:  git it from bbox
-      lon_0 <- -122 # TODO:  git it from bbox
-      # TODO:  3) Create the proj4string text from these using sprintf()
+      
+      # 2) Calculate lat lo/mid/hi and lon mid
+      lat_1 <- bbox[2]
+      lat_2 <- bbox[4] 
+      lat_0 <- (lat_1 + lat_2)/2 
+      lon_1 <- bbox[1]
+      lon_2 <- min(bbox[3], -66.97626) # this is the east most longitude to use
+      lon_0 <- (lon_1 + lon_2)/2 
+      
+      # 3) Create the proj4string text
       projString <- sprintf("+proj=aea +lat_1=%.1f +lat_2=%.1f +lat_0=%.1f +lon_0=%.1f +x_0=0 +y_0=0 +datum=NAD83 +units=m +no_defs",
                             lat_1, lat_2, lat_0, lon_0)
       projection <- sp::CRS(projString)
+      
     } else if ( conusOnly ) {
+      
       projection <- sp::CRS("+proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=37.5 +lon_0=-96 +x_0=0 +y_0=0 +datum=NAD83 +units=m +no_defs")
+      
     } else {
-      # Use native projection
-      projection <- state_SPDF@proj4string
+      
+      # TODO:  The 'conusOnly = FALSE' option needs to be replaced with the 
+      # TODO:  artifical projection that places Alaska and Hawaii in the lower
+      # TODO:  left corner. Jon has seen such a projection in an example but
+      # TODO:  can't remember exactly where.
+      
+      projection <- sp::CRS("+proj=laea +lat_0=45 +lon_0=-100 +x_0=0 +y_0=0 +a=6370997 +b=6370997 +units=m +no_defs")
+      
     }
+    
   } else {
-    # use as provided
+    
+    # Use projection found in SPDF
+    
   }
+  
+  # if ( is.null(projection) ) {
+  #   if ( !is.null(stateCode) ) {
+  #     # TODO:  1) Get boundaries from stateSPDF
+  #     bbox <- sp::bbox(state_SPDF)
+  #     # TODO:  2) Calculate lat lo/mid/hi and lon mid
+  #     lat_1 <- 40 # TODO:  git it from bbox
+  #     lat_2 <- 50 # TODO:  git it from bbox
+  #     lat_0 <- 45 # TODO:  git it from bbox
+  #     lon_0 <- -122 # TODO:  git it from bbox
+  #     # TODO:  3) Create the proj4string text from these using sprintf()
+  #     projString <- sprintf("+proj=aea +lat_1=%.1f +lat_2=%.1f +lat_0=%.1f +lon_0=%.1f +x_0=0 +y_0=0 +datum=NAD83 +units=m +no_defs",
+  #                           lat_1, lat_2, lat_0, lon_0)
+  #     projection <- sp::CRS(projString)
+  #   } else if ( conusOnly ) {
+  #     projection <- sp::CRS("+proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=37.5 +lon_0=-96 +x_0=0 +y_0=0 +datum=NAD83 +units=m +no_defs")
+  #   } else {
+  #     # Use native projection
+  #     projection <- state_SPDF@proj4string
+  #   }
+  # } else {
+  #   # use as provided
+  # }
   
   # ----- Merge data with SPDF -------------------------------------------------
   
@@ -219,9 +301,9 @@ countyMap <- function(
       border.col = stateBorderColor
     ) +
     tmap::tm_layout(
-      title = title,
-      title.size = 1.1,
-      title.position = c("center", "top"),
+      main.title = title,
+      main.title.size = .9,
+      main.title.position = c("center", "top"),
       frame = FALSE
     )
   

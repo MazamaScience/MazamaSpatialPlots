@@ -20,13 +20,14 @@
 #' @param data Dataframe containing values to plot. This dataframe
 #' must contain a column named \code{stateCode} with the 2-character state code.
 #' @param parameter Name of the column in \code{data} to use for coloring the map.
-#' @param state_SPDF SpatialPolygonsDataFrame with US states. The data slot must
-#' contain a column named \code{stateCode} with the 2-character state code.
+#' @param state_SPDF SpatialPolygonsDataFrame with US states. It's data 
+#' \code{@slot} must contain a column named \code{stateCode} with the 
+#' 2-character state code.
 #' @param palette Palette name or a vector of colors based on RColorBrewer.
 #' @param breaks Numeric vector of break points. 
 #' @param conusOnly Logical specifying Continental US state codes. Ignored when 
-#' stateCode is specified.
-#' @param stateCode Vector of state codes to include in the plot.
+#' the \code{stateCode} argument is specified.
+#' @param stateCode Vector of state codes to include on the map.
 #' @param projection Specified method to represent surface of Earth.
 #' @param stateBorderColor Color used for state borders.
 #' @param title Text string to use as the plot title.
@@ -216,7 +217,7 @@ stateMap <- function(
   # NOTE:  Setting the est most longitude improves plots that include Alaska by 
   # NOTE:  assuming the east most longitude cannot be greater than -66.97626 
   # NOTE:  (which is the farthest east longitude in the continental US).
-  # NOTE:  This wouldnt work if someone wants to include Guam but this function
+  # NOTE:  This wouldn't work if someone wants to include Guam but this function
   # NOTE:  is designed primarily for CONUS.
   
   if ( is.null(projection) ) {
