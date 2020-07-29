@@ -87,7 +87,7 @@
 #' compatible with \code{stateMap()}. See the MazamaSpatialUtils package for the 
 #' function convertUSCensusStates() that creates this SPDF. 
 #' 
-#' This dataset was generated on 2020-25-20 by running:
+#' This dataset was generated on 2020-07-25 by running:
 #'
 #' \preformatted{
 #' library(MazamaSpatialUtils)
@@ -104,16 +104,16 @@
 "USCensusStates_02"
 
 
-#' @title US Census State SpatialPolygonsDataFrame 
-#' @format A SpatialPolygonsDataFrame(SPDF) with 52 observations and 8 variables.
-#' @description The \code{USCensusStates_02} SPDF provides a SPDF of US states to 
-#' use in code examples. It is created from converting a US state borders 
+#' @title US Census Counties SpatialPolygonsDataFrame 
+#' @format A SpatialPolygonsDataFrame(SPDF) with 3169 observations and 9 variables.
+#' @description The \code{USCensusCounties_02} SPDF provides a SPDF of US counties to 
+#' use in code examples. It is created from converting a US county borders 
 #' shapefile to a SpatialPolygonsDataFrame with additional columns of data. The 
 #' code for creating it provides an example for how to create a SPDF that is 
-#' compatible with \code{stateMap()}. See the MazamaSpatialUtils package for the 
-#' function convertUSCensusStates() that creates this SPDF. 
+#' compatible with \code{countyMap()}. See the MazamaSpatialUtils package for the 
+#' function convertUSCensusCounties() that creates this SPDF. 
 #' 
-#' This dataset was generated on 2020-25-20 by running:
+#' This dataset was generated on 2020-07-29 by running:
 #'
 #' \preformatted{
 #' library(MazamaSpatialUtils)
@@ -122,9 +122,9 @@
 #' 
 #' MazamaSpatialUtils::convertUSCensusCounties()
 #' 
-#' MazamaSpatialUtils::loadSpatialData("USCensusStates_02")
+#' MazamaSpatialUtils::loadSpatialData("USCensusCounties_02")
 #' 
-#' save(USCensusStates_02, file = "data/USCensusStates_02.rda")
+#' save(USCensusCounties_02, file = "data/USCensusCounties_02.rda")
 #' }
 #'
-"USCensusStates_02"
+"USCensusCounties_02"
