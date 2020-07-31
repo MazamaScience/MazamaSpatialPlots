@@ -23,14 +23,17 @@ countyMap(
 \item{data}{Dataframe containing values to plot. This dataframe
 must contain a column named \code{countyFIPS} with the 5-digit FIPS code.}
 
-\item{parameter}{Name of the column of data in \code{data} to use for
+\item{parameter}{Name of the column in \code{data} to use for
 coloring the map.}
 
 \item{state_SPDF}{SpatialPolygonsDataFrame with US states. It's data 
-\code{@slot} must contain a column named \code{stateCode}}
+\code{@slot} must contain a column named \code{stateCode} if 
+\code{conusOnly = TRUE} or the \code{stateCode} argument is specified.}
 
 \item{county_SPDF}{SpatialPolygonsDataFrame with US counties. It's data 
-\code{@slot} must contain a column named \code{stateCode} and \code{countyFIPS}}
+\code{@slot} must always contain a column named and \code{countyFIPS} and a
+column named \code{stateCode} if \code{conusOnly = TRUE} or the 
+\code{stateCode} argument is specified.}
 
 \item{palette}{Palette name or a vector of colors based on RColorBrewer.}
 
@@ -74,7 +77,28 @@ countyMap(
   data = example_US_countyCovid, 
   parameter = "cases",
   breaks = c(0,100,200,500,1000,2000,5000,10000,20000,50000,1e6),
-  title = "Covid cases by county -- June 01, 2020"
+  title = "COVID-19 Cases by County \n as of June 01 2020"
 )
+
+countyMap(
+  data = example_US_countyCovid,
+  parameter = "deaths",
+  state_SPDF = USCensusStates_02,
+  county_SPDF = USCensusCounties_02,
+  palette = "OrRd",
+  breaks = c(0, 1, 50, 100, 250, 500, 1000, 2500, 3000),
+  stateCode = c( "NY", "PA", "MD", "NJ", "DE"),
+  stateBorderColor = "black",
+  countyBorderColor = 'grey70', 
+  title = "COVID-19 Deaths* in the Mid Atlantic"
+) +
+  tmap::tm_layout(
+    main.title.size = 1.2,
+    main.title.color = "white",
+    attr.color = 'white',
+    bg.color = "dodgerblue4"
+  ) +
+  tmap::tm_credits("*as of June 01, 2020", col = "white", position = "left")
+
 }
 }

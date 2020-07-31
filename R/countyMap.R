@@ -12,12 +12,15 @@
 #' 
 #' @param data Dataframe containing values to plot. This dataframe              
 #' must contain a column named \code{countyFIPS} with the 5-digit FIPS code.
-#' @param parameter Name of the column of data in \code{data} to use for
+#' @param parameter Name of the column in \code{data} to use for
 #' coloring the map.
 #' @param state_SPDF SpatialPolygonsDataFrame with US states. It's data 
-#' \code{@slot} must contain a column named \code{stateCode} 
+#' \code{@slot} must contain a column named \code{stateCode} if 
+#' \code{conusOnly = TRUE} or the \code{stateCode} argument is specified.
 #' @param county_SPDF SpatialPolygonsDataFrame with US counties. It's data 
-#' \code{@slot} must contain a column named \code{stateCode} and \code{countyFIPS}
+#' \code{@slot} must always contain a column named and \code{countyFIPS} and a
+#' column named \code{stateCode} if \code{conusOnly = TRUE} or the 
+#' \code{stateCode} argument is specified.
 #' @param palette Palette name or a vector of colors based on RColorBrewer.
 #' @param breaks Numeric vector of break points. 
 #' @param conusOnly Logical specifying Continental US state codes. Ignored when 
@@ -40,8 +43,29 @@
 #'   data = example_US_countyCovid, 
 #'   parameter = "cases",
 #'   breaks = c(0,100,200,500,1000,2000,5000,10000,20000,50000,1e6),
-#'   title = "Covid cases by county -- June 01, 2020"
+#'   title = "COVID-19 Cases by County \n as of June 01 2020"
 #' )
+#' 
+#' countyMap(
+#'   data = example_US_countyCovid,
+#'   parameter = "deaths",
+#'   state_SPDF = USCensusStates_02,
+#'   county_SPDF = USCensusCounties_02,
+#'   palette = "OrRd",
+#'   breaks = c(0, 1, 50, 100, 250, 500, 1000, 2500, 3000),
+#'   stateCode = c( "NY", "PA", "MD", "NJ", "DE"),
+#'   stateBorderColor = "black",
+#'   countyBorderColor = 'grey70', 
+#'   title = "COVID-19 Deaths* in the Mid Atlantic"
+#' ) +
+#'   tmap::tm_layout(
+#'     main.title.size = 1.2,
+#'     main.title.color = "white",
+#'     attr.color = 'white',
+#'     bg.color = "dodgerblue4"
+#'   ) +
+#'   tmap::tm_credits("*as of June 01, 2020", col = "white", position = "left")
+#' 
 #' }
 #' @export 
 #' @importFrom sp CRS
@@ -242,29 +266,6 @@ countyMap <- function(
     # Use projection found in SPDF
     
   }
-  
-  # if ( is.null(projection) ) {
-  #   if ( !is.null(stateCode) ) {
-  #     # TODO:  1) Get boundaries from stateSPDF
-  #     bbox <- sp::bbox(state_SPDF)
-  #     # TODO:  2) Calculate lat lo/mid/hi and lon mid
-  #     lat_1 <- 40 # TODO:  git it from bbox
-  #     lat_2 <- 50 # TODO:  git it from bbox
-  #     lat_0 <- 45 # TODO:  git it from bbox
-  #     lon_0 <- -122 # TODO:  git it from bbox
-  #     # TODO:  3) Create the proj4string text from these using sprintf()
-  #     projString <- sprintf("+proj=aea +lat_1=%.1f +lat_2=%.1f +lat_0=%.1f +lon_0=%.1f +x_0=0 +y_0=0 +datum=NAD83 +units=m +no_defs",
-  #                           lat_1, lat_2, lat_0, lon_0)
-  #     projection <- sp::CRS(projString)
-  #   } else if ( conusOnly ) {
-  #     projection <- sp::CRS("+proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=37.5 +lon_0=-96 +x_0=0 +y_0=0 +datum=NAD83 +units=m +no_defs")
-  #   } else {
-  #     # Use native projection
-  #     projection <- state_SPDF@proj4string
-  #   }
-  # } else {
-  #   # use as provided
-  # }
   
   # ----- Merge data with SPDF -------------------------------------------------
   
