@@ -75,7 +75,7 @@ modified with ggplot options." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MazamaSpatialPlots</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7</span>
       </span>
     </div>
 
@@ -171,8 +171,9 @@ must contain a column named <code>stateCode</code> with the 2-character state co
     </tr>
     <tr>
       <th>state_SPDF</th>
-      <td><p>SpatialPolygonsDataFrame with US states. The data slot must
-contain a column named <code>stateCode</code> with the 2-character state code.</p></td>
+      <td><p>SpatialPolygonsDataFrame with US states. It's data 
+<code>@slot</code> must contain a column named <code>stateCode</code> with the 
+2-character state code.</p></td>
     </tr>
     <tr>
       <th>palette</th>
@@ -185,11 +186,11 @@ contain a column named <code>stateCode</code> with the 2-character state code.</
     <tr>
       <th>conusOnly</th>
       <td><p>Logical specifying Continental US state codes. Ignored when 
-stateCode is specified.</p></td>
+the <code>stateCode</code> argument is specified.</p></td>
     </tr>
     <tr>
       <th>stateCode</th>
-      <td><p>Vector of state codes to include in the plot.</p></td>
+      <td><p>Vector of state codes to include on the map.</p></td>
     </tr>
     <tr>
       <th>projection</th>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Example state obesity dataset — example_US_stateObesity • MazamaSpatialPlots</title>
+<title>US Census Counties SpatialPolygonsDataFrame — USCensusCounties_02 • MazamaSpatialPlots</title>
 
 
 <!-- jquery -->
@@ -35,38 +35,24 @@
 
 
 
-<meta property="og:title" content="Example state obesity dataset — example_US_stateObesity" />
-<meta property="og:description" content="The example_US_stateObesity dataset provides a small
-state dataset to use in code examples. The code for creating it provides an
-example for how to create a dataest that is compatible with stateMap().
-This dataset was generated on 2020-06-09 by running:
+<meta property="og:title" content="US Census Counties SpatialPolygonsDataFrame — USCensusCounties_02" />
+<meta property="og:description" content="The USCensusCounties_02 SPDF provides a SPDF of US counties to 
+use in code examples. It is created from converting a US county borders 
+shapefile to a SpatialPolygonsDataFrame with additional columns of data. The 
+code for creating it provides an example for how to create a SPDF that is 
+compatible with countyMap(). See the MazamaSpatialUtils package for the 
+function convertUSCensusCounties() that creates this SPDF.
+This dataset was generated on 2020-07-29 by running:
 
-library(dplyr)
 library(MazamaSpatialUtils)
 
-fileUrl &amp;lt;- paste0(&quot;http://data-lakecountyil.opendata.arcgis.com/datasets/&quot;,
-                  &quot;3e0c1eb04e5c48b3be9040b0589d3ccf_8.csv&quot;)
+setSpatialDataDir(&quot;~/Data/Spatial&quot;)
 
-col_names &amp;lt;- c(&quot;FID&quot;, &quot;stateName&quot;, &quot;obesityRate&quot;, &quot;SHAPE_Length&quot;, &quot;SHAPE_Area&quot;)
-col_types = &quot;icddd&quot;
+MazamaSpatialUtils::convertUSCensusCounties()
 
-outputColumns &amp;lt;- c(&quot;stateCode&quot;, &quot;stateName&quot;, &quot;obesityRate&quot;)
+MazamaSpatialUtils::loadSpatialData(&quot;USCensusCounties_02&quot;)
 
-# After a little trial and error, the following works well:
-
-example_US_stateObesity &amp;lt;-
-  readr::read_csv(
-    file = fileUrl,
-    skip = 1,                    # Skip the header line
-    col_names = col_names,
-    col_types = col_types
-  ) %&amp;gt;%
-  dplyr::mutate(
-    stateCode = MazamaSpatialUtils::US_stateNameToCode(stateName)
-  ) %&amp;gt;%
-  dplyr::select(!!outputColumns)
-
-save(example_US_stateObesity, file = &quot;data/example_US_stateObesity.rda&quot;)
+save(USCensusCounties_02, file = &quot;data/USCensusCounties_02.rda&quot;)
 
 " />
 <meta name="twitter:card" content="summary" />
@@ -155,53 +141,39 @@ save(example_US_stateObesity, file = &quot;data/example_US_stateObesity.rda&quot
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Example state obesity dataset</h1>
+    <h1>US Census Counties SpatialPolygonsDataFrame</h1>
     <small class="dont-index">Source: <a href='https://github.com/MazamaScience/MazamaSpatialPlots/blob/master/R/data.R'><code>R/data.R</code></a></small>
-    <div class="hidden name"><code>example_US_stateObesity.Rd</code></div>
+    <div class="hidden name"><code>USCensusCounties_02.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>The <code>example_US_stateObesity</code> dataset provides a small
-state dataset to use in code examples. The code for creating it provides an
-example for how to create a dataest that is compatible with <code><a href='stateMap.html'>stateMap()</a></code>.</p>
-<p>This dataset was generated on 2020-06-09 by running:</p>
+    <p>The <code>USCensusCounties_02</code> SPDF provides a SPDF of US counties to 
+use in code examples. It is created from converting a US county borders 
+shapefile to a SpatialPolygonsDataFrame with additional columns of data. The 
+code for creating it provides an example for how to create a SPDF that is 
+compatible with <code><a href='countyMap.html'>countyMap()</a></code>. See the MazamaSpatialUtils package for the 
+function convertUSCensusCounties() that creates this SPDF.</p>
+<p>This dataset was generated on 2020-07-29 by running:</p>
 <pre>
-library(dplyr)
 library(MazamaSpatialUtils)
 
-fileUrl &lt;- paste0("http://data-lakecountyil.opendata.arcgis.com/datasets/",
-                  "3e0c1eb04e5c48b3be9040b0589d3ccf_8.csv")
+setSpatialDataDir("~/Data/Spatial")
 
-col_names &lt;- c("FID", "stateName", "obesityRate", "SHAPE_Length", "SHAPE_Area")
-col_types = "icddd"
+MazamaSpatialUtils::convertUSCensusCounties()
 
-outputColumns &lt;- c("stateCode", "stateName", "obesityRate")
+MazamaSpatialUtils::loadSpatialData("USCensusCounties_02")
 
-# After a little trial and error, the following works well:
-
-example_US_stateObesity &lt;-
-  readr::read_csv(
-    file = fileUrl,
-    skip = 1,                    # Skip the header line
-    col_names = col_names,
-    col_types = col_types
-  ) %&gt;%
-  dplyr::mutate(
-    stateCode = MazamaSpatialUtils::US_stateNameToCode(stateName)
-  ) %&gt;%
-  dplyr::select(!!outputColumns)
-
-save(example_US_stateObesity, file = "data/example_US_stateObesity.rda")
+save(USCensusCounties_02, file = "data/USCensusCounties_02.rda")
 </pre>
 
     </div>
 
-    <pre class="usage"><span class='no'>example_US_stateObesity</span></pre>
+    <pre class="usage"><span class='no'>USCensusCounties_02</span></pre>
 
 
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
-    <p>A tibble with 52 rows and 3 columns of data.</p>
+    <p>A SpatialPolygonsDataFrame(SPDF) with 3169 observations and 9 variables.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

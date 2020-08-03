@@ -51,7 +51,7 @@ col_types = &quot;Dcccii&quot;
 
 outputColumns &amp;lt;- c(&quot;stateCode&quot;, &quot;stateName&quot;, &quot;countyFIPS&quot;, &quot;countyName&quot;, &quot;cases&quot;, &quot;deaths&quot;)
 
-# A couple of iterations and I end up with this:
+# After a little trial and error, the following works well:
 
 example_US_countyCovid &amp;lt;-
   readr::read_csv(
@@ -59,11 +59,11 @@ example_US_countyCovid &amp;lt;-
     skip = 1,                    # Skip the header line
     col_names = col_names,
     col_types = col_types
-  ) 
+  ) %&amp;gt;%
   dplyr::mutate(
     stateCode = MazamaSpatialUtils::US_stateNameToCode(stateName),
-  ) 
-  dplyr::filter(.data$date == lubridate::ymd(&quot;2020-06-01&quot;)) 
+  ) %&amp;gt;%
+  dplyr::filter(.data$date == lubridate::ymd(&quot;2020-06-01&quot;)) %&amp;gt;%
   dplyr::select(!!outputColumns)
 
 save(example_US_countyCovid, file = &quot;data/example_US_countyCovid.rda&quot;)
@@ -101,7 +101,7 @@ save(example_US_countyCovid, file = &quot;data/example_US_countyCovid.rda&quot;)
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MazamaSpatialPlots</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7</span>
       </span>
     </div>
 
@@ -176,7 +176,7 @@ col_types = "Dcccii"
 
 outputColumns &lt;- c("stateCode", "stateName", "countyFIPS", "countyName", "cases", "deaths")
 
-# A couple of iterations and I end up with this:
+# After a little trial and error, the following works well:
 
 example_US_countyCovid &lt;-
   readr::read_csv(
@@ -184,11 +184,11 @@ example_US_countyCovid &lt;-
     skip = 1,                    # Skip the header line
     col_names = col_names,
     col_types = col_types
-  ) <!-- %&gt;% -->
+  ) %&gt;%
   dplyr::mutate(
     stateCode = MazamaSpatialUtils::US_stateNameToCode(stateName),
-  ) <!-- %&gt;% -->
-  dplyr::filter(.data$date == lubridate::ymd("2020-06-01")) <!-- %&gt;% -->
+  ) %&gt;%
+  dplyr::filter(.data$date == lubridate::ymd("2020-06-01")) %&gt;%
   dplyr::select(!!outputColumns)
 
 save(example_US_countyCovid, file = "data/example_US_countyCovid.rda")
