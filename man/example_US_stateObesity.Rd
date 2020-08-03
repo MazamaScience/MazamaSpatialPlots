@@ -29,7 +29,7 @@ col_types = "icddd"
 
 outputColumns <- c("stateCode", "stateName", "obesityRate")
 
-# A couple of iterations and I end up with this:
+# After a little trial and error, the following works well:
 
 example_US_stateObesity <-
   readr::read_csv(
@@ -37,10 +37,10 @@ example_US_stateObesity <-
     skip = 1,                    # Skip the header line
     col_names = col_names,
     col_types = col_types
-  ) %>%
+  ) \%>\%
   dplyr::mutate(
     stateCode = MazamaSpatialUtils::US_stateNameToCode(stateName)
-  ) %>%
+  ) \%>\%
   dplyr::select(!!outputColumns)
 
 save(example_US_stateObesity, file = "data/example_US_stateObesity.rda")

@@ -1,4 +1,8 @@
 
+# MazamaSpatialPlots 0.0.7
+
+* Restored improved `countyMap()` function.
+
 # MazamaSpatialPlots 0.0.6
 
 * Added "Creating State Maps" article.

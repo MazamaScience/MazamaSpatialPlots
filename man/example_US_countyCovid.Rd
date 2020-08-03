@@ -28,7 +28,7 @@ col_types = "Dcccii"
 
 outputColumns <- c("stateCode", "stateName", "countyFIPS", "countyName", "cases", "deaths")
 
-# A couple of iterations and I end up with this:
+# After a little trial and error, the following works well:
 
 example_US_countyCovid <-
   readr::read_csv(
@@ -36,11 +36,11 @@ example_US_countyCovid <-
     skip = 1,                    # Skip the header line
     col_names = col_names,
     col_types = col_types
-  ) %>%
+  ) \%>\%
   dplyr::mutate(
     stateCode = MazamaSpatialUtils::US_stateNameToCode(stateName),
-  ) %>%
-  dplyr::filter(.data$date == lubridate::ymd("2020-06-01")) %>%
+  ) \%>\%
+  dplyr::filter(.data$date == lubridate::ymd("2020-06-01")) \%>\%
   dplyr::select(!!outputColumns)
 
 save(example_US_countyCovid, file = "data/example_US_countyCovid.rda")

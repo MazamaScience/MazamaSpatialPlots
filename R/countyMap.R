@@ -37,7 +37,6 @@
 #' @examples
 #' \donttest{
 #' library(MazamaSpatialPlots)
-#' mazama_initialize()
 #'
 #' countyMap(
 #'   data = example_US_countyCovid, 
