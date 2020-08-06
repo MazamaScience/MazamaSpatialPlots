@@ -15,11 +15,11 @@
 #' @param parameter Name of the column in \code{data} to use for
 #' coloring the map.
 #' @param state_SPDF SpatialPolygonsDataFrame with US states. It's data 
-#' \code{@slot} must contain a column named \code{stateCode} if 
+#' \code{@slot} must contain a column named \code{stateCode} if either
 #' \code{conusOnly = TRUE} or the \code{stateCode} argument is specified.
 #' @param county_SPDF SpatialPolygonsDataFrame with US counties. It's data 
 #' \code{@slot} must always contain a column named and \code{countyFIPS} and a
-#' column named \code{stateCode} if \code{conusOnly = TRUE} or the 
+#' column named \code{stateCode} if either \code{conusOnly = TRUE} or the 
 #' \code{stateCode} argument is specified.
 #' @param palette Palette name or a vector of colors based on RColorBrewer.
 #' @param breaks Numeric vector of break points. 
@@ -154,7 +154,12 @@ countyMap <- function(
   }
   
   # Does 'county_SPDF' have the required columns? 
-  requiredSPDFFields <- c("countyFIPS")
+  if ( conusOnly == TRUE | !is.null(stateCode) ){ 
+    requiredSPDFFields <- c("countyFIPS", "stateCode")
+  } else {
+    requiredSPDFFields <- c("countyFIPS")
+  }
+  
   missingSPDFFields <- setdiff(requiredSPDFFields, names(county_SPDF@data))
   if ( length(missingSPDFFields) > 0 ) { 
     stop(paste0("Missing fields in 'county_SPDF': ",
