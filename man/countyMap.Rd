@@ -27,12 +27,12 @@ must contain a column named \code{countyFIPS} with the 5-digit FIPS code.}
 coloring the map.}
 
 \item{state_SPDF}{SpatialPolygonsDataFrame with US states. It's data 
-\code{@slot} must contain a column named \code{stateCode} if 
+\code{@slot} must contain a column named \code{stateCode} if either
 \code{conusOnly = TRUE} or the \code{stateCode} argument is specified.}
 
 \item{county_SPDF}{SpatialPolygonsDataFrame with US counties. It's data 
 \code{@slot} must always contain a column named and \code{countyFIPS} and a
-column named \code{stateCode} if \code{conusOnly = TRUE} or the 
+column named \code{stateCode} if either \code{conusOnly = TRUE} or the 
 \code{stateCode} argument is specified.}
 
 \item{palette}{Palette name or a vector of colors based on RColorBrewer.}
