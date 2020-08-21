@@ -70,7 +70,7 @@ county level. Input consists of a dataframe with countyFIPS identifiers." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MazamaSpatialPlots</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.8</span>
       </span>
     </div>
 
@@ -97,6 +97,9 @@ county level. Input consists of a dataframe with countyFIPS identifiers." />
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="../articles/articles/Creating_State_Maps.html">Creating State Maps</a>
+    </li>
+    <li>
+      <a href="../articles/articles/Working_with_Locations.html">Working with Locations</a>
     </li>
   </ul>
 </li>
@@ -165,14 +168,14 @@ coloring the map.</p></td>
     <tr>
       <th>state_SPDF</th>
       <td><p>SpatialPolygonsDataFrame with US states. It's data 
-<code>@slot</code> must contain a column named <code>stateCode</code> if 
+<code>@slot</code> must contain a column named <code>stateCode</code> if either
 <code>conusOnly = TRUE</code> or the <code>stateCode</code> argument is specified.</p></td>
     </tr>
     <tr>
       <th>county_SPDF</th>
       <td><p>SpatialPolygonsDataFrame with US counties. It's data 
 <code>@slot</code> must always contain a column named and <code>countyFIPS</code> and a
-column named <code>stateCode</code> if <code>conusOnly = TRUE</code> or the 
+column named <code>stateCode</code> if either <code>conusOnly = TRUE</code> or the 
 <code>stateCode</code> argument is specified.</p></td>
     </tr>
     <tr>

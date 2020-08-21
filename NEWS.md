@@ -1,3 +1,6 @@
+# MazamaSpatialPlots 0.0.8
+
+* Added "Working with Locations" article.
 
 # MazamaSpatialPlots 0.0.7
 
