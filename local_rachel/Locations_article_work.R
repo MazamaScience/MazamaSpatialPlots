@@ -18,7 +18,7 @@ library(PWFSLSmoke)
 
 # 1) First load data, there are several options for loading monitor data 
 
-#monitorData <- monitor_load(20170601,20171001) # from a given time range
+#monitorData <- monitor_load(20170601, 20171001) # from a given time range
 #monitor2018Data <- monitor_loadAnnual(2018) # from a given year
 #latestDailyData <- monitor_loadDaily() # previous 45 days of daily data (up to the most recent full day)
 monitorLatestData <- monitor_loadLatest() # past 10 days of data (up to the current hour) 
@@ -29,10 +29,11 @@ monitorLatestData <- monitor_loadLatest() # past 10 days of data (up to the curr
 # for time series. Maybe future update filter at a point in time so that can be changed dynamically.
 
 
+
 # Maximum daily average dataframe -- one record per monitor
 dailyMax <-
   monitorLatestData %>%
-  monitor_dailyStatistic() %>%
+  monitor_dailyStatistic(minHours = 2) %>% # only need two daily measurement to be included
   monitor_extractData() %>% 
   tidyr::pivot_longer(-datetime, names_to = "monitorID", values_to = "value") %>%
   dplyr::group_by(monitorID) %>% 
@@ -82,7 +83,7 @@ PWFSLSmoke::monitor_map(monitorLatestData,
 geojson_file <- tempfile(fileext = ".geojson")
 current_geojson <- monitor_writeCurrentStatusGeoJSON(monitorLatestData, geojson_file)
 current_list <- jsonlite::fromJSON(current_geojson)
-monitorSPDF <- rgdal::readOGR(dsn = geojson_file)
+monitorSPDF <- rgdal::readOGR(dsn = geojson_file, verbose = TRUE)
 
 # bring in pm25 field from dailyMax 
 monitorSPDF@data <- monitorSPDF@data %>%
@@ -181,8 +182,9 @@ stateMap(
   ) +
   tmap::tm_layout(
     main.title = "Latest Average Daily Max Monitor Reading",
-    main.title.position = c("left", "top"),
+    main.title.position = c("center", "top"),
     main.title.size = .9,
+    main.title.color = 'white',
     attr.color = 'white',
     bg.color = "deepskyblue4",
     legend.outside = TRUE 
@@ -231,6 +233,7 @@ stateMap(
     legend.col.show = F) +
   tmap::tm_layout(
     main.title = 'Air Quality in New England',
+    main.title.size = 1.1,
     title.fontface = 2,
     fontfamily = "serif",
     bg.color = "lightblue3",
@@ -271,3 +274,14 @@ plot(subset(USCensusStates_02, stateCode %in% stateCodeList))
 points(AIRNOW_metaData$longitude, AIRNOW_metaData$latitude, pch = 20, col = cols)
 points(other_meatData$longitude, other_meatData$latitude, pch = 24, col = cols)
 
+
+
+# badmons <- as.vector(dailyMax[dailyMax$pm25==-Inf, "monitorID"])
+# 
+# badmons <- as.vector(badmons$monitorID)
+# 
+# t <- dplyr::select(monitorLatestData$data , c(datetime, "840020900040_01", "061072002_01"))
+# 
+# View(dailyMax$data[,c("datetime", "840020900040_01","061072002_01")])
+# 
+# chk <- monitor_getDailyMean(monitorLatestData)
