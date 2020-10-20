@@ -45,6 +45,10 @@ testthat::test_that("handles errors correctly", {
                          )
   testthat::expect_error(stateMap(example_US_stateObesity, 'obesityRate', projection = '+bad projection'))
   
+  testthat::expect_error(stateMap(example_US_countyCovid, parameter = c('cases', 'deaths'), title = "Bad title"),
+                         "The lengths of 'parameter' and 'title' must be equal."
+                         )
+  
 })
 
 testthat::test_that("subsets by stateCode correctly", {

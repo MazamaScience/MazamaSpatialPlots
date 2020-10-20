@@ -14,7 +14,8 @@ stateMap(
   stateCode = NULL,
   projection = NULL,
   stateBorderColor = "gray50",
-  title = NULL
+  title = NULL,
+  main.title = NULL
 )
 }
 \arguments{
@@ -40,7 +41,10 @@ the \code{stateCode} argument is specified.}
 
 \item{stateBorderColor}{Color used for state borders.}
 
-\item{title}{Text string to use as the plot title.}
+\item{title}{Vector of text strings to use as individual plot titles. 
+This must be the same length as 'parameter'.}
+
+\item{main.title}{Text string to use as an overall title for all plots.}
 }
 \value{
 A ggplot object.
