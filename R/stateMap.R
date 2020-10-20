@@ -46,7 +46,7 @@
 #'   parameter = "obesityRate", 
 #'   palette = "BuPu",
 #'   stateBorderColor = "white",
-#'   title = "2018 Obesity by State"
+#'   main.title = "2018 Obesity by State"
 #' )
 #' 
 #' # Example of customization using tm_layout and breaks parameter
@@ -291,8 +291,7 @@ stateMap <- function(
     tmap::tm_fill(
       col = parameter,
       palette = palette,
-      breaks = breaks,
-      title = title
+      breaks = breaks
     ) +
     tmap::tm_shape(state_SPDF, projection = projection) +
     tmap::tm_polygons(
@@ -301,8 +300,10 @@ stateMap <- function(
     ) +
     tmap::tm_layout(
       main.title = main.title,
+      title = title,
       main.title.size = .9,
       main.title.position = c("center", "top"),
+      title.position = c("center", 'top'),
       frame = FALSE
     )
   
