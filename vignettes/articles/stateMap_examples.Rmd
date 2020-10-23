@@ -1,0 +1,168 @@
+---
+title: "Creating State Maps"
+author: "Rachel Carroll, Mazama Science"
+date: "October 23, 2020"
+output: rmarkdown::html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Objective
+
+The goal of this document is to introduce the `stateMap()` function in the 
+**MazamaSpatialPlots** package. This document will serve as a tutorial for 
+collecting data and creating customizable maps of U.S. states and territories. 
+
+## Default Plot
+
+In this example, the package-internal dataframe, `example_US_stateObesity`, 
+is used directly:
+
+```{r plot_obesity, warning = FALSE, message = FALSE }
+library(MazamaSpatialPlots)
+
+stateMap(
+  data = example_US_stateObesity,
+  parameter = 'obesityRate',
+  title = "Obesity Rate in U.S. States"
+)
+```
+
+## Customizing with Function Parameters
+
+In the section above examples, the `stateMap()` inputs `data`, `parameter`, 
+`state_SPDF`, and `title` are used to create maps. This section will demonstrate 
+how to use the other input parameters to customize your map. 
+
+### Using palette, breaks, and stateBorderColor
+
+The `palette`, `breaks`, and `stateBorderColor` parameters dictate the coloring 
+of your map. The shade(s) are defined with `palette` and the distribution of 
+color across the map is defined with `breaks`.
+
+In this example, `breaks` is used to create a coarser coloring scheme and 
+`palette` is used to customize the exact color for each obesity rate level.
+
+```{r plotColors, warning = FALSE, message = FALSE }
+
+stateMap(
+  data = example_US_stateObesity,
+  parameter = 'obesityRate',
+  palette = c("lightblue", "orange", "red"),
+  breaks = c(20, 27, 34, 40),
+  stateBorderColor = "black",
+  title = "Obesity Rate in U.S. States"
+)
+
+```
+
+In this example, `breaks` is used to create a more detailed coloring scheme and 
+the blue to purple color palette is chosen.
+
+```{r plotStates, warning = FALSE, message = FALSE }
+
+stateMap(
+  data = example_US_stateObesity,
+  parameter = 'obesityRate',
+  palette = 'BuPu',
+  breaks = seq(20, 38, 3),
+  stateBorderColor = 'white',
+  title = "Obesity Rate in U.S. States"
+)
+
+```
+
+## Customizing with the **tmap** Package
+
+One benefit of using `stateMap()` is that the output is a _ggplot2_ object. 
+Therefore, maps can be further customized using functionality from the **tmap**
+and **ggplot2** packages. Many visual adjustments including legend and title 
+locations, fonts, and background colors can be made by simply appending your 
+`stateMap()` plot with arguments in `tmap::tm_layout()`. Furthermore,
+`tmap::tm_style()` can be used to leverage built-in styles and 
+`tmap::tm_compass()` can be used to add a compass to your map. The three 
+examples below demonstrate how to build customized visualizations using both 
+`stateMap()` parameters and **tmap** functionality.
+
+### Using tmap::tm_layout()
+
+```{r tmapStyling1, warning = FALSE, warning = FALSE, message = FALSE }
+
+stateMap(
+  data = example_US_stateObesity, 
+  parameter = "obesityRate",
+  breaks = seq(20,38,3), #increasing color detail
+  conusOnly = FALSE ,
+  stateBorderColor = 'black',
+) +
+  tmap::tm_layout(
+    frame = TRUE,
+    main.title = 'Obesity Rates in U.S. States and Territories',
+    main.title.position = c("center", "top"),
+    title.fontface = 2,
+    fontfamily = "serif",
+    bg.color = "grey85", 
+    inner.margins  = .05,
+    legend.position = c('right', 'top')
+  ) 
+
+```
+
+### Using tmap style "classic" and a compass
+
+```{r tmapStyling2, warning = FALSE, message = FALSE }
+
+stateMap(
+  data = example_US_stateObesity, 
+  parameter = "obesityRate", 
+  breaks = seq(20,40,4),
+) +
+  tmap::tm_style(
+    'classic'
+  ) +
+  tmap::tm_layout(
+    title = 'Obesity Rate by State',
+    title.position = c("center", "top"),
+    title.size = 1.2,
+    inner.margins  = .08
+  ) +
+  tmap::tm_compass() 
+  
+
+```
+
+### Polishing  New England regional map
+
+```{r tmapStyling3, warning = FALSE, message = FALSE }
+  
+stateMap(
+ data = example_US_stateObesity,
+ parameter = "obesityRate",
+ stateCode = c('ME', 'NH', 'VT', 'MA', 'RI', 'CT'),
+ stateBorderColor = 'black',
+ title = 'Obesity Rates in New England'
+) +
+ tmap::tm_layout(
+   frame = TRUE,
+   frame.double.line = TRUE,
+   title.size = 1.2,
+   title.fontface = 2,
+   fontfamily = "serif",
+   bg.color = "grey85",
+   inner.margins  = .08
+ )
+
+```
+
+## Conclusion
+
+The `stateMap()` function allows us to create attractive maps very efficiently and with a lot of flexibility. The function creates highly customized visualizations through direct inputs and by 
+harnessing the functionality of the **tmap** package. 
+
+
+
+
+
+
