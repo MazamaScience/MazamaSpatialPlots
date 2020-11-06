@@ -81,7 +81,7 @@ extract and visualize data from the internet.
 ```{r html_getTable_and_stateMap, warning = FALSE, message = FALSE }
 
 URL <- "https://www.patriotsoftware.com/blog/accounting/average-cost-living-by-state/"
-livingCostData <- MazamaCoreUtils::html_getTable(URL)
+livingCostData <- MazamaCoreUtils::html_getTable(URL, header = TRUE)
 
 livingCostData <- 
   livingCostData %>%
@@ -91,7 +91,7 @@ livingCostData <-
     avgMonthlyRent = as.numeric(gsub('[$,]', '', .data$"Median Monthly Rent")),
     rentWagePercent = 100*12*avgMonthlyRent/avgAnnualWage,
     .keep = "none"
-    ) 
+  ) 
 
 stateMap(
   data = livingCostData,

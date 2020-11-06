@@ -272,3 +272,4 @@ tmap::tm_shape(selectedStateSPDF) +
 ## Conclusion
 
 Using a few key functions from the Mazama spatial packages and **PWFSLSmoke** makes it easy to create detailed and descriptive maps containing both regional averages as well as spatial data point measurements. The examples in this article demonstrate one of many ways to leverage these functions. This article also demonstrates a method of working with time series data. A natural extension would be to create similar plots at incrementing points in time to identify recent air quality trends.  
+

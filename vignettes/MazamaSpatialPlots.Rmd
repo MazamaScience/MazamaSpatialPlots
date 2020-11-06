@@ -4,7 +4,7 @@ author: "Rachel Carroll, Mazama Science"
 date: "July 25, 2020"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{MazamaSpatialPlots}
+  %\VignetteIndexEntry{Introduction to MazamaSpatialPlots}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

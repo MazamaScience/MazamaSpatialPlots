@@ -1,8 +1,9 @@
-pandoc: 2.3.1
-pkgdown: 1.4.1
+pandoc: 2.7.3
+pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
   MazamaSpatialPlots: MazamaSpatialPlots.html
-  Creating_State_Maps: articles/Creating_State_Maps.html
-  Working_with_Locations: articles/Working_with_Locations.html
+  articles/Creating_State_Maps: Creating_State_Maps.html
+  articles/Working_with_Locations: Working_with_Locations.html
+last_built: 2020-11-06T19:57Z
 

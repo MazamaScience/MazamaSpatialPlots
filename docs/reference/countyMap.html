@@ -10,23 +10,27 @@
 
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -38,7 +42,6 @@
 <meta property="og:title" content="County level thematic map — countyMap" />
 <meta property="og:description" content="Uses the tmap package to generate a thematic map at the
 county level. Input consists of a dataframe with countyFIPS identifiers." />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -56,7 +59,7 @@ county level. Input consists of a dataframe with countyFIPS identifiers." />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -70,7 +73,7 @@ county level. Input consists of a dataframe with countyFIPS identifiers." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MazamaSpatialPlots</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.9</span>
       </span>
     </div>
 
@@ -109,7 +112,7 @@ county level. Input consists of a dataframe with countyFIPS identifiers." />
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/MazamaScience/MazamaSpatialPlots">
+  <a href="https://github.com/MazamaScience/MazamaSpatialPlots/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -137,20 +140,20 @@ county level. Input consists of a dataframe with countyFIPS identifiers." />
 county level. Input consists of a dataframe with <code>countyFIPS</code> identifiers.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>countyMap</span>(
-  <span class='kw'>data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>parameter</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>state_SPDF</span> <span class='kw'>=</span> <span class='st'>"USCensusStates_02"</span>,
-  <span class='kw'>county_SPDF</span> <span class='kw'>=</span> <span class='st'>"USCensusCounties_02"</span>,
-  <span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"YlOrBr"</span>,
-  <span class='kw'>breaks</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>conusOnly</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>stateCode</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>projection</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>stateBorderColor</span> <span class='kw'>=</span> <span class='st'>"gray50"</span>,
-  <span class='kw'>countyBorderColor</span> <span class='kw'>=</span> <span class='st'>"white"</span>,
-  <span class='kw'>title</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
-)</pre>
+    <pre class="usage"><span class='fu'>countyMap</span><span class='op'>(</span>
+  data <span class='op'>=</span> <span class='cn'>NULL</span>,
+  parameter <span class='op'>=</span> <span class='cn'>NULL</span>,
+  state_SPDF <span class='op'>=</span> <span class='st'>"USCensusStates_02"</span>,
+  county_SPDF <span class='op'>=</span> <span class='st'>"USCensusCounties_02"</span>,
+  palette <span class='op'>=</span> <span class='st'>"YlOrBr"</span>,
+  breaks <span class='op'>=</span> <span class='cn'>NULL</span>,
+  conusOnly <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  stateCode <span class='op'>=</span> <span class='cn'>NULL</span>,
+  projection <span class='op'>=</span> <span class='cn'>NULL</span>,
+  stateBorderColor <span class='op'>=</span> <span class='st'>"gray50"</span>,
+  countyBorderColor <span class='op'>=</span> <span class='st'>"white"</span>,
+  title <span class='op'>=</span> <span class='cn'>NULL</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -228,45 +231,42 @@ the following parameters:</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>MazamaSpatialPlots</span>)
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/MazamaScience/MazamaSpatialPlots'>MazamaSpatialPlots</a></span><span class='op'>)</span>
 
-<span class='fu'>countyMap</span>(
-  <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>example_US_countyCovid</span>,
-  <span class='kw'>parameter</span> <span class='kw'>=</span> <span class='st'>"cases"</span>,
-  <span class='kw'>breaks</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>,<span class='fl'>100</span>,<span class='fl'>200</span>,<span class='fl'>500</span>,<span class='fl'>1000</span>,<span class='fl'>2000</span>,<span class='fl'>5000</span>,<span class='fl'>10000</span>,<span class='fl'>20000</span>,<span class='fl'>50000</span>,<span class='fl'>1e6</span>),
-  <span class='kw'>title</span> <span class='kw'>=</span> <span class='st'>"COVID-19 Cases by County \n as of June 01 2020"</span>
-)</div><div class='img'><img src='countyMap-1.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='fu'>countyMap</span>(
-  <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>example_US_countyCovid</span>,
-  <span class='kw'>parameter</span> <span class='kw'>=</span> <span class='st'>"deaths"</span>,
-  <span class='kw'>state_SPDF</span> <span class='kw'>=</span> <span class='no'>USCensusStates_02</span>,
-  <span class='kw'>county_SPDF</span> <span class='kw'>=</span> <span class='no'>USCensusCounties_02</span>,
-  <span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"OrRd"</span>,
-  <span class='kw'>breaks</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>50</span>, <span class='fl'>100</span>, <span class='fl'>250</span>, <span class='fl'>500</span>, <span class='fl'>1000</span>, <span class='fl'>2500</span>, <span class='fl'>3000</span>),
-  <span class='kw'>stateCode</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>( <span class='st'>"NY"</span>, <span class='st'>"PA"</span>, <span class='st'>"MD"</span>, <span class='st'>"NJ"</span>, <span class='st'>"DE"</span>),
-  <span class='kw'>stateBorderColor</span> <span class='kw'>=</span> <span class='st'>"black"</span>,
-  <span class='kw'>countyBorderColor</span> <span class='kw'>=</span> <span class='st'>'grey70'</span>,
-  <span class='kw'>title</span> <span class='kw'>=</span> <span class='st'>"COVID-19 Deaths* in the Mid Atlantic"</span>
-) +
-  <span class='kw pkg'>tmap</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/tmap/man/tm_layout.html'>tm_layout</a></span>(
-    <span class='kw'>main.title.size</span> <span class='kw'>=</span> <span class='fl'>1.2</span>,
-    <span class='kw'>main.title.color</span> <span class='kw'>=</span> <span class='st'>"white"</span>,
-    <span class='kw'>attr.color</span> <span class='kw'>=</span> <span class='st'>'white'</span>,
-    <span class='kw'>bg.color</span> <span class='kw'>=</span> <span class='st'>"dodgerblue4"</span>
-  ) +
-  <span class='kw pkg'>tmap</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/tmap/man/tm_credits.html'>tm_credits</a></span>(<span class='st'>"*as of June 01, 2020"</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"white"</span>, <span class='kw'>position</span> <span class='kw'>=</span> <span class='st'>"left"</span>)</div><div class='img'><img src='countyMap-2.png' alt='' width='700' height='433' /></div><div class='input'>
-# }
+<span class='fu'>countyMap</span><span class='op'>(</span>
+  data <span class='op'>=</span> <span class='va'>example_US_countyCovid</span>, 
+  parameter <span class='op'>=</span> <span class='st'>"cases"</span>,
+  breaks <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>,<span class='fl'>100</span>,<span class='fl'>200</span>,<span class='fl'>500</span>,<span class='fl'>1000</span>,<span class='fl'>2000</span>,<span class='fl'>5000</span>,<span class='fl'>10000</span>,<span class='fl'>20000</span>,<span class='fl'>50000</span>,<span class='fl'>1e6</span><span class='op'>)</span>,
+  title <span class='op'>=</span> <span class='st'>"COVID-19 Cases by County \n as of June 01 2020"</span>
+<span class='op'>)</span>
+</div><div class='img'><img src='countyMap-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>countyMap</span><span class='op'>(</span>
+  data <span class='op'>=</span> <span class='va'>example_US_countyCovid</span>,
+  parameter <span class='op'>=</span> <span class='st'>"deaths"</span>,
+  state_SPDF <span class='op'>=</span> <span class='va'>USCensusStates_02</span>,
+  county_SPDF <span class='op'>=</span> <span class='va'>USCensusCounties_02</span>,
+  palette <span class='op'>=</span> <span class='st'>"OrRd"</span>,
+  breaks <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>50</span>, <span class='fl'>100</span>, <span class='fl'>250</span>, <span class='fl'>500</span>, <span class='fl'>1000</span>, <span class='fl'>2500</span>, <span class='fl'>3000</span><span class='op'>)</span>,
+  stateCode <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span> <span class='st'>"NY"</span>, <span class='st'>"PA"</span>, <span class='st'>"MD"</span>, <span class='st'>"NJ"</span>, <span class='st'>"DE"</span><span class='op'>)</span>,
+  stateBorderColor <span class='op'>=</span> <span class='st'>"black"</span>,
+  countyBorderColor <span class='op'>=</span> <span class='st'>'grey70'</span>, 
+  title <span class='op'>=</span> <span class='st'>"COVID-19 Deaths* in the Mid Atlantic"</span>
+<span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>tmap</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/tmap/man/tm_layout.html'>tm_layout</a></span><span class='op'>(</span>
+    main.title.size <span class='op'>=</span> <span class='fl'>1.2</span>,
+    main.title.color <span class='op'>=</span> <span class='st'>"white"</span>,
+    attr.color <span class='op'>=</span> <span class='st'>'white'</span>,
+    bg.color <span class='op'>=</span> <span class='st'>"dodgerblue4"</span>
+  <span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>tmap</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/tmap/man/tm_credits.html'>tm_credits</a></span><span class='op'>(</span><span class='st'>"*as of June 01, 2020"</span>, col <span class='op'>=</span> <span class='st'>"white"</span>, position <span class='op'>=</span> <span class='st'>"left"</span><span class='op'>)</span>
+</div><div class='img'><img src='countyMap-2.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'># }</span>
 </div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
-      <li><a href="#details">Details</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -277,7 +277,7 @@ the following parameters:</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

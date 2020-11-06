@@ -1,3 +1,7 @@
+# MazamaSpatialPlots 0.0.9
+
+* Added dependency on `MazamaCoreUtils (>= 0.4.5)`.
+
 # MazamaSpatialPlots 0.0.8
 
 * Added "Working with Locations" article.

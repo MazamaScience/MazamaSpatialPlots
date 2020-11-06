@@ -6,19 +6,19 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Working with Locations • MazamaSpatialPlots</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../../pkgdown.css" rel="stylesheet">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../../bootstrap-toc.css">
+<script src="../../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../../pkgdown.css" rel="stylesheet">
 <script src="../../pkgdown.js"></script><meta property="og:title" content="Working with Locations">
-<meta property="og:description" content="">
-<meta name="twitter:card" content="summary">
+<meta property="og:description" content="MazamaSpatialPlots">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
-<body>
+<body data-spy="scroll" data-target="#toc">
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">MazamaSpatialPlots</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.9</span>
       </span>
     </div>
 
@@ -70,7 +70,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/MazamaScience/MazamaSpatialPlots">
+  <a href="https://github.com/MazamaScience/MazamaSpatialPlots/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -85,10 +85,11 @@
 
       
 
-      </header><div class="row">
+      </header><script src="Working_with_Locations_files/accessible-code-block-0.0.1/empty-anchor.js"></script><link href="Working_with_Locations_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
+<script src="Working_with_Locations_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1>Working with Locations</h1>
+      <h1 data-toc-skip>Working with Locations</h1>
                         <h4 class="author">Rachel Carroll, Mazama Science</h4>
             
             <h4 class="date">August 7, 2020</h4>
@@ -121,106 +122,110 @@
 </ul>
 <p>These functions load in the data as a <em>ws_monitor</em> object, which contains 1) a dataframe with air quality monitor readings over time and 2) the monitor-level metadata with characteristics such as monitor locations.</p>
 <p>In the example below, data from the past 10 days is loaded and monitor-level calculations are performed. The data can be summarized in any way deemed relevant so long as there is one measurement per monitor. This allows us to color monitor location points based on the monitor’s PM2.5 value reading. To accomplish this, the data can be summarized over time or data can be extracted at a specific point in time. In this case, the former method is used to calculate the maximum daily average for each monitor.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(MazamaSpatialPlots)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(PWFSLSmoke)</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="co"># Load data</span></a>
-<a class="sourceLine" id="cb1-5" data-line-number="5">monitorLatestData &lt;-<span class="st"> </span>PWFSLSmoke<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/PWFSLSmoke/man/monitor_loadLatest.html">monitor_loadLatest</a></span>() <span class="co">#past 10 days of data, up to the current hour</span></a>
-<a class="sourceLine" id="cb1-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="co"># Prepare Data: Subset and summarize based on desired information</span></a>
-<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="co"># calculating maximum daily average (one record per monitor)</span></a>
-<a class="sourceLine" id="cb1-9" data-line-number="9">dailyMax &lt;-</a>
-<a class="sourceLine" id="cb1-10" data-line-number="10"><span class="st">  </span>monitorLatestData <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb1-11" data-line-number="11"><span class="st">  </span>PWFSLSmoke<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/PWFSLSmoke/man/monitor_dailyStatistic.html">monitor_dailyStatistic</a></span>(<span class="dt">minHours =</span> <span class="dv">2</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># daily average</span></a>
-<a class="sourceLine" id="cb1-12" data-line-number="12"><span class="st">  </span>PWFSLSmoke<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/PWFSLSmoke/man/monitor_extractDataFrame.html">monitor_extractData</a></span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb1-13" data-line-number="13"><span class="st">  </span>tidyr<span class="op">::</span><span class="kw"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer</a></span>(<span class="op">-</span>datetime, <span class="dt">names_to =</span> <span class="st">"monitorID"</span>, <span class="dt">values_to =</span> <span class="st">"value"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb1-14" data-line-number="14"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(monitorID) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb1-15" data-line-number="15"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span>(<span class="dt">pm25 =</span> <span class="kw"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span>(value, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># taking maximum daily average</span></a>
-<a class="sourceLine" id="cb1-16" data-line-number="16"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span>(monitorLatestData<span class="op">$</span>meta, <span class="dt">by =</span> <span class="st">'monitorID'</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb1-17" data-line-number="17"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(</a>
-<a class="sourceLine" id="cb1-18" data-line-number="18">    <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">'monitorID'</span>, <span class="st">'stateCode'</span>, <span class="st">'latitude'</span>, <span class="st">'longitude'</span>, <span class="st">'pwfslDataIngestSource'</span>, <span class="st">'pm25'</span>))</a>
-<a class="sourceLine" id="cb1-19" data-line-number="19"></a>
-<a class="sourceLine" id="cb1-20" data-line-number="20"><span class="co"># Clean pm25 column by setting -Inf values to NA</span></a>
-<a class="sourceLine" id="cb1-21" data-line-number="21">dailyMax<span class="op">$</span>pm25 &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/replace.html">replace</a></span>(dailyMax<span class="op">$</span>pm25, dailyMax<span class="op">$</span>pm25 <span class="op">==</span><span class="st"> </span><span class="op">-</span><span class="ot">Inf</span>, <span class="ot">NA</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/MazamaScience/MazamaSpatialPlots">MazamaSpatialPlots</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/MazamaScience/PWFSLSmoke">PWFSLSmoke</a></span><span class="op">)</span>
+
+<span class="co"># Load data</span>
+<span class="va">monitorLatestData</span> <span class="op">&lt;-</span> <span class="fu">PWFSLSmoke</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/PWFSLSmoke/man/monitor_loadLatest.html">monitor_loadLatest</a></span><span class="op">(</span><span class="op">)</span> <span class="co">#past 10 days of data, up to the current hour</span>
+
+<span class="co"># Prepare Data: Subset and summarize based on desired information</span>
+<span class="co"># calculating maximum daily average (one record per monitor)</span>
+<span class="va">dailyMax</span> <span class="op">&lt;-</span>
+  <span class="va">monitorLatestData</span> <span class="op">%&gt;%</span>
+  <span class="fu">PWFSLSmoke</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/PWFSLSmoke/man/monitor_dailyStatistic.html">monitor_dailyStatistic</a></span><span class="op">(</span>minHours <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="co"># daily average</span>
+  <span class="fu">PWFSLSmoke</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/PWFSLSmoke/man/monitor_extractDataFrame.html">monitor_extractData</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer</a></span><span class="op">(</span><span class="op">-</span><span class="va">datetime</span>, names_to <span class="op">=</span> <span class="st">"monitorID"</span>, values_to <span class="op">=</span> <span class="st">"value"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">monitorID</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span>pm25 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">value</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="co"># taking maximum daily average</span>
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">monitorLatestData</span><span class="op">$</span><span class="va">meta</span>, by <span class="op">=</span> <span class="st">'monitorID'</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span>
+    <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'monitorID'</span>, <span class="st">'stateCode'</span>, <span class="st">'latitude'</span>, <span class="st">'longitude'</span>, <span class="st">'pwfslDataIngestSource'</span>, <span class="st">'pm25'</span><span class="op">)</span><span class="op">)</span>
+
+<span class="co"># Clean pm25 column by setting -Inf values to NA</span>
+<span class="va">dailyMax</span><span class="op">$</span><span class="va">pm25</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/replace.html">replace</a></span><span class="op">(</span><span class="va">dailyMax</span><span class="op">$</span><span class="va">pm25</span>, <span class="va">dailyMax</span><span class="op">$</span><span class="va">pm25</span> <span class="op">==</span> <span class="op">-</span><span class="cn">Inf</span>, <span class="cn">NA</span><span class="op">)</span></code></pre></div>
 <p>Now, the <em>ws_monitor</em> object, <code>monitorLatestData</code> and the monitor-level dataframe, <code>dailyMax</code>, can be used to create air quality maps as demonstrated in the following sections.</p>
 </div>
 <div id="plot-monitor-locations" class="section level2">
 <h2 class="hasAnchor">
 <a href="#plot-monitor-locations" class="anchor"></a>Plot Monitor Locations</h2>
 <p>To simply plot monitor locations without colors, monitor-level calculations are not yet needed. Instead, the metadata of <code>monitorLatestData</code> can be used directly. We also introduce a U.S. state Spatial Polygons Data Frame (SPDF) so the monitor locations will appear on a map of U.S. states.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co"># Get state codes and only include continental US states</span></a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">stateCodeList &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/unique.html">unique</a></span>(monitorLatestData<span class="op">$</span>meta<span class="op">$</span>stateCode) </a>
-<a class="sourceLine" id="cb2-3" data-line-number="3">stateCodeList &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/subset.html">subset</a></span>(</a>
-<a class="sourceLine" id="cb2-4" data-line-number="4">  stateCodeList, stateCodeList <span class="op">%in%</span><span class="st"> </span>MazamaSpatialUtils<span class="op">::</span>CONUS</a>
-<a class="sourceLine" id="cb2-5" data-line-number="5">  )</a>
-<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="co"># Create subsetted U.S. state SPDF</span></a>
-<a class="sourceLine" id="cb2-7" data-line-number="7">stateSPDF &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/subset.html">subset</a></span>(USCensusStates_<span class="dv">02</span>, stateCode <span class="op">%in%</span><span class="st"> </span>stateCodeList)</a>
-<a class="sourceLine" id="cb2-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb2-9" data-line-number="9"><span class="co"># Plot U.S. state SPDF</span></a>
-<a class="sourceLine" id="cb2-10" data-line-number="10"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(stateSPDF)  </a>
-<a class="sourceLine" id="cb2-11" data-line-number="11"></a>
-<a class="sourceLine" id="cb2-12" data-line-number="12"><span class="co"># Overlay monitor location points</span></a>
-<a class="sourceLine" id="cb2-13" data-line-number="13"><span class="co"># </span><span class="al">NOTE</span><span class="co">: can use either dailyMax or monitorLatestData$meta since both have metadata </span></a>
-<a class="sourceLine" id="cb2-14" data-line-number="14"><span class="kw"><a href="https://rdrr.io/r/graphics/points.html">points</a></span>(monitorLatestData<span class="op">$</span>meta<span class="op">$</span>longitude, monitorLatestData<span class="op">$</span>meta<span class="op">$</span>latitude)</a>
-<a class="sourceLine" id="cb2-15" data-line-number="15"><span class="kw"><a href="https://rdrr.io/r/graphics/points.html">points</a></span>(monitorLatestData<span class="op">$</span>meta<span class="op">$</span>longitude, monitorLatestData<span class="op">$</span>meta<span class="op">$</span>latitude)</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Get state codes and only include continental US states</span>
+<span class="va">stateCodeList</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">monitorLatestData</span><span class="op">$</span><span class="va">meta</span><span class="op">$</span><span class="va">stateCode</span><span class="op">)</span> 
+<span class="va">stateCodeList</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span><span class="op">(</span>
+  <span class="va">stateCodeList</span>, <span class="va">stateCodeList</span> <span class="op">%in%</span> <span class="fu">MazamaSpatialUtils</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/MazamaSpatialUtils/man/CONUS.html">CONUS</a></span>
+  <span class="op">)</span>
+<span class="co"># Create subsetted U.S. state SPDF</span>
+<span class="va">stateSPDF</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span><span class="op">(</span><span class="va">USCensusStates_02</span>, <span class="va">stateCode</span> <span class="op">%in%</span> <span class="va">stateCodeList</span><span class="op">)</span>
+
+<span class="co"># Plot U.S. state SPDF</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">stateSPDF</span><span class="op">)</span>  
+
+<span class="co"># Overlay monitor location points</span>
+<span class="co"># NOTE: can use either dailyMax or monitorLatestData$meta since both have metadata </span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/points.html">points</a></span><span class="op">(</span><span class="va">monitorLatestData</span><span class="op">$</span><span class="va">meta</span><span class="op">$</span><span class="va">longitude</span>, <span class="va">monitorLatestData</span><span class="op">$</span><span class="va">meta</span><span class="op">$</span><span class="va">latitude</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/points.html">points</a></span><span class="op">(</span><span class="va">monitorLatestData</span><span class="op">$</span><span class="va">meta</span><span class="op">$</span><span class="va">longitude</span>, <span class="va">monitorLatestData</span><span class="op">$</span><span class="va">meta</span><span class="op">$</span><span class="va">latitude</span><span class="op">)</span></code></pre></div>
 <p><img src="Working_with_Locations_files/figure-html/monitor_locs-1.png" width="700"></p>
 <p>Another method to map monitor loactions is to use the <code><a href="https://rdrr.io/pkg/PWFSLSmoke/man/monitor_map.html">monitor_map()</a></code> function from <strong>PWFSLSmoke</strong>. In fact, this function can also color the monitor location points (by default, the maximum measurement per monitor is used to color the points). This function is very useful when taking a quick look across the continental U.S. However, the method above allows for some more flexibility in subsetting states and calculating desired monitor-level statistics.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co"># method 2 using monitor_map() from PWFSLSmoke</span></a>
-<a class="sourceLine" id="cb3-2" data-line-number="2">PWFSLSmoke<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/PWFSLSmoke/man/monitor_map.html">monitor_map</a></span>(monitorLatestData, </a>
-<a class="sourceLine" id="cb3-3" data-line-number="3">                        <span class="dt">countyCol =</span> <span class="ot">NA</span>,</a>
-<a class="sourceLine" id="cb3-4" data-line-number="4">                        <span class="dt">colors =</span> <span class="st">'grey50'</span>,</a>
-<a class="sourceLine" id="cb3-5" data-line-number="5">                        <span class="dt">stateCol =</span> <span class="st">"black"</span>,</a>
-<a class="sourceLine" id="cb3-6" data-line-number="6">                        <span class="dt">pch =</span> <span class="dv">3</span>,</a>
-<a class="sourceLine" id="cb3-7" data-line-number="7">                        <span class="dt">stateLwd =</span> <span class="dv">3</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># method 2 using monitor_map() from PWFSLSmoke</span>
+<span class="fu">PWFSLSmoke</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/PWFSLSmoke/man/monitor_map.html">monitor_map</a></span><span class="op">(</span><span class="va">monitorLatestData</span>, 
+                        countyCol <span class="op">=</span> <span class="cn">NA</span>,
+                        colors <span class="op">=</span> <span class="st">'grey50'</span>,
+                        stateCol <span class="op">=</span> <span class="st">"black"</span>,
+                        pch <span class="op">=</span> <span class="fl">3</span>,
+                        stateLwd <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></code></pre></div>
 <p><img src="Working_with_Locations_files/figure-html/monitor_locs2-1.png" width="700"></p>
 </div>
 <div id="plot-monitor-values" class="section level2">
 <h2 class="hasAnchor">
 <a href="#plot-monitor-values" class="anchor"></a>Plot Monitor Values</h2>
 <p>To build upon the examples above, this section shows how to plot points on a map with added visual customizations. To create descriptive visualizations of this nature, it is a good idea to transform the locations data into a SPDF. This is because SPDFs are compatible with the <strong>tmap</strong> package, which allows us to create attractive maps with high flexibility.</p>
-<p>Below, monitor locations are again plotted on a plain continental U.S. map. In this example, however, <strong>tmap</strong> is used so the overall layout, color schemes, legend break points, and point shapes are easily specified. Notice that AIRNOW monitors are displayed as circles and AIRSIS and WRCC monitors are triangles. This is done by simply defining the shape parameter in <code>tm_symbols()</code> with the data source column. This cannot be done using <code><a href="https://rdrr.io/pkg/PWFSLSmoke/man/monitor_map.html">PWFSLSmoke::monitor_map()</a></code> and would require longer messier code to create directly using <code><a href="https://rdrr.io/r/graphics/plot.html">plot()</a></code> and <code><a href="https://rdrr.io/r/graphics/points.html">points()</a></code>.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="co"># transform monitorLatestData into a SPDF </span></a>
-<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co"># </span><span class="al">TODO</span><span class="co">: make this a function called monitor_toSPDF ?????</span></a>
-<a class="sourceLine" id="cb4-3" data-line-number="3">geojson_file &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/tempfile.html">tempfile</a></span>(<span class="dt">fileext =</span> <span class="st">".geojson"</span>)</a>
-<a class="sourceLine" id="cb4-4" data-line-number="4">current_geojson &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/PWFSLSmoke/man/monitor_writeCurrentStatusGeoJSON.html">monitor_writeCurrentStatusGeoJSON</a></span>(monitorLatestData, geojson_file)</a>
-<a class="sourceLine" id="cb4-5" data-line-number="5">current_list &lt;-<span class="st"> </span>jsonlite<span class="op">::</span><span class="kw"><a href="https://jeroen.cran.dev/jsonlite/reference/fromJSON.html">fromJSON</a></span>(current_geojson)</a>
-<a class="sourceLine" id="cb4-6" data-line-number="6">monitorSPDF &lt;-<span class="st"> </span>rgdal<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/rgdal/man/readOGR.html">readOGR</a></span>(<span class="dt">dsn =</span> geojson_file, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb4-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co"># bring in pm25 field from dailyMax </span></a>
-<a class="sourceLine" id="cb4-9" data-line-number="9">monitorSPDF<span class="op">@</span>data &lt;-<span class="st"> </span>monitorSPDF<span class="op">@</span>data <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span>(dailyMax[, <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"monitorID"</span>, <span class="st">"pm25"</span>)], <span class="dt">by =</span> <span class="st">"monitorID"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(  </a>
-<a class="sourceLine" id="cb4-12" data-line-number="12">    <span class="dt">plotDataSource =</span> <span class="kw"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span>(</a>
-<a class="sourceLine" id="cb4-13" data-line-number="13">      pwfslDataIngestSource <span class="op">==</span><span class="st"> "AIRNOW"</span>, </a>
-<a class="sourceLine" id="cb4-14" data-line-number="14">      <span class="st">"AIRNOW"</span>, </a>
-<a class="sourceLine" id="cb4-15" data-line-number="15">      <span class="st">"AIRSIS or WRCC"</span>)</a>
-<a class="sourceLine" id="cb4-16" data-line-number="16">    ) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb4-17" data-line-number="17"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(</a>
-<a class="sourceLine" id="cb4-18" data-line-number="18">    <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"monitorID"</span>, <span class="st">"stateCode"</span>, <span class="st">"longitude"</span>, <span class="st">"latitude"</span>, <span class="st">"plotDataSource"</span>, <span class="st">"pm25"</span>)</a>
-<a class="sourceLine" id="cb4-19" data-line-number="19">    )</a>
-<a class="sourceLine" id="cb4-20" data-line-number="20"></a>
-<a class="sourceLine" id="cb4-21" data-line-number="21"><span class="co">#createMap</span></a>
-<a class="sourceLine" id="cb4-22" data-line-number="22">tmap<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span>(stateSPDF, </a>
-<a class="sourceLine" id="cb4-23" data-line-number="23">               <span class="dt">bbox =</span> <span class="kw">bbox</span>(monitorSPDF) <span class="co">#use monitor bbox </span></a>
-<a class="sourceLine" id="cb4-24" data-line-number="24">               ) <span class="op">+</span></a>
-<a class="sourceLine" id="cb4-25" data-line-number="25"><span class="st">  </span>tmap<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_polygons</a></span>(</a>
-<a class="sourceLine" id="cb4-26" data-line-number="26">    <span class="dt">col =</span> <span class="st">"grey85"</span>,</a>
-<a class="sourceLine" id="cb4-27" data-line-number="27">    <span class="dt">border.col =</span> <span class="st">"black"</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb4-28" data-line-number="28"><span class="st">  </span>tmap<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span>(monitorSPDF) <span class="op">+</span><span class="st">  </span><span class="co"># plot colored monitor location points </span></a>
-<a class="sourceLine" id="cb4-29" data-line-number="29"><span class="st">  </span>tmap<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/tmap/man/tm_symbols.html">tm_symbols</a></span>(              </a>
-<a class="sourceLine" id="cb4-30" data-line-number="30">    <span class="dt">col =</span> <span class="st">"pm25"</span>,</a>
-<a class="sourceLine" id="cb4-31" data-line-number="31">    <span class="dt">palette =</span> <span class="st">"Reds"</span>,</a>
-<a class="sourceLine" id="cb4-32" data-line-number="32">    <span class="dt">breaks =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="dv">0</span>, <span class="dv">50</span>, <span class="dv">5</span>), <span class="dv">1000</span>), <span class="co"># </span><span class="al">NOTE</span><span class="co">: all values are between 0 and 50 except 2 (outliers?)</span></a>
-<a class="sourceLine" id="cb4-33" data-line-number="33">    <span class="dt">shape =</span> <span class="st">"plotDataSource"</span>,        <span class="co"># shape of points will depend on the monitor source</span></a>
-<a class="sourceLine" id="cb4-34" data-line-number="34">    <span class="dt">shapes =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">16</span>, <span class="dv">17</span>),              <span class="co"># specify circles and triangle shapes</span></a>
-<a class="sourceLine" id="cb4-35" data-line-number="35">    <span class="dt">scale =</span> <span class="fl">.4</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb4-36" data-line-number="36"><span class="st">  </span>tmap<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/tmap/man/tm_layout.html">tm_layout</a></span>(</a>
-<a class="sourceLine" id="cb4-37" data-line-number="37">    <span class="dt">main.title =</span> <span class="st">"Latest Average Daily Max Monitor Reading"</span>,</a>
-<a class="sourceLine" id="cb4-38" data-line-number="38">    <span class="dt">main.title.position =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"center"</span>, <span class="st">"top"</span>),</a>
-<a class="sourceLine" id="cb4-39" data-line-number="39">    <span class="dt">bg.color =</span> <span class="st">"deepskyblue4"</span>,</a>
-<a class="sourceLine" id="cb4-40" data-line-number="40">    <span class="dt">attr.color =</span> <span class="st">"white"</span>,</a>
-<a class="sourceLine" id="cb4-41" data-line-number="41">    <span class="dt">legend.position =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"left"</span>, <span class="st">"center"</span>)</a>
-<a class="sourceLine" id="cb4-42" data-line-number="42">  )</a></code></pre></div>
+<p>Below, monitor locations are again plotted on a plain continental U.S. map. In this example, however, <strong>tmap</strong> is used so the overall layout, color schemes, legend break points, and point shapes are easily specified. Notice that AIRNOW monitors are displayed as circles and AIRSIS and WRCC monitors are triangles. This is done by simply defining the shape parameter in <code>tm_symbols()</code> with the data source column. This cannot be done using <code><a href="https://rdrr.io/pkg/PWFSLSmoke/man/monitor_map.html">PWFSLSmoke::monitor_map()</a></code> and would require longer messier code to create directly using <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> and <code><a href="https://rdrr.io/r/graphics/points.html">points()</a></code>.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># transform monitorLatestData into a SPDF </span>
+<span class="co"># TODO: make this a function called monitor_toSPDF ?????</span>
+<span class="va">geojson_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".geojson"</span><span class="op">)</span>
+<span class="va">current_geojson</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/PWFSLSmoke/man/monitor_writeCurrentStatusGeoJSON.html">monitor_writeCurrentStatusGeoJSON</a></span><span class="op">(</span><span class="va">monitorLatestData</span>, <span class="va">geojson_file</span><span class="op">)</span>
+<span class="va">current_list</span> <span class="op">&lt;-</span> <span class="fu">jsonlite</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jsonlite/man/fromJSON.html">fromJSON</a></span><span class="op">(</span><span class="va">current_geojson</span><span class="op">)</span>
+<span class="va">monitorSPDF</span> <span class="op">&lt;-</span> <span class="fu">rgdal</span><span class="fu">::</span><span class="fu"><a href="http://rgdal.r-forge.r-project.org/reference/readOGR.html">readOGR</a></span><span class="op">(</span>dsn <span class="op">=</span> <span class="va">geojson_file</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+
+<span class="co"># bring in pm25 field from dailyMax </span>
+<span class="va">monitorSPDF</span><span class="op">@</span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">monitorSPDF</span><span class="op">@</span><span class="va">data</span> <span class="op">%&gt;%</span>
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">dailyMax</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"monitorID"</span>, <span class="st">"pm25"</span><span class="op">)</span><span class="op">]</span>, by <span class="op">=</span> <span class="st">"monitorID"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>  
+    plotDataSource <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span>
+      <span class="va">pwfslDataIngestSource</span> <span class="op">==</span> <span class="st">"AIRNOW"</span>, 
+      <span class="st">"AIRNOW"</span>, 
+      <span class="st">"AIRSIS or WRCC"</span><span class="op">)</span>
+    <span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span>
+    <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"monitorID"</span>, <span class="st">"stateCode"</span>, <span class="st">"longitude"</span>, <span class="st">"latitude"</span>, <span class="st">"plotDataSource"</span>, <span class="st">"pm25"</span><span class="op">)</span>
+    <span class="op">)</span>
+
+<span class="co">#createMap</span>
+<span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">stateSPDF</span>, 
+               bbox <span class="op">=</span> <span class="fu">bbox</span><span class="op">(</span><span class="va">monitorSPDF</span><span class="op">)</span> <span class="co">#use monitor bbox </span>
+               <span class="op">)</span> <span class="op">+</span>
+  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_polygons</a></span><span class="op">(</span>
+    col <span class="op">=</span> <span class="st">"grey85"</span>,
+    border.col <span class="op">=</span> <span class="st">"black"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">monitorSPDF</span><span class="op">)</span> <span class="op">+</span>  <span class="co"># plot colored monitor location points </span>
+  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_symbols.html">tm_symbols</a></span><span class="op">(</span>              
+    col <span class="op">=</span> <span class="st">"pm25"</span>,
+    palette <span class="op">=</span> <span class="st">"Reds"</span>,
+    breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">50</span>, <span class="fl">5</span><span class="op">)</span>, <span class="fl">1000</span><span class="op">)</span>, <span class="co"># NOTE: all values are between 0 and 50 except 2 (outliers?)</span>
+    shape <span class="op">=</span> <span class="st">"plotDataSource"</span>,        <span class="co"># shape of points will depend on the monitor source</span>
+    shapes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">16</span>, <span class="fl">17</span><span class="op">)</span>,              <span class="co"># specify circles and triangle shapes</span>
+    scale <span class="op">=</span> <span class="fl">.4</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_layout.html">tm_layout</a></span><span class="op">(</span>
+    main.title <span class="op">=</span> <span class="st">"Latest Average Daily Max Monitor Reading"</span>,
+    main.title.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"center"</span>, <span class="st">"top"</span><span class="op">)</span>,
+    bg.color <span class="op">=</span> <span class="st">"deepskyblue4"</span>,
+    attr.color <span class="op">=</span> <span class="st">"white"</span>,
+    legend.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"left"</span>, <span class="st">"center"</span><span class="op">)</span>
+  <span class="op">)</span></code></pre></div>
 <p><img src="Working_with_Locations_files/figure-html/monitor_vals-1.png" width="700"></p>
 </div>
 <div id="plot-polygon-summarized-values" class="section level2">
@@ -228,42 +233,43 @@
 <a href="#plot-polygon-summarized-values" class="anchor"></a>Plot Polygon Summarized Values</h2>
 <p>In this section <code><a href="https://rdrr.io/pkg/MazamaSpatialUtils/man/summarizeByPolygon.html">MazamaSpatialUtils::summarizeByPolygon()</a></code> is introduced. The purpose of this function is to summarize spatial data by regions defined by the polygons in a given SPDF. For example, using a U.S. state level SPDF would summarize the data by state while a U.S. county SPDF would summarize by county. The input spatial data must contain latitude, longitude, and a value to be summarized.</p>
 <p>Below, <code><a href="https://rdrr.io/pkg/MazamaSpatialUtils/man/summarizeByPolygon.html">MazamaSpatialUtils::summarizeByPolygon()</a></code> is used with a U.S. state SPDF and the dataframe <code>dailyMax</code> (created in the “Prepare Monitor Data” section) to find average PM2.5 readings by state. These state-level values are incorporated into the state SPDF’s data <code>@slot</code> so the map can be colored by the summarized values.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="co"># replacing NA with 0. </span></a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co"># </span><span class="al">NOTE</span><span class="co">: should add na.rm argument to summarizeByPolygon() so we can </span></a>
-<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co"># </span><span class="al">NOTE</span><span class="co">: use dailyMax$pm25 directly in the function. This step will bring down </span></a>
-<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co"># </span><span class="al">NOTE</span><span class="co">: the average value which is NOT GOOD </span></a>
-<a class="sourceLine" id="cb5-5" data-line-number="5">stateSPDF &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/subset.html">subset</a></span>(USCensusStates_<span class="dv">02</span>, stateCode <span class="op">%in%</span><span class="st"> </span>stateCodeList)</a>
-<a class="sourceLine" id="cb5-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb5-7" data-line-number="7">newValueVector &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/replace.html">replace</a></span>(dailyMax<span class="op">$</span>pm25, <span class="kw"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span>(dailyMax<span class="op">$</span>pm25), <span class="dv">0</span>)</a>
-<a class="sourceLine" id="cb5-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb5-9" data-line-number="9"><span class="co"># Summarize by State</span></a>
-<a class="sourceLine" id="cb5-10" data-line-number="10">stateSummarizedDF &lt;-<span class="st"> </span>MazamaSpatialUtils<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/MazamaSpatialUtils/man/summarizeByPolygon.html">summarizeByPolygon</a></span>(</a>
-<a class="sourceLine" id="cb5-11" data-line-number="11">  <span class="dt">longitude =</span> dailyMax<span class="op">$</span>longitude,</a>
-<a class="sourceLine" id="cb5-12" data-line-number="12">  <span class="dt">latitude =</span> dailyMax<span class="op">$</span>latitude,</a>
-<a class="sourceLine" id="cb5-13" data-line-number="13">  <span class="dt">value =</span> newValueVector, </a>
-<a class="sourceLine" id="cb5-14" data-line-number="14">  <span class="dt">SPDF =</span> stateSPDF,</a>
-<a class="sourceLine" id="cb5-15" data-line-number="15">  <span class="dt">useBuffering =</span> <span class="ot">TRUE</span>,</a>
-<a class="sourceLine" id="cb5-16" data-line-number="16">  <span class="dt">FUN =</span> mean</a>
-<a class="sourceLine" id="cb5-17" data-line-number="17">)</a>
-<a class="sourceLine" id="cb5-18" data-line-number="18"></a>
-<a class="sourceLine" id="cb5-19" data-line-number="19"><span class="co"># add summarized values to stateSPDF@data</span></a>
-<a class="sourceLine" id="cb5-20" data-line-number="20">stateSPDF<span class="op">@</span>data &lt;-<span class="st"> </span>stateSPDF<span class="op">@</span>data <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb5-21" data-line-number="21"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span>(stateSummarizedDF, <span class="dt">by =</span> <span class="st">"polygonID"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb5-22" data-line-number="22"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">avgPM25 =</span> summaryValue)</a>
-<a class="sourceLine" id="cb5-23" data-line-number="23"></a>
-<a class="sourceLine" id="cb5-24" data-line-number="24"><span class="co">#createMap</span></a>
-<a class="sourceLine" id="cb5-25" data-line-number="25">tmap<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span>(stateSPDF) <span class="op">+</span></a>
-<a class="sourceLine" id="cb5-26" data-line-number="26"><span class="st">  </span>tmap<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_polygons</a></span>(</a>
-<a class="sourceLine" id="cb5-27" data-line-number="27">    <span class="dt">col =</span> <span class="st">"avgPM25"</span>,</a>
-<a class="sourceLine" id="cb5-28" data-line-number="28">    <span class="dt">breaks =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="dv">5</span>, <span class="dv">13</span>, <span class="dv">2</span>), <span class="kw"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="dv">15</span>, <span class="dv">70</span>, <span class="dv">5</span>)),</a>
-<a class="sourceLine" id="cb5-29" data-line-number="29">    <span class="dt">border.col =</span> <span class="st">"black"</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb5-30" data-line-number="30"><span class="st">  </span>tmap<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/tmap/man/tm_layout.html">tm_layout</a></span>(</a>
-<a class="sourceLine" id="cb5-31" data-line-number="31">    <span class="dt">main.title =</span> <span class="st">"Latest Average Daily Max Monitor Reading"</span>,</a>
-<a class="sourceLine" id="cb5-32" data-line-number="32">    <span class="dt">main.title.position =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"center"</span>, <span class="st">"top"</span>),</a>
-<a class="sourceLine" id="cb5-33" data-line-number="33">    <span class="dt">bg.color =</span> <span class="st">"deepskyblue4"</span>,</a>
-<a class="sourceLine" id="cb5-34" data-line-number="34">    <span class="dt">attr.color =</span> <span class="st">"white"</span>,</a>
-<a class="sourceLine" id="cb5-35" data-line-number="35">    <span class="dt">legend.position =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"right"</span>, <span class="st">"bottom"</span>)</a>
-<a class="sourceLine" id="cb5-36" data-line-number="36">  )</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># replacing NA with 0. </span>
+<span class="co"># NOTE: should add na.rm argument to summarizeByPolygon() so we can </span>
+<span class="co"># NOTE: use dailyMax$pm25 directly in the function. This step will bring down </span>
+<span class="co"># NOTE: the average value which is NOT GOOD </span>
+<span class="va">stateSPDF</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span><span class="op">(</span><span class="va">USCensusStates_02</span>, <span class="va">stateCode</span> <span class="op">%in%</span> <span class="va">stateCodeList</span><span class="op">)</span>
+
+<span class="va">newValueVector</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/replace.html">replace</a></span><span class="op">(</span><span class="va">dailyMax</span><span class="op">$</span><span class="va">pm25</span>, <span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">dailyMax</span><span class="op">$</span><span class="va">pm25</span><span class="op">)</span>, <span class="fl">0</span><span class="op">)</span>
+
+<span class="co"># Summarize by State</span>
+<span class="va">stateSummarizedDF</span> <span class="op">&lt;-</span> <span class="fu">MazamaSpatialUtils</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/MazamaSpatialUtils/man/summarizeByPolygon.html">summarizeByPolygon</a></span><span class="op">(</span>
+  longitude <span class="op">=</span> <span class="va">dailyMax</span><span class="op">$</span><span class="va">longitude</span>,
+  latitude <span class="op">=</span> <span class="va">dailyMax</span><span class="op">$</span><span class="va">latitude</span>,
+  value <span class="op">=</span> <span class="va">newValueVector</span>, 
+  SPDF <span class="op">=</span> <span class="va">stateSPDF</span>,
+  useBuffering <span class="op">=</span> <span class="cn">TRUE</span>,
+  FUN <span class="op">=</span> <span class="va">mean</span>
+<span class="op">)</span>
+
+<span class="co"># add summarized values to stateSPDF@data</span>
+<span class="va">stateSPDF</span><span class="op">@</span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">stateSPDF</span><span class="op">@</span><span class="va">data</span> <span class="op">%&gt;%</span>
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">stateSummarizedDF</span>, by <span class="op">=</span> <span class="st">"polygonID"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>avgPM25 <span class="op">=</span> <span class="va">summaryValue</span><span class="op">)</span>
+
+<span class="co">#createMap</span>
+<span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">stateSPDF</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_polygons</a></span><span class="op">(</span>
+    col <span class="op">=</span> <span class="st">"avgPM25"</span>,
+    breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">13</span>, <span class="fl">2</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">15</span>, <span class="fl">70</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span>,
+    border.col <span class="op">=</span> <span class="st">"black"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_layout.html">tm_layout</a></span><span class="op">(</span>
+    main.title <span class="op">=</span> <span class="st">"Latest Average Daily Max Monitor Reading"</span>,
+    main.title.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"center"</span>, <span class="st">"top"</span><span class="op">)</span>,
+    bg.color <span class="op">=</span> <span class="st">"deepskyblue4"</span>,
+    attr.color <span class="op">=</span> <span class="st">"white"</span>,
+    legend.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"right"</span>, <span class="st">"bottom"</span><span class="op">)</span>
+  <span class="op">)</span></code></pre></div>
 <p><img src="Working_with_Locations_files/figure-html/plot_summarized-1.png" width="700"></p>
 </div>
 <div id="sprinkle-points-on-summarized-value-maps" class="section level2">
@@ -271,68 +277,70 @@
 <a href="#sprinkle-points-on-summarized-value-maps" class="anchor"></a>Sprinkle Points on Summarized Value Maps</h2>
 <p>In this section, we use both the state-level and monitor-level SPDFs to create a map with states colored by average air quality and monitor location points colored and sized by the maximum daily average PM2.5 concentrations</p>
 <p>In the example below <code><a href="../../reference/stateMap.html">MazamaSpatialPlots::stateMap()</a></code> is used for the state-level map and colors. It is appended by <strong>tmap</strong> functions to overlay the monitor location points.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="co">#subset SPDFs</span></a>
-<a class="sourceLine" id="cb6-2" data-line-number="2">selectedStateCodeList &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">'ME'</span>, <span class="st">'NH'</span>, <span class="st">'VT'</span>, <span class="st">'MA'</span>, <span class="st">'RI'</span>, <span class="st">'CT'</span>)</a>
-<a class="sourceLine" id="cb6-3" data-line-number="3">selectedStateSPDF &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/subset.html">subset</a></span>(stateSPDF, stateCode <span class="op">%in%</span><span class="st"> </span>selectedStateCodeList)</a>
-<a class="sourceLine" id="cb6-4" data-line-number="4">selectedMonitorSPDF &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/subset.html">subset</a></span>(monitorSPDF, stateCode <span class="op">%in%</span><span class="st"> </span>selectedStateCodeList)</a>
-<a class="sourceLine" id="cb6-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb6-6" data-line-number="6"><span class="co"># Now use different size markers since all are AIRNOW in new england</span></a>
-<a class="sourceLine" id="cb6-7" data-line-number="7"><span class="kw"><a href="../../reference/stateMap.html">stateMap</a></span>(</a>
-<a class="sourceLine" id="cb6-8" data-line-number="8">  <span class="dt">data =</span> selectedStateSPDF<span class="op">@</span>data,</a>
-<a class="sourceLine" id="cb6-9" data-line-number="9">  <span class="dt">parameter =</span> <span class="st">"avgPM25"</span>, <span class="co"># color states by average PM Value</span></a>
-<a class="sourceLine" id="cb6-10" data-line-number="10">  <span class="dt">stateCode =</span> selectedStateCodeList,</a>
-<a class="sourceLine" id="cb6-11" data-line-number="11">  <span class="dt">stateBorderColor =</span> <span class="st">'white'</span>, </a>
-<a class="sourceLine" id="cb6-12" data-line-number="12">  <span class="dt">breaks =</span> <span class="kw"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="dv">1</span>, <span class="dv">20</span>, <span class="dv">2</span>),</a>
-<a class="sourceLine" id="cb6-13" data-line-number="13">) <span class="op">+</span></a>
-<a class="sourceLine" id="cb6-14" data-line-number="14"><span class="st">  </span>tmap<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span>(selectedMonitorSPDF) <span class="op">+</span><span class="st">  </span><span class="co"># plot points of each monitor location with color </span></a>
-<a class="sourceLine" id="cb6-15" data-line-number="15"><span class="st">  </span>tmap<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/tmap/man/tm_symbols.html">tm_bubbles</a></span>(          <span class="co"># and size based on PM value reading of the monitor</span></a>
-<a class="sourceLine" id="cb6-16" data-line-number="16">    <span class="dt">size =</span> <span class="st">"pm25"</span>,</a>
-<a class="sourceLine" id="cb6-17" data-line-number="17">    <span class="dt">col =</span> <span class="st">"pm25"</span>, </a>
-<a class="sourceLine" id="cb6-18" data-line-number="18">    <span class="dt">border.col =</span> <span class="st">'black'</span>,</a>
-<a class="sourceLine" id="cb6-19" data-line-number="19">    <span class="dt">breaks =</span> <span class="kw"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="dv">1</span>, <span class="dv">20</span>, <span class="dv">2</span>),</a>
-<a class="sourceLine" id="cb6-20" data-line-number="20">    <span class="dt">scale =</span> <span class="fl">.9</span>,</a>
-<a class="sourceLine" id="cb6-21" data-line-number="21">    <span class="dt">legend.size.show =</span> F,</a>
-<a class="sourceLine" id="cb6-22" data-line-number="22">    <span class="dt">legend.col.show =</span> F</a>
-<a class="sourceLine" id="cb6-23" data-line-number="23">    ) <span class="op">+</span></a>
-<a class="sourceLine" id="cb6-24" data-line-number="24"><span class="st">  </span>tmap<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/tmap/man/tm_layout.html">tm_layout</a></span>(</a>
-<a class="sourceLine" id="cb6-25" data-line-number="25">    <span class="dt">main.title =</span> <span class="st">'Air Quality in New England'</span>,</a>
-<a class="sourceLine" id="cb6-26" data-line-number="26">    <span class="dt">main.title.size =</span> <span class="fl">1.1</span>,</a>
-<a class="sourceLine" id="cb6-27" data-line-number="27">    <span class="dt">fontfamily =</span> <span class="st">"serif"</span>,</a>
-<a class="sourceLine" id="cb6-28" data-line-number="28">    <span class="dt">bg.color =</span> <span class="st">"lightblue3"</span>,</a>
-<a class="sourceLine" id="cb6-29" data-line-number="29">  )</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">#subset SPDFs</span>
+<span class="va">selectedStateCodeList</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'ME'</span>, <span class="st">'NH'</span>, <span class="st">'VT'</span>, <span class="st">'MA'</span>, <span class="st">'RI'</span>, <span class="st">'CT'</span><span class="op">)</span>
+<span class="va">selectedStateSPDF</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span><span class="op">(</span><span class="va">stateSPDF</span>, <span class="va">stateCode</span> <span class="op">%in%</span> <span class="va">selectedStateCodeList</span><span class="op">)</span>
+<span class="va">selectedMonitorSPDF</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span><span class="op">(</span><span class="va">monitorSPDF</span>, <span class="va">stateCode</span> <span class="op">%in%</span> <span class="va">selectedStateCodeList</span><span class="op">)</span>
+
+<span class="co"># Now use different size markers since all are AIRNOW in new england</span>
+<span class="fu"><a href="../../reference/stateMap.html">stateMap</a></span><span class="op">(</span>
+  data <span class="op">=</span> <span class="va">selectedStateSPDF</span><span class="op">@</span><span class="va">data</span>,
+  parameter <span class="op">=</span> <span class="st">"avgPM25"</span>, <span class="co"># color states by average PM Value</span>
+  stateCode <span class="op">=</span> <span class="va">selectedStateCodeList</span>,
+  stateBorderColor <span class="op">=</span> <span class="st">'white'</span>, 
+  breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">20</span>, <span class="fl">2</span><span class="op">)</span>,
+<span class="op">)</span> <span class="op">+</span>
+  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">selectedMonitorSPDF</span><span class="op">)</span> <span class="op">+</span>  <span class="co"># plot points of each monitor location with color </span>
+  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_symbols.html">tm_bubbles</a></span><span class="op">(</span>          <span class="co"># and size based on PM value reading of the monitor</span>
+    size <span class="op">=</span> <span class="st">"pm25"</span>,
+    col <span class="op">=</span> <span class="st">"pm25"</span>, 
+    border.col <span class="op">=</span> <span class="st">'black'</span>,
+    breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">20</span>, <span class="fl">2</span><span class="op">)</span>,
+    scale <span class="op">=</span> <span class="fl">.9</span>,
+    legend.size.show <span class="op">=</span> <span class="cn">F</span>,
+    legend.col.show <span class="op">=</span> <span class="cn">F</span>
+    <span class="op">)</span> <span class="op">+</span>
+  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_layout.html">tm_layout</a></span><span class="op">(</span>
+    main.title <span class="op">=</span> <span class="st">'Air Quality in New England'</span>,
+    main.title.size <span class="op">=</span> <span class="fl">1.1</span>,
+    fontfamily <span class="op">=</span> <span class="st">"serif"</span>,
+    bg.color <span class="op">=</span> <span class="st">"lightblue3"</span>,
+  <span class="op">)</span></code></pre></div>
 <p><img src="Working_with_Locations_files/figure-html/plot_summarized_points-1.png" width="700"></p>
 <p>This next example only uses <strong>tmap</strong> functions. The <code>tm_symbols()</code> function is used to plot the monitor locations so the point shapes can be specified.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="co">#subset SPDFs</span></a>
-<a class="sourceLine" id="cb7-2" data-line-number="2">selectedStateCodeList &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"CA"</span>, <span class="st">"OR"</span>, <span class="st">"WA"</span>, <span class="st">"NV"</span>, <span class="st">"ID"</span>, <span class="st">"UT"</span>, <span class="st">"AZ"</span>)</a>
-<a class="sourceLine" id="cb7-3" data-line-number="3">selectedStateSPDF &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/subset.html">subset</a></span>(stateSPDF, stateCode <span class="op">%in%</span><span class="st"> </span>selectedStateCodeList)</a>
-<a class="sourceLine" id="cb7-4" data-line-number="4">selectedMonitorSPDF &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/subset.html">subset</a></span>(monitorSPDF, stateCode <span class="op">%in%</span><span class="st"> </span>selectedStateCodeList)</a>
-<a class="sourceLine" id="cb7-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="co"># can also do it with just tmap</span></a>
-<a class="sourceLine" id="cb7-7" data-line-number="7">tmap<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span>(selectedStateSPDF) <span class="op">+</span></a>
-<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="st">  </span>tmap<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_polygons</a></span>(</a>
-<a class="sourceLine" id="cb7-9" data-line-number="9">    <span class="dt">col =</span> <span class="st">"avgPM25"</span>, </a>
-<a class="sourceLine" id="cb7-10" data-line-number="10">    <span class="dt">palette =</span> <span class="st">"YlOrBr"</span>,</a>
-<a class="sourceLine" id="cb7-11" data-line-number="11">    <span class="dt">border.col =</span> <span class="st">"black"</span>,</a>
-<a class="sourceLine" id="cb7-12" data-line-number="12">    <span class="dt">breaks =</span> <span class="kw"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="dv">0</span>, <span class="dv">50</span>, <span class="dv">5</span>),</a>
-<a class="sourceLine" id="cb7-13" data-line-number="13">    <span class="dt">legend.show =</span> <span class="ot">FALSE</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb7-14" data-line-number="14"><span class="st">  </span>tmap<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span>(selectedMonitorSPDF) <span class="op">+</span><span class="st">  </span><span class="co"># plot points of each monitor location with color </span></a>
-<a class="sourceLine" id="cb7-15" data-line-number="15"><span class="st">  </span>tmap<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/tmap/man/tm_symbols.html">tm_symbols</a></span>(          <span class="co"># and size based on PM value reading of the monitor</span></a>
-<a class="sourceLine" id="cb7-16" data-line-number="16">    <span class="dt">col =</span> <span class="st">"pm25"</span>,</a>
-<a class="sourceLine" id="cb7-17" data-line-number="17">    <span class="dt">palette =</span> <span class="st">"YlOrBr"</span>,</a>
-<a class="sourceLine" id="cb7-18" data-line-number="18">    <span class="dt">breaks =</span> <span class="kw"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="dv">0</span>, <span class="dv">50</span>, <span class="dv">5</span>),</a>
-<a class="sourceLine" id="cb7-19" data-line-number="19">    <span class="dt">shape =</span> <span class="st">"plotDataSource"</span>,</a>
-<a class="sourceLine" id="cb7-20" data-line-number="20">    <span class="dt">shapes =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">21</span>, <span class="dv">24</span>),</a>
-<a class="sourceLine" id="cb7-21" data-line-number="21">    <span class="dt">scale =</span> <span class="fl">.6</span></a>
-<a class="sourceLine" id="cb7-22" data-line-number="22">  ) <span class="op">+</span></a>
-<a class="sourceLine" id="cb7-23" data-line-number="23"><span class="st">  </span>tmap<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/tmap/man/tm_layout.html">tm_layout</a></span>(</a>
-<a class="sourceLine" id="cb7-24" data-line-number="24">    <span class="dt">main.title =</span> <span class="st">"Air Quality in Western U.S. States"</span>,</a>
-<a class="sourceLine" id="cb7-25" data-line-number="25">    <span class="dt">main.title.position =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"left"</span>, <span class="st">"top"</span>),</a>
-<a class="sourceLine" id="cb7-26" data-line-number="26">    <span class="dt">main.title.size =</span> <span class="fl">1.1</span>,</a>
-<a class="sourceLine" id="cb7-27" data-line-number="27">    <span class="dt">fontfamily =</span> <span class="st">"serif"</span>,</a>
-<a class="sourceLine" id="cb7-28" data-line-number="28">    <span class="dt">legend.outside =</span> T,</a>
-<a class="sourceLine" id="cb7-29" data-line-number="29">    <span class="dt">bg.color =</span> <span class="st">"lightblue3"</span>, </a>
-<a class="sourceLine" id="cb7-30" data-line-number="30">    <span class="dt">inner.margins =</span> <span class="fl">.1</span>,</a>
-<a class="sourceLine" id="cb7-31" data-line-number="31">  )</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">#subset SPDFs</span>
+<span class="va">selectedStateCodeList</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"CA"</span>, <span class="st">"OR"</span>, <span class="st">"WA"</span>, <span class="st">"NV"</span>, <span class="st">"ID"</span>, <span class="st">"UT"</span>, <span class="st">"AZ"</span><span class="op">)</span>
+<span class="va">selectedStateSPDF</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span><span class="op">(</span><span class="va">stateSPDF</span>, <span class="va">stateCode</span> <span class="op">%in%</span> <span class="va">selectedStateCodeList</span><span class="op">)</span>
+<span class="va">selectedMonitorSPDF</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span><span class="op">(</span><span class="va">monitorSPDF</span>, <span class="va">stateCode</span> <span class="op">%in%</span> <span class="va">selectedStateCodeList</span><span class="op">)</span>
+
+<span class="co"># can also do it with just tmap</span>
+<span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">selectedStateSPDF</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_polygons.html">tm_polygons</a></span><span class="op">(</span>
+    col <span class="op">=</span> <span class="st">"avgPM25"</span>, 
+    palette <span class="op">=</span> <span class="st">"YlOrBr"</span>,
+    border.col <span class="op">=</span> <span class="st">"black"</span>,
+    breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">50</span>, <span class="fl">5</span><span class="op">)</span>,
+    legend.show <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_shape.html">tm_shape</a></span><span class="op">(</span><span class="va">selectedMonitorSPDF</span><span class="op">)</span> <span class="op">+</span>  <span class="co"># plot points of each monitor location with color </span>
+  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_symbols.html">tm_symbols</a></span><span class="op">(</span>          <span class="co"># and size based on PM value reading of the monitor</span>
+    col <span class="op">=</span> <span class="st">"pm25"</span>,
+    palette <span class="op">=</span> <span class="st">"YlOrBr"</span>,
+    breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">50</span>, <span class="fl">5</span><span class="op">)</span>,
+    shape <span class="op">=</span> <span class="st">"plotDataSource"</span>,
+    shapes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">21</span>, <span class="fl">24</span><span class="op">)</span>,
+    scale <span class="op">=</span> <span class="fl">.6</span>
+  <span class="op">)</span> <span class="op">+</span>
+  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_layout.html">tm_layout</a></span><span class="op">(</span>
+    main.title <span class="op">=</span> <span class="st">"Air Quality in Western U.S. States"</span>,
+    main.title.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"left"</span>, <span class="st">"top"</span><span class="op">)</span>,
+    main.title.size <span class="op">=</span> <span class="fl">1.1</span>,
+    fontfamily <span class="op">=</span> <span class="st">"serif"</span>,
+    legend.outside <span class="op">=</span> <span class="cn">T</span>,
+    bg.color <span class="op">=</span> <span class="st">"lightblue3"</span>, 
+    inner.margins <span class="op">=</span> <span class="fl">.1</span>,
+  <span class="op">)</span></code></pre></div>
 <p><img src="Working_with_Locations_files/figure-html/plot_summarized_points2-1.png" width="700"></p>
 </div>
 <div id="conclusion" class="section level2">
@@ -342,22 +350,11 @@
 </div>
   </div>
 
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
 
-        <div id="tocnav">
-      <h2 class="hasAnchor">
-<a href="#tocnav" class="anchor"></a>Contents</h2>
-      <ul class="nav nav-pills nav-stacked">
-<li><a href="#objective">Objective</a></li>
-      <li><a href="#prepare-monitor-data">Prepare Monitor Data</a></li>
-      <li><a href="#plot-monitor-locations">Plot Monitor Locations</a></li>
-      <li><a href="#plot-monitor-values">Plot Monitor Values</a></li>
-      <li><a href="#plot-polygon-summarized-values">Plot Polygon Summarized Values</a></li>
-      <li><a href="#sprinkle-points-on-summarized-value-maps">Sprinkle Points on Summarized Value Maps</a></li>
-      <li><a href="#conclusion">Conclusion</a></li>
-      </ul>
+        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
+    </nav>
 </div>
-      </div>
 
 </div>
 
@@ -368,7 +365,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
