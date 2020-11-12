@@ -30,7 +30,9 @@
 #' @param stateCode Vector of state codes to include on the map.
 #' @param projection Specified method to represent surface of Earth.
 #' @param stateBorderColor Color used for state borders.
-#' @param title Text string to use as the plot title.
+#' @param title Vector of text strings to use as individual plot titles. 
+#' This must be the same length as 'parameter'.
+#' @param main.title Text string to use as an overall title for all plots.
 #' @return A ggplot object.
 #' 
 #' @rdname stateMap
@@ -44,7 +46,7 @@
 #'   parameter = "obesityRate", 
 #'   palette = "BuPu",
 #'   stateBorderColor = "white",
-#'   title = "2018 Obesity by State"
+#'   main.title = "2018 Obesity by State"
 #' )
 #' 
 #' # Example of customization using tm_layout and breaks parameter
@@ -99,7 +101,8 @@ stateMap <- function(
   stateCode = NULL,
   projection = NULL,
   stateBorderColor = "gray50",
-  title = NULL
+  title = NULL,
+  main.title = NULL
 ) {
   
   # ----- Validate parameters --------------------------------------------------
@@ -191,6 +194,10 @@ stateMap <- function(
                   "projection string."))
     }
   }
+  
+  # Validate length of 'parameter' and 'title'
+  if ( !is.null(title) && length(parameter) != length(title) )
+    stop("The lengths of 'parameter' and 'title' must be equal.")
   
   # ----- Subset the SPDF ------------------------------------------------------
   
@@ -292,9 +299,11 @@ stateMap <- function(
       border.col = stateBorderColor
     ) +
     tmap::tm_layout(
-      main.title = title,
+      main.title = main.title,
+      title = title,
       main.title.size = .9,
       main.title.position = c("center", "top"),
+      title.position = c("center", 'top'),
       frame = FALSE
     )
   
