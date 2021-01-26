@@ -1,20 +1,23 @@
-# ----------- Test with dataframe with "state name" variable ----------- 
+# ----------- Test with dataframe with "stateName" variable -----------
 
 # load a dataframe
 URL <- "https://www.patriotsoftware.com/blog/accounting/average-cost-living-by-state/"
-livingCostData <- MazamaCoreUtils::html_getTable(URL)
+livingCostData <- MazamaCoreUtils::html_getTable(URL, header = TRUE)
 
-# prepare dataframe with "state name" but not "stateCode" variable
+# prepare dataframe with "stateName" but not "stateCode" variable
 livingCostData <- livingCostData %>%
   dplyr::mutate(
-    'state name' = .data$"State",
+    'stateName' = .data$"State",
     avgAnnualWage = as.numeric(gsub('[$,]', '', .data$"Annual Mean Wage (All Occupations)")),
     avgMonthlyRent = as.numeric(gsub('[$,]', '', .data$"Median Monthly Rent")),
     rentWagePercent = 100*12*avgMonthlyRent/avgAnnualWage,
     .keep = "none"
-  ) 
+  ) %>%
+  dplyr::mutate(
+    stateCode = MazamaSpatialUtils::US_stateNameToCode(.data$stateName)
+  )
 
-# check to make sure "state name" is included but not "stateCode" 
+# check to make sure "stateName" is included but not "stateCode"
 head(livingCostData)
 
 # make sure stateMap works
@@ -24,24 +27,24 @@ stateMap(
   parameter = 'rentWagePercent',
 )
 
-# make sure error is there without "state name" or "stateCode"
+# make sure error is there without "stateName" or "stateCode"
 stateMap(
-  data = livingCostData[, -which(names(livingCostData) %in% "state name")],
+  data = livingCostData[, -which(names(livingCostData) %in% "stateName")],
   state_SPDF = USCensusStates_02,
   parameter = 'rentWagePercent'
 )
 
-#  ----------- Test with SPDF with "state name" variable ----------- 
+#  ----------- Test with SPDF with "stateName" variable -----------
 
 # load SPDF
 SPDF <- USCensusStates_02
 
-# prepare SPDF data with "state name" but not "stateCode" variable
+# prepare SPDF data with "stateName" but not "stateCode" variable
 SPDF@data <- SPDF@data %>%
-  dplyr::mutate('state name' = .data$stateName, .keep = "unused") %>%
+  dplyr::mutate('stateName' = .data$stateName, .keep = "unused") %>%
   dplyr::select(c(-stateCode))
 
-# check to make sure "state name" is included but not "stateCode"
+# check to make sure "stateName" is included but not "stateCode"
 head(SPDF@data)
 
 # make sure stateMap works
@@ -51,12 +54,12 @@ stateMap(
   parameter = 'rentWagePercent'
 )
 
-# make sure error is there without "state name" or "stateCode"
+# make sure error is there without "stateName" or "stateCode"
 stateMap(
   data = livingCostData,
   state_SPDF = subset(
-    SPDF, 
-    select = -which(names(SPDF@data) %in% "state name")
+    SPDF,
+    select = -which(names(SPDF@data) %in% "stateName")
     ),
   parameter = 'rentWagePercent'
 )
