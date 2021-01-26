@@ -26,20 +26,20 @@ must contain a column named \code{countyFIPS} with the 5-digit FIPS code.}
 \item{parameter}{Name of the column in \code{data} to use for
 coloring the map.}
 
-\item{state_SPDF}{SpatialPolygonsDataFrame with US states. It's data 
+\item{state_SPDF}{SpatialPolygonsDataFrame with US states. It's data
 \code{@slot} must contain a column named \code{stateCode} if either
 \code{conusOnly = TRUE} or the \code{stateCode} argument is specified.}
 
-\item{county_SPDF}{SpatialPolygonsDataFrame with US counties. It's data 
+\item{county_SPDF}{SpatialPolygonsDataFrame with US counties. It's data
 \code{@slot} must always contain a column named and \code{countyFIPS} and a
-column named \code{stateCode} if either \code{conusOnly = TRUE} or the 
+column named \code{stateCode} if either \code{conusOnly = TRUE} or the
 \code{stateCode} argument is specified.}
 
 \item{palette}{Palette name or a vector of colors based on RColorBrewer.}
 
 \item{breaks}{Numeric vector of break points.}
 
-\item{conusOnly}{Logical specifying Continental US state codes. Ignored when 
+\item{conusOnly}{Logical specifying Continental US state codes. Ignored when
 the \code{stateCode} argument is specified.}
 
 \item{stateCode}{Vector of state codes to include on the map.}
@@ -73,7 +73,7 @@ the following parameters:
 library(MazamaSpatialPlots)
 
 countyMap(
-  data = example_US_countyCovid, 
+  data = example_US_countyCovid,
   parameter = "cases",
   breaks = c(0,100,200,500,1000,2000,5000,10000,20000,50000,1e6),
   title = "COVID-19 Cases by County \n as of June 01 2020"
@@ -88,7 +88,7 @@ countyMap(
   breaks = c(0, 1, 50, 100, 250, 500, 1000, 2500, 3000),
   stateCode = c( "NY", "PA", "MD", "NJ", "DE"),
   stateBorderColor = "black",
-  countyBorderColor = 'grey70', 
+  countyBorderColor = 'grey70',
   title = "COVID-19 Deaths* in the Mid Atlantic"
 ) +
   tmap::tm_layout(

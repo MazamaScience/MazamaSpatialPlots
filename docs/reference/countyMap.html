@@ -73,7 +73,7 @@ county level. Input consists of a dataframe with countyFIPS identifiers." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MazamaSpatialPlots</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
       </span>
     </div>
 
@@ -103,6 +103,9 @@ county level. Input consists of a dataframe with countyFIPS identifiers." />
     </li>
     <li>
       <a href="../articles/articles/Working_with_Locations.html">Working with Locations</a>
+    </li>
+    <li>
+      <a href="../articles/articles/stateMap_examples.html">Creating State Maps</a>
     </li>
   </ul>
 </li>
@@ -170,15 +173,15 @@ coloring the map.</p></td>
     </tr>
     <tr>
       <th>state_SPDF</th>
-      <td><p>SpatialPolygonsDataFrame with US states. It's data 
+      <td><p>SpatialPolygonsDataFrame with US states. It's data
 <code>@slot</code> must contain a column named <code>stateCode</code> if either
 <code>conusOnly = TRUE</code> or the <code>stateCode</code> argument is specified.</p></td>
     </tr>
     <tr>
       <th>county_SPDF</th>
-      <td><p>SpatialPolygonsDataFrame with US counties. It's data 
+      <td><p>SpatialPolygonsDataFrame with US counties. It's data
 <code>@slot</code> must always contain a column named and <code>countyFIPS</code> and a
-column named <code>stateCode</code> if either <code>conusOnly = TRUE</code> or the 
+column named <code>stateCode</code> if either <code>conusOnly = TRUE</code> or the
 <code>stateCode</code> argument is specified.</p></td>
     </tr>
     <tr>
@@ -191,7 +194,7 @@ column named <code>stateCode</code> if either <code>conusOnly = TRUE</code> or t
     </tr>
     <tr>
       <th>conusOnly</th>
-      <td><p>Logical specifying Continental US state codes. Ignored when 
+      <td><p>Logical specifying Continental US state codes. Ignored when
 the <code>stateCode</code> argument is specified.</p></td>
     </tr>
     <tr>
@@ -234,7 +237,7 @@ the following parameters:</p>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/MazamaScience/MazamaSpatialPlots'>MazamaSpatialPlots</a></span><span class='op'>)</span>
 
 <span class='fu'>countyMap</span><span class='op'>(</span>
-  data <span class='op'>=</span> <span class='va'>example_US_countyCovid</span>, 
+  data <span class='op'>=</span> <span class='va'>example_US_countyCovid</span>,
   parameter <span class='op'>=</span> <span class='st'>"cases"</span>,
   breaks <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>,<span class='fl'>100</span>,<span class='fl'>200</span>,<span class='fl'>500</span>,<span class='fl'>1000</span>,<span class='fl'>2000</span>,<span class='fl'>5000</span>,<span class='fl'>10000</span>,<span class='fl'>20000</span>,<span class='fl'>50000</span>,<span class='fl'>1e6</span><span class='op'>)</span>,
   title <span class='op'>=</span> <span class='st'>"COVID-19 Cases by County \n as of June 01 2020"</span>
@@ -249,7 +252,7 @@ the following parameters:</p>
   breaks <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>50</span>, <span class='fl'>100</span>, <span class='fl'>250</span>, <span class='fl'>500</span>, <span class='fl'>1000</span>, <span class='fl'>2500</span>, <span class='fl'>3000</span><span class='op'>)</span>,
   stateCode <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span> <span class='st'>"NY"</span>, <span class='st'>"PA"</span>, <span class='st'>"MD"</span>, <span class='st'>"NJ"</span>, <span class='st'>"DE"</span><span class='op'>)</span>,
   stateBorderColor <span class='op'>=</span> <span class='st'>"black"</span>,
-  countyBorderColor <span class='op'>=</span> <span class='st'>'grey70'</span>, 
+  countyBorderColor <span class='op'>=</span> <span class='st'>'grey70'</span>,
   title <span class='op'>=</span> <span class='st'>"COVID-19 Deaths* in the Mid Atlantic"</span>
 <span class='op'>)</span> <span class='op'>+</span>
   <span class='fu'>tmap</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/tmap/man/tm_layout.html'>tm_layout</a></span><span class='op'>(</span>
@@ -273,7 +276,7 @@ the following parameters:</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Jonathan Callahan, Tina Chen.</p>
+  <p>Developed by Jonathan Callahan, Rachel Carroll, Eli Grosman.</p>
 </div>
 
 <div class="pkgdown">

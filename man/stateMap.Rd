@@ -24,15 +24,15 @@ must contain a column named \code{stateCode} with the 2-character state code.}
 
 \item{parameter}{Name of the column in \code{data} to use for coloring the map.}
 
-\item{state_SPDF}{SpatialPolygonsDataFrame with US states. It's data 
-\code{@slot} must contain a column named \code{stateCode} with the 
+\item{state_SPDF}{SpatialPolygonsDataFrame with US states. It's data
+\code{@slot} must contain a column named \code{stateCode} with the
 2-character state code.}
 
 \item{palette}{Palette name or a vector of colors based on RColorBrewer.}
 
 \item{breaks}{Numeric vector of break points.}
 
-\item{conusOnly}{Logical specifying Continental US state codes. Ignored when 
+\item{conusOnly}{Logical specifying Continental US state codes. Ignored when
 the \code{stateCode} argument is specified.}
 
 \item{stateCode}{Vector of state codes to include on the map.}
@@ -41,7 +41,7 @@ the \code{stateCode} argument is specified.}
 
 \item{stateBorderColor}{Color used for state borders.}
 
-\item{title}{Vector of text strings to use as individual plot titles. 
+\item{title}{Vector of text strings to use as individual plot titles.
 This must be the same length as 'parameter'.}
 
 \item{main.title}{Text string to use as an overall title for all plots.}
@@ -54,10 +54,10 @@ Uses the \pkg{tmap} package to generate a thematic map at the
 state level. Input consists of a dataframe with \code{stateCode} identifiers.
 
 Data to plot is specified with \code{parameter} argument. If \code{parameter}
-is mult-valued, mutliple plots will be generated and displayed in a 
+is mult-valued, mutliple plots will be generated and displayed in a
 "small multiples" matrix.
 
-The returned object is a \pkg{tmap} ggplot object which can be further 
+The returned object is a \pkg{tmap} ggplot object which can be further
 modified with ggplot options.
 }
 \details{
@@ -74,34 +74,34 @@ the following parameters:
 library(MazamaSpatialPlots)
 
 stateMap(
-  data = example_US_stateObesity, 
-  parameter = "obesityRate", 
+  data = example_US_stateObesity,
+  parameter = "obesityRate",
   palette = "BuPu",
   stateBorderColor = "white",
-  title = "2018 Obesity by State"
+  main.title = "2018 Obesity by State"
 )
 
 # Example of customization using tm_layout and breaks parameter
 stateMap(
-  data = example_US_stateObesity, 
-  parameter = "obesityRate", 
-  breaks = seq(20,38,3), 
+  data = example_US_stateObesity,
+  parameter = "obesityRate",
+  breaks = seq(20,38,3),
   stateBorderColor = 'black'
 ) +
   tmap::tm_layout(
     frame = TRUE,
     frame.double.line = TRUE,
     main.title = 'Obesity Rate by State',
-    main.title.position = c("center", "top"), 
+    main.title.position = c("center", "top"),
     fontfamily = "serif",
-    bg.color = "grey85", 
+    bg.color = "grey85",
     inner.margins  = .05
   )
 
 # Example using stateCode
 stateMap(
-  data = example_US_stateObesity, 
-  parameter = "obesityRate", 
+  data = example_US_stateObesity,
+  parameter = "obesityRate",
   stateCode = c('ME', 'NH', 'VT', 'MA', 'RI', 'CT'),
   stateBorderColor = 'black',
   title = 'Obesity Rates in New England'
@@ -112,7 +112,7 @@ stateMap(
     title.size = 1.2,
     title.fontface = 2,
     fontfamily = "serif",
-    bg.color = "grey85", 
+    bg.color = "grey85",
     inner.margins  = .08
   )
 }

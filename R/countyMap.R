@@ -1,50 +1,50 @@
 #' @title County level thematic map
 #' @description Uses the \pkg{tmap} package to generate a thematic map at the
 #' county level. Input consists of a dataframe with \code{countyFIPS} identifiers.
-#' 
+#'
 #' @details See \code{tmap::tm_fill()} for a more detailed description of
 #' the following parameters:
-#' 
+#'
 #' \itemize{
 #' \item{\code{palette}}
 #' \item{\code{breaks}}
 #' }
-#' 
-#' @param data Dataframe containing values to plot. This dataframe              
+#'
+#' @param data Dataframe containing values to plot. This dataframe
 #' must contain a column named \code{countyFIPS} with the 5-digit FIPS code.
 #' @param parameter Name of the column in \code{data} to use for
 #' coloring the map.
-#' @param state_SPDF SpatialPolygonsDataFrame with US states. It's data 
+#' @param state_SPDF SpatialPolygonsDataFrame with US states. It's data
 #' \code{@slot} must contain a column named \code{stateCode} if either
 #' \code{conusOnly = TRUE} or the \code{stateCode} argument is specified.
-#' @param county_SPDF SpatialPolygonsDataFrame with US counties. It's data 
+#' @param county_SPDF SpatialPolygonsDataFrame with US counties. It's data
 #' \code{@slot} must always contain a column named and \code{countyFIPS} and a
-#' column named \code{stateCode} if either \code{conusOnly = TRUE} or the 
+#' column named \code{stateCode} if either \code{conusOnly = TRUE} or the
 #' \code{stateCode} argument is specified.
 #' @param palette Palette name or a vector of colors based on RColorBrewer.
-#' @param breaks Numeric vector of break points. 
-#' @param conusOnly Logical specifying Continental US state codes. Ignored when 
-#' the \code{stateCode} argument is specified. 
+#' @param breaks Numeric vector of break points.
+#' @param conusOnly Logical specifying Continental US state codes. Ignored when
+#' the \code{stateCode} argument is specified.
 #' @param stateCode Vector of state codes to include on the map.
 #' @param projection Specified method to represent surface of Earth.
 #' @param stateBorderColor Color used for state borders.
 #' @param countyBorderColor Color used for county borders.
 #' @param title Text string to use as the plot title.
 #' @return A ggplot object.
-#' 
+#'
 #' @rdname countyMap
-#' 
+#'
 #' @examples
 #' \donttest{
 #' library(MazamaSpatialPlots)
 #'
 #' countyMap(
-#'   data = example_US_countyCovid, 
+#'   data = example_US_countyCovid,
 #'   parameter = "cases",
 #'   breaks = c(0,100,200,500,1000,2000,5000,10000,20000,50000,1e6),
 #'   title = "COVID-19 Cases by County \n as of June 01 2020"
 #' )
-#' 
+#'
 #' countyMap(
 #'   data = example_US_countyCovid,
 #'   parameter = "deaths",
@@ -54,7 +54,7 @@
 #'   breaks = c(0, 1, 50, 100, 250, 500, 1000, 2500, 3000),
 #'   stateCode = c( "NY", "PA", "MD", "NJ", "DE"),
 #'   stateBorderColor = "black",
-#'   countyBorderColor = 'grey70', 
+#'   countyBorderColor = 'grey70',
 #'   title = "COVID-19 Deaths* in the Mid Atlantic"
 #' ) +
 #'   tmap::tm_layout(
@@ -64,14 +64,13 @@
 #'     bg.color = "dodgerblue4"
 #'   ) +
 #'   tmap::tm_credits("*as of June 01, 2020", col = "white", position = "left")
-#' 
+#'
 #' }
-#' @export 
+#' @export
 #' @importFrom sp CRS
-#' @importFrom stringr str_length
 #' @importFrom rlang .data
 #' @importFrom tmap tm_shape tm_fill tm_polygons tm_layout
-#' 
+#'
 
 countyMap <- function(
   data = NULL,
@@ -87,34 +86,34 @@ countyMap <- function(
   countyBorderColor = "white",
   title = NULL
 ) {
-  
+
   # ----- Validate parameters --------------------------------------------------
-  
+
   MazamaCoreUtils::stopIfNull(data)
   MazamaCoreUtils::stopIfNull(parameter)
-  
+
   # Check if data exists
   if ( !exists("data") ) {
     stop("Parameter 'data' is empty.")
   }
-  
+
   # * Validate 'data' -----
-  
+
   # Does 'parameter' exist in the incoming dataframe?
   if ( !parameter %in% colnames(data) ) {
     stop(sprintf("'%s' is not found in the incoming 'data' dataframe.", parameter))
   }
-  
-  # Does 'data' have the required columns? 
+
+  # Does 'data' have the required columns?
   requiredFields <- c("countyFIPS")
   missingFields <- setdiff(requiredFields, names(data))
   if ( length(missingFields) > 0 ) {
-    stop(paste0("Missing fields in 'data': ", 
+    stop(paste0("Missing fields in 'data': ",
                 paste0(missingFields, collapse = ", ")))
   }
-  
+
   # * Validate state_SPDF -----
-  
+
   # Accept state SPDF as character string or as object
   if ( is.character(state_SPDF) ) {
     if ( exists(state_SPDF) ) {
@@ -126,21 +125,21 @@ countyMap <- function(
       ))
     }
   }
-  
-  # Does 'state_SPDF' have the required columns? 
+
+  # Does 'state_SPDF' have the required columns?
   # NOTE: state_SPDF@data does not require stateCode column if conusOnly = FALSE
   # NOTE: and stateCode argument is not specified
-  if ( conusOnly == TRUE | !is.null(stateCode) ){ 
+  if ( conusOnly == TRUE | !is.null(stateCode) ){
     requiredSPDFFields <- c("stateCode")
     missingSPDFFields <- setdiff(requiredSPDFFields, names(state_SPDF@data))
-    if ( length(missingSPDFFields) > 0 ) { 
+    if ( length(missingSPDFFields) > 0 ) {
       stop(paste0("Missing fields in 'state_SPDF': ",
                   paste0(missingSPDFFields, collapse = ", ")))
     }
   }
-  
+
   # * Validate county_SPDF -----
-  
+
   # Accept county SPDF as character string or as object
   if ( is.character(county_SPDF) ) {
     if ( exists(county_SPDF) ) {
@@ -152,32 +151,32 @@ countyMap <- function(
       ))
     }
   }
-  
-  # Does 'county_SPDF' have the required columns? 
-  if ( conusOnly == TRUE | !is.null(stateCode) ){ 
+
+  # Does 'county_SPDF' have the required columns?
+  if ( conusOnly == TRUE | !is.null(stateCode) ){
     requiredSPDFFields <- c("countyFIPS", "stateCode")
   } else {
     requiredSPDFFields <- c("countyFIPS")
   }
-  
+
   missingSPDFFields <- setdiff(requiredSPDFFields, names(county_SPDF@data))
-  if ( length(missingSPDFFields) > 0 ) { 
+  if ( length(missingSPDFFields) > 0 ) {
     stop(paste0("Missing fields in 'county_SPDF': ",
                 paste0(missingSPDFFields, collapse = ", ")))
   }
-  
+
   # * Validate other -----
-  
+
   # Validate breaks
   if ( !is.null(breaks) && !is.numeric(breaks) ) {
     stop("Parameter 'breaks' must be a numeric vector.")
   }
-  
+
   # Guarantee that conusOnly is logical
   if ( !is.logical(conusOnly) ) {
     conusOnly <- TRUE
   }
-  
+
   # Validate incoming stateCode vector if any
   if ( !is.null(stateCode) ) {
     if ( !all(stateCode %in% MazamaSpatialUtils::US_52) ) {
@@ -186,7 +185,7 @@ countyMap <- function(
                    paste0(invalidStateCodes, collapse = ", ")))
     }
   }
-  
+
   # Convert projection to a CRS object if necessary
   if ( !is.null(projection) ) {
     if ( is.character(projection) ) {
@@ -198,86 +197,86 @@ countyMap <- function(
                   "projection string."))
     }
   }
-  
+
   # ----- Subset the SPDF ---------------------------------------------------------
 
   if ( !is.null(stateCode) ) {
-    
+
     # NOTE:  Subset doesn't work properly unless we change the name here
     incomingStateCode <- stateCode
     state_SPDF <- subset(state_SPDF, state_SPDF$stateCode %in% incomingStateCode)
     county_SPDF <- subset(county_SPDF, county_SPDF$stateCode %in% incomingStateCode)
     data <- data %>% dplyr::filter(.data$stateCode %in% incomingStateCode)
-    
+
   } else if ( conusOnly ) {
-    
+
     state_SPDF <- subset(state_SPDF, state_SPDF$stateCode %in% MazamaSpatialUtils::CONUS)
     county_SPDF <- subset(county_SPDF, county_SPDF$stateCode %in% MazamaSpatialUtils::CONUS)
     data <- data %>% dplyr::filter(.data$stateCode %in% MazamaSpatialUtils::CONUS)
-    
+
   } else {
-    
+
     # use existing SPDF
-    
+
   }
-  
+
   # ----- Create a projection --------------------------------------------------
-  
-  # NOTE:  Setting the est most longitude improves plots that include Alaska by 
-  # NOTE:  assuming the east most longitude cannot be greater than -66.97626 
+
+  # NOTE:  Setting the est most longitude improves plots that include Alaska by
+  # NOTE:  assuming the east most longitude cannot be greater than -66.97626
   # NOTE:  (which is the farthest east longitude in the continental US).
   # NOTE:  This wouldn't work if someone wants to include Guam but this function
   # NOTE:  is designed primarily for CONUS.
-  
+
   if ( is.null(projection) ) {
-    
+
     # NOTE:  Specifying stateCode takes precedence over specifying conusOnly
     if ( !is.null(stateCode) ) {
-      
+
       # 1) Get boundaries from stateSPDF
       bbox <- sp::bbox(state_SPDF)
-      
+
       # 2) Calculate lat lo/mid/hi and lon mid
       lat_1 <- bbox[2]
-      lat_2 <- bbox[4] 
-      lat_0 <- (lat_1 + lat_2)/2 
+      lat_2 <- bbox[4]
+      lat_0 <- (lat_1 + lat_2)/2
       lon_1 <- bbox[1]
       lon_2 <- min(bbox[3], -66.97626) # this is the east most longitude to use
-      lon_0 <- (lon_1 + lon_2)/2 
-      
+      lon_0 <- (lon_1 + lon_2)/2
+
       # 3) Create the proj4string text
       projString <- sprintf("+proj=aea +lat_1=%.1f +lat_2=%.1f +lat_0=%.1f +lon_0=%.1f +x_0=0 +y_0=0 +datum=NAD83 +units=m +no_defs",
                             lat_1, lat_2, lat_0, lon_0)
       projection <- sp::CRS(projString)
-      
+
     } else if ( conusOnly ) {
-      
+
       projection <- sp::CRS("+proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=37.5 +lon_0=-96 +x_0=0 +y_0=0 +datum=NAD83 +units=m +no_defs")
-      
+
     } else {
-      
-      # TODO:  The 'conusOnly = FALSE' option needs to be replaced with the 
+
+      # TODO:  The 'conusOnly = FALSE' option needs to be replaced with the
       # TODO:  artifical projection that places Alaska and Hawaii in the lower
       # TODO:  left corner. Jon has seen such a projection in an example but
       # TODO:  can't remember exactly where.
-      
+
       projection <- sp::CRS("+proj=laea +lat_0=45 +lon_0=-100 +x_0=0 +y_0=0 +a=6370997 +b=6370997 +units=m +no_defs")
-      
+
     }
-    
+
   } else {
-    
+
     # Use projection found in SPDF
-    
+
   }
-  
+
   # ----- Merge data with SPDF -------------------------------------------------
-  
+
   # NOTE:  We can use left_join() because 'countyFIPS' is guaranteed to be in
   # NOTE:  both dataframes. We use "matrix style" subsetting of 'data' to
   # NOTE:  specify that we want all rows and just the columns with "countyFIPS"
   # NOTE:  and the parameter of interest.
-  
+
   # Add the incoming data$parameter to 'county_SPDF@data'.
   county_SPDF@data <-
     dplyr::left_join(
@@ -285,7 +284,7 @@ countyMap <- function(
       data[, c("countyFIPS", parameter)],
       by = "countyFIPS"
     )
-  
+
   # ----- Create plot ----------------------------------------------------------
 
   gg <-
@@ -311,25 +310,25 @@ countyMap <- function(
       main.title.position = c("center", "top"),
       frame = FALSE
     )
-  
+
   # ----- Return ---------------------------------------------------------------
-  
+
   return(gg)
-  
+
 }
 
 # ===== DEBUGGING ==============================================================
 
 if ( FALSE ) {
-  
+
   # NOTE:  Good idea to clear out the Global environment before running this.
-  
+
   library(MazamaSpatialPlots)
   mazama_initialize()
-  
+
   state_SPDF <- USCensusStates_02
   county_SPDF <- USCensusCounties_02
-  
+
   # Set up required variables so we can walk through the code
   data = example_US_countyCovid
   parameter = "cases"
@@ -341,12 +340,12 @@ if ( FALSE ) {
   stateBorderColor = "white"
   countyBorderColor = "gray90"
   title = "Covid cases by county -- June 01, 2020"
-  
+
   # Run the code above and then start walking through the lines of code in the
   # function.
   #
   # You can also source this file and run the function now
-  
+
   countyMap(
     data = data,
     parameter = parameter,
@@ -361,34 +360,34 @@ if ( FALSE ) {
     countyBorderColor = countyBorderColor,
     title = title
   )
-  
+
   ##############################################################################
   # Here is how I would use this function in real life:
-  
+
   countyMap(
-    data, 
-    parameter = "cases", 
+    data,
+    parameter = "cases",
     state_SPDF = state_SPDF,
     county_SPDF = county_SPDF
   )
-  
+
   # Not bad be, because we are plotting raw numbers rather than the rate,
   # we should probably use an exponential set of breaks.
-  
+
   countyMap(
-    data, 
-    parameter = "cases", 
+    data,
+    parameter = "cases",
     state_SPDF = state_SPDF,
     county_SPDF = county_SPDF,
     breaks = c(0,100,200,500,1000,2000,5000,10000,20000,50000,1e6)
   )
-  
+
   # A few more tweaks with manual tmap additions
   # See: ?tmap::tm_layout
-  
+
   countyMap(
-    data, 
-    parameter = "cases", 
+    data,
+    parameter = "cases",
     state_SPDF = state_SPDF,
     county_SPDF = county_SPDF,
     breaks = c(0,100,200,500,1000,2000,5000,10000,20000,50000,1e6)
@@ -398,7 +397,7 @@ if ( FALSE ) {
       title.size = 2,
       title.fontface = "bold"
     )
-  
+
   # Very nice!
-  
+
 }

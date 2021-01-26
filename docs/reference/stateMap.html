@@ -43,9 +43,9 @@
 <meta property="og:description" content="Uses the tmap package to generate a thematic map at the
 state level. Input consists of a dataframe with stateCode identifiers.
 Data to plot is specified with parameter argument. If parameter
-is mult-valued, mutliple plots will be generated and displayed in a 
+is mult-valued, mutliple plots will be generated and displayed in a
 &quot;small multiples&quot; matrix.
-The returned object is a tmap ggplot object which can be further 
+The returned object is a tmap ggplot object which can be further
 modified with ggplot options." />
 
 
@@ -78,7 +78,7 @@ modified with ggplot options." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MazamaSpatialPlots</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
       </span>
     </div>
 
@@ -108,6 +108,9 @@ modified with ggplot options." />
     </li>
     <li>
       <a href="../articles/articles/Working_with_Locations.html">Working with Locations</a>
+    </li>
+    <li>
+      <a href="../articles/articles/stateMap_examples.html">Creating State Maps</a>
     </li>
   </ul>
 </li>
@@ -144,9 +147,9 @@ modified with ggplot options." />
     <p>Uses the <span class="pkg">tmap</span> package to generate a thematic map at the
 state level. Input consists of a dataframe with <code>stateCode</code> identifiers.</p>
 <p>Data to plot is specified with <code>parameter</code> argument. If <code>parameter</code>
-is mult-valued, mutliple plots will be generated and displayed in a 
+is mult-valued, mutliple plots will be generated and displayed in a
 "small multiples" matrix.</p>
-<p>The returned object is a <span class="pkg">tmap</span> ggplot object which can be further 
+<p>The returned object is a <span class="pkg">tmap</span> ggplot object which can be further
 modified with ggplot options.</p>
     </div>
 
@@ -160,7 +163,8 @@ modified with ggplot options.</p>
   stateCode <span class='op'>=</span> <span class='cn'>NULL</span>,
   projection <span class='op'>=</span> <span class='cn'>NULL</span>,
   stateBorderColor <span class='op'>=</span> <span class='st'>"gray50"</span>,
-  title <span class='op'>=</span> <span class='cn'>NULL</span>
+  title <span class='op'>=</span> <span class='cn'>NULL</span>,
+  main.title <span class='op'>=</span> <span class='cn'>NULL</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -177,8 +181,8 @@ must contain a column named <code>stateCode</code> with the 2-character state co
     </tr>
     <tr>
       <th>state_SPDF</th>
-      <td><p>SpatialPolygonsDataFrame with US states. It's data 
-<code>@slot</code> must contain a column named <code>stateCode</code> with the 
+      <td><p>SpatialPolygonsDataFrame with US states. It's data
+<code>@slot</code> must contain a column named <code>stateCode</code> with the
 2-character state code.</p></td>
     </tr>
     <tr>
@@ -191,7 +195,7 @@ must contain a column named <code>stateCode</code> with the 2-character state co
     </tr>
     <tr>
       <th>conusOnly</th>
-      <td><p>Logical specifying Continental US state codes. Ignored when 
+      <td><p>Logical specifying Continental US state codes. Ignored when
 the <code>stateCode</code> argument is specified.</p></td>
     </tr>
     <tr>
@@ -208,7 +212,12 @@ the <code>stateCode</code> argument is specified.</p></td>
     </tr>
     <tr>
       <th>title</th>
-      <td><p>Text string to use as the plot title.</p></td>
+      <td><p>Vector of text strings to use as individual plot titles.
+This must be the same length as 'parameter'.</p></td>
+    </tr>
+    <tr>
+      <th>main.title</th>
+      <td><p>Text string to use as an overall title for all plots.</p></td>
     </tr>
     </table>
 
@@ -230,34 +239,34 @@ the following parameters:</p>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/MazamaScience/MazamaSpatialPlots'>MazamaSpatialPlots</a></span><span class='op'>)</span>
 
 <span class='fu'>stateMap</span><span class='op'>(</span>
-  data <span class='op'>=</span> <span class='va'>example_US_stateObesity</span>, 
-  parameter <span class='op'>=</span> <span class='st'>"obesityRate"</span>, 
+  data <span class='op'>=</span> <span class='va'>example_US_stateObesity</span>,
+  parameter <span class='op'>=</span> <span class='st'>"obesityRate"</span>,
   palette <span class='op'>=</span> <span class='st'>"BuPu"</span>,
   stateBorderColor <span class='op'>=</span> <span class='st'>"white"</span>,
-  title <span class='op'>=</span> <span class='st'>"2018 Obesity by State"</span>
+  main.title <span class='op'>=</span> <span class='st'>"2018 Obesity by State"</span>
 <span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='warning'>Warning: CRS object has comment, which is lost in output</span></div><div class='img'><img src='stateMap-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Example of customization using tm_layout and breaks parameter</span>
 <span class='fu'>stateMap</span><span class='op'>(</span>
-  data <span class='op'>=</span> <span class='va'>example_US_stateObesity</span>, 
-  parameter <span class='op'>=</span> <span class='st'>"obesityRate"</span>, 
-  breaks <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>20</span>,<span class='fl'>38</span>,<span class='fl'>3</span><span class='op'>)</span>, 
+  data <span class='op'>=</span> <span class='va'>example_US_stateObesity</span>,
+  parameter <span class='op'>=</span> <span class='st'>"obesityRate"</span>,
+  breaks <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>20</span>,<span class='fl'>38</span>,<span class='fl'>3</span><span class='op'>)</span>,
   stateBorderColor <span class='op'>=</span> <span class='st'>'black'</span>
 <span class='op'>)</span> <span class='op'>+</span>
   <span class='fu'>tmap</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/tmap/man/tm_layout.html'>tm_layout</a></span><span class='op'>(</span>
     frame <span class='op'>=</span> <span class='cn'>TRUE</span>,
     frame.double.line <span class='op'>=</span> <span class='cn'>TRUE</span>,
     main.title <span class='op'>=</span> <span class='st'>'Obesity Rate by State'</span>,
-    main.title.position <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"center"</span>, <span class='st'>"top"</span><span class='op'>)</span>, 
+    main.title.position <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"center"</span>, <span class='st'>"top"</span><span class='op'>)</span>,
     fontfamily <span class='op'>=</span> <span class='st'>"serif"</span>,
-    bg.color <span class='op'>=</span> <span class='st'>"grey85"</span>, 
+    bg.color <span class='op'>=</span> <span class='st'>"grey85"</span>,
     inner.margins  <span class='op'>=</span> <span class='fl'>.05</span>
   <span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='warning'>Warning: CRS object has comment, which is lost in output</span></div><div class='img'><img src='stateMap-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Example using stateCode</span>
 <span class='fu'>stateMap</span><span class='op'>(</span>
-  data <span class='op'>=</span> <span class='va'>example_US_stateObesity</span>, 
-  parameter <span class='op'>=</span> <span class='st'>"obesityRate"</span>, 
+  data <span class='op'>=</span> <span class='va'>example_US_stateObesity</span>,
+  parameter <span class='op'>=</span> <span class='st'>"obesityRate"</span>,
   stateCode <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'ME'</span>, <span class='st'>'NH'</span>, <span class='st'>'VT'</span>, <span class='st'>'MA'</span>, <span class='st'>'RI'</span>, <span class='st'>'CT'</span><span class='op'>)</span>,
   stateBorderColor <span class='op'>=</span> <span class='st'>'black'</span>,
   title <span class='op'>=</span> <span class='st'>'Obesity Rates in New England'</span>
@@ -268,7 +277,7 @@ the following parameters:</p>
     title.size <span class='op'>=</span> <span class='fl'>1.2</span>,
     title.fontface <span class='op'>=</span> <span class='fl'>2</span>,
     fontfamily <span class='op'>=</span> <span class='st'>"serif"</span>,
-    bg.color <span class='op'>=</span> <span class='st'>"grey85"</span>, 
+    bg.color <span class='op'>=</span> <span class='st'>"grey85"</span>,
     inner.margins  <span class='op'>=</span> <span class='fl'>.08</span>
   <span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='warning'>Warning: CRS object has comment, which is lost in output</span></div><div class='img'><img src='stateMap-3.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># }</span>
@@ -284,7 +293,7 @@ the following parameters:</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Jonathan Callahan, Tina Chen.</p>
+  <p>Developed by Jonathan Callahan, Rachel Carroll, Eli Grosman.</p>
 </div>
 
 <div class="pkgdown">
