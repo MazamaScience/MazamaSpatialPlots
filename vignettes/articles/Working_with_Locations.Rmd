@@ -1,5 +1,5 @@
 ---
-title: "Working with Locations"
+title: "Working with Air Quality Data"
 author: "Rachel Carroll, Mazama Science"
 date: "August 7, 2020"
 output: html_document
@@ -11,7 +11,13 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Objective
 
-The objective of this article is to demonstrate how to make detailed maps from air quality monitoring data. The **PWFSLSmoke** package is used to extract and manipulate the air quality monitoring data from AIRNOW, AIRSIS and WRCC. This data contains particulate matter 2.5 (PM2.5) concentrations at the monitor locations over time. In this demonstration, we create maps that display monitor locations, air quality statistics at monitor locations, and average air quality in a given region. 
+The objective of this article is to demonstrate how to make detailed maps from 
+air quality monitoring data. The **PWFSLSmoke** package is used to extract and 
+manipulate the air quality monitoring data from AIRNOW, AIRSIS and WRCC. This 
+data contains particulate matter 2.5 (PM2.5) concentrations at the monitor 
+locations over time. In this demonstration, we create maps that display monitor 
+locations, air quality statistics at monitor locations, and average air quality 
+in a given region. 
 
 ## Prepare Monitor Data
 
@@ -25,7 +31,13 @@ There are several functions in the **PWFSLSmoke** package that can be used to lo
   
 These functions load in the data as a _ws_monitor_ object, which contains 1) a dataframe with air quality monitor readings over time and 2) the monitor-level metadata with characteristics such as monitor locations. 
 
-In the example below, data from the past 10 days is loaded and monitor-level calculations are performed. The data can be summarized in any way deemed relevant so long as there is one measurement per monitor. This allows us to color monitor location points based on the monitor's PM2.5 value reading. To accomplish this, the data can be summarized over time or data can be extracted at a specific point in time. In this case, the former method is used to calculate the maximum daily average for each monitor. 
+In the example below, data from the past 10 days is loaded and monitor-level 
+calculations are performed. The data can be summarized in any way deemed relevant 
+so long as we end up with one measurement per monitor. This allows us to color monitor 
+location points based on the monitor's PM2.5 value reading. To accomplish this, 
+the data can be summarized over time or data can be extracted at a specific 
+point in time. In this case, the former method is used to calculate the maximum 
+daily average for each monitor. 
 
 ```{r prepdata, warning = FALSE, message = FALSE}
 
@@ -33,7 +45,7 @@ library(MazamaSpatialPlots)
 library(PWFSLSmoke)
 
 # Load data
-monitorLatestData <- PWFSLSmoke::monitor_loadLatest() #past 10 days of data, up to the current hour
+monitorLatestData <- PWFSLSmoke::monitor_loadLatest() # past 10 days of data, up to the current hour
 
 # Prepare Data: Subset and summarize based on desired information
 # calculating maximum daily average (one record per monitor)
@@ -53,11 +65,18 @@ dailyMax$pm25 <- replace(dailyMax$pm25, dailyMax$pm25 == -Inf, NA)
 
 ```
 
-Now, the _ws_monitor_ object, `monitorLatestData` and the monitor-level dataframe, `dailyMax`, can be used to create air quality maps as demonstrated in the following sections.
+Now the _ws_monitor_ object, `monitorLatestData` and the monitor-level dataframe, 
+`dailyMax`, can be used to create air quality maps as demonstrated in the 
+following sections.
 
 ## Plot Monitor Locations 
 
-To simply plot monitor locations without colors, monitor-level calculations are not yet needed. Instead, the metadata of `monitorLatestData` can be used directly. We also introduce a U.S. state Spatial Polygons Data Frame (SPDF) so the monitor locations will appear on a map of U.S. states.
+To simply plot monitor locations without colors, monitor-level calculations are 
+not yet needed. Instead, the metadata of `monitorLatestData` can be used directly. 
+We also introduce a U.S. state Spatial Polygons Data Frame (SPDF) so the monitor 
+locations will appear on a map of U.S. states.
+
+For simplicity, we won't project the data at all.
 
 ```{r monitor_locs, warning = FALSE, message = FALSE}
 
@@ -79,28 +98,38 @@ points(monitorLatestData$meta$longitude, monitorLatestData$meta$latitude)
 
 ```
 
-Another method to map monitor loactions is to use the `monitor_map()` function from **PWFSLSmoke**. In fact, this function can also color the monitor location points (by default, the maximum measurement per monitor is used to color the points). This function is very useful when taking a quick look across the continental U.S. However, the method above allows for some more flexibility in subsetting states and calculating desired monitor-level statistics.     
+Another method to map monitor loactions is to use the `monitor_map()` function 
+from **PWFSLSmoke**. In fact, this function can also color the monitor location 
+points (by default, the maximum measurement per monitor is used to color the 
+points). This function is very useful when taking a quick look across the 
+continental U.S. However, the method above allows for some more flexibility in 
+subsetting states and calculating desired monitor-level statistics.     
 
 ``` {r monitor_locs2, warning = FALSE, message = FALSE}
 # method 2 using monitor_map() from PWFSLSmoke
-PWFSLSmoke::monitor_map(monitorLatestData, 
-                        countyCol = NA,
-                        colors = 'grey50',
-                        stateCol = "black",
-                        pch = 3,
-                        stateLwd = 3)
-                        
+PWFSLSmoke::monitor_map(
+  monitorLatestData, 
+  countyCol = NA,
+  colors = 'grey50',
+  stateCol = "black",
+  pch = 3,
+  stateLwd = 3
+)
 ```                       
 
 ## Plot Monitor Values
 
-To build upon the examples above, this section shows how to plot points on a map with added visual customizations.  To create descriptive visualizations of this nature, it is a good idea to transform the locations data into a SPDF. This is because SPDFs are compatible with the **tmap** package, which allows us to create attractive maps with high flexibility.
+To build upon the examples above, this section shows how to plot points on a map 
+with added visual customizations.  To create descriptive visualizations of this 
+nature, it is a good idea to transform the locations data into a 
+_SpatialPointsDataFrame_. This is because SPDFs are compatible with the **tmap** 
+package, which allows us to create attractive maps with high flexibility.
 
 Below, monitor locations are again plotted on a plain continental U.S. map. In this example, however, **tmap** is used so the overall layout, color schemes, legend break points, and point shapes are easily specified.  Notice that AIRNOW monitors are displayed as circles and AIRSIS and WRCC monitors are triangles. This is done by simply defining the shape parameter in `tm_symbols()` with the data source column. This cannot be done using `PWFSLSmoke::monitor_map()` and would require longer messier code to create directly using `plot()` and `points()`.
 
 ```{r monitor_vals, warning = FALSE, message = FALSE}
 
-# transform monitorLatestData into a SPDF 
+# transform monitorLatestData into a SpatialPointsDataFrame 
 # TODO: make this a function called monitor_toSPDF ?????
 geojson_file <- tempfile(fileext = ".geojson")
 current_geojson <- monitor_writeCurrentStatusGeoJSON(monitorLatestData, geojson_file)
@@ -147,9 +176,17 @@ tmap::tm_shape(stateSPDF,
 
 ## Plot Polygon Summarized Values
 
-In this section `MazamaSpatialUtils::summarizeByPolygon()` is introduced. The purpose of this function is to summarize spatial data by regions defined by the polygons in a given SPDF. For example, using a U.S. state level SPDF would summarize the data by state while a U.S. county SPDF would summarize by county. The input spatial data must contain latitude, longitude, and a value to be summarized. 
+In this section `MazamaSpatialUtils::summarizeByPolygon()` is introduced. The 
+purpose of this function is to summarize spatial data by regions defined by the 
+polygons in a given SPDF. For example, using a U.S. state level SPDF would 
+summarize the data by state while a U.S. county SPDF would summarize by county. 
+The input spatial data must contain latitude, longitude, and a value to be summarized. 
 
-Below, `MazamaSpatialUtils::summarizeByPolygon()` is used with a U.S. state SPDF and the dataframe `dailyMax` (created in the "Prepare Monitor Data" section) to find average PM2.5 readings by state. These state-level values are incorporated into the state SPDF's data `@slot` so the map can be colored by the summarized values.  
+Below, `MazamaSpatialUtils::summarizeByPolygon()` is used with a U.S. state SPDF 
+and the dataframe `dailyMax` (created in the "Prepare Monitor Data" section above) 
+to find average PM2.5 readings by state. These state-level values are 
+incorporated into the state SPDF's data `@slot` so the map can be colored by the 
+summarized values.  
 
 ```{r plot_summarized, warning = FALSE, message = FALSE}
 # replacing NA with 0. 
@@ -193,9 +230,13 @@ tmap::tm_shape(stateSPDF) +
  
 ## Sprinkle Points on Summarized Value Maps
 
-In this section, we use both the state-level and monitor-level SPDFs to create a map with states colored by average air quality and monitor location points colored and sized by the maximum daily average PM2.5 concentrations
+In this section, we use both the state-level and monitor-level SPDFs to create a 
+map with states colored by average air quality and monitor location points 
+colored and sized by the maximum daily average PM2.5 concentrations
 
-In the example below `MazamaSpatialPlots::stateMap()` is used for the state-level map and colors. It is appended by **tmap** functions to overlay the monitor location points. 
+In the example below `MazamaSpatialPlots::stateMap()` is used for the state-level 
+map and colors. Various **tmap** functions are added to overlay the monitor 
+location points. 
 
 ```{r plot_summarized_points, warning = FALSE, message = FALSE}
 
@@ -231,7 +272,8 @@ stateMap(
   
 ```
 
-This next example only uses **tmap** functions. The `tm_symbols()` function is used to plot the monitor locations so the point shapes can be specified. 
+This next example only uses **tmap** functions. The `tm_symbols()` function is 
+used to plot the monitor locations so the point shapes can be specified. 
 
 ```{r plot_summarized_points2, warning = FALSE, message = FALSE}
 
@@ -266,10 +308,15 @@ tmap::tm_shape(selectedStateSPDF) +
     bg.color = "lightblue3", 
     inner.margins = .1,
   )
-
 ```
 
 ## Conclusion
 
-Using a few key functions from the Mazama spatial packages and **PWFSLSmoke** makes it easy to create detailed and descriptive maps containing both regional averages as well as spatial data point measurements. The examples in this article demonstrate one of many ways to leverage these functions. This article also demonstrates a method of working with time series data. A natural extension would be to create similar plots at incrementing points in time to identify recent air quality trends.  
+Using a few key functions from **MazamaSpatialUtls**, **MazamaSpatialPlots**
+and **PWFSLSmoke** makes it easy to create detailed and descriptive maps 
+containing both regional averages as well as spatial data point measurements. 
+The examples in this article demonstrate several ways to leverage these functions
+as well as customization capabilities from the **tmap** package.
+
+
 

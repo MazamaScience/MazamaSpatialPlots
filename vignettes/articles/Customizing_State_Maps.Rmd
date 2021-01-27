@@ -117,7 +117,7 @@ stateMap(
 
 ```
 
-### Polishing  New England regional map
+### Fancy  New England regional map
 
 ```{r tmapStyling3, warning = FALSE, message = FALSE }
   
@@ -142,8 +142,10 @@ stateMap(
 
 ## Conclusion
 
-The `stateMap()` function allows us to create attractive maps very efficiently and with a lot of flexibility. The function creates highly customized visualizations through direct inputs and by 
-harnessing the functionality of the **tmap** package. 
+The `stateMap()` function allows us to create attractive maps very efficiently 
+and with a lot of flexibility. The function creates highly customized 
+visualizations through direct inputs and by harnessing the functionality of the 
+**tmap** package. 
 
 
 

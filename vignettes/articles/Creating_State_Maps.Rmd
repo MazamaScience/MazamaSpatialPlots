@@ -12,29 +12,33 @@ knitr::opts_chunk$set(echo = TRUE)
 ## Objective
 
 The goal of this document is to introduce the `stateMap()` function in the 
-**MazamaSpatialPlots** package. Additionally, this document will provide examples to show the usage of the `stateMap()` function's additional arguments.
+**MazamaSpatialPlots** package. It demonstrates default usage and customizations
+using the `stateMap()` function's arguments.
 
 ## Default Plots
 
 The `stateMap()` function requires two forms of state-level data. First is a 
 Spatial Polygons Data Frame (SPDF) containing state level polygons. The SPDF must 
-include the variable `stateCode` in it's data `@slot`. The default SPDF is 
-"USCensusStates_02", which is contained in the package data. Higher or lower 
-resolution US Census state SPDFs can downloaded from
-http://data.mazamascience.com/MazamaSpatialUtils/Spatial_0.7/
-or generated and loaded using 
-`MazamaSpatialUtils::convertUSCensusStates()`. 
+include the variable `stateCode` in it's `@data` slot. The default SPDF is 
+"USCensusStates_02", which part of the package data. Higher or lower 
+resolution US Census state SPDFs can be installed with:
+
+```
+library(MazamaSpatialUtils)
+setSpatialDataDir('~/Data/Spatial') # default directory for spatial data
+installSpatialData('USCensusStates_02')
+```
 
 The second required form of data is a regular dataframe that contains the 
 variable `stateCode` as well as a variable of interest. The variable of interest 
-from this dataset is indicated using the `parameter` input. It is used to color 
-states in the generated chloropleth map. 
+from this dataset is indicated using the `parameter` argument. This `parameter`
+is used to determine the colors of states in the generated chloropleth map. 
 
-Below, there are three examples of obtaining, summarizing, and mapping 
+The next three examples demonstrate obtaining, summarizing, and mapping 
 state-level data. The first two use example dataframes from the package and the 
-last uses `MazamaCoreUtils::html_getTable()` to easily pull data from a website.
+third uses `MazamaCoreUtils::html_getTable()` to easily pull data from a website.
 
-### Using package dataframe `example_US_stateObjesity`
+### Using package dataframe `example_US_stateObesity`
 
 In this example, the package-internal dataframe, `example_US_stateObesity`, 
 is used directly:
@@ -73,6 +77,7 @@ stateMap(
 ```
 
 ### Using data found online
+
 State-level data of interest can be found online and easily scraped using 
 `MazamaCoreUtils::html_getTable()` to parse all table elements from a website. 
 Using `html_getTable()` in conjunction with `stateMap()` makes it very easy to 
@@ -109,7 +114,7 @@ how to use the other input parameters to customize your map.
 ### Using palette, breaks, and stateBorderColor
 
 The `palette`, `breaks`, and `stateBorderColor` parameters dictate the coloring 
-of your map. The shade(s) are defined with `palette` and the distribution of 
+of your map. Colors are defined with `palette` and the distribution of 
 color across the map is defined with `breaks`. As expected, `stateBorderColor` 
 defines the state border color. 
 
@@ -122,6 +127,7 @@ and palettes:
 
 In this example, `breaks` is used to create a coarser coloring scheme and 
 `palette` is used to customize the exact color for each obesity rate level.
+The vector of `breaks` will be one longer than the vector of `colors`.
 
 ```{r plotColors, warning = FALSE, message = FALSE }
 
@@ -137,7 +143,7 @@ stateMap(
 ```
 
 In this example, `breaks` is used to create a more detailed coloring scheme and 
-the blue to purple color palette is chosen.
+the **RColorBrewer** blue to purple color palette name is chosen.
 
 ```{r plotStates, warning = FALSE, message = FALSE }
 
@@ -156,8 +162,8 @@ stateMap(
 
 The `conusOnly` and `stateCode` parameters define which states will be included 
 in the map. If `stateCode` is defined, then `conusOnly` will be ignored. If 
-`stateCode` is not defined, then `conusOnly` specifies if only the continental 
-US will be displayed. When `conusOnly = FALSE`, the continental U.S., Alaska, 
+`stateCode` is not defined, then `conusOnly` specifies whether the map is limited
+to the continental US. When `conusOnly = FALSE`, the continental U.S., Alaska, 
 Hawaii, and U.S. Territories will be included. 
 
 This example builds upon the previous example and includes `stateCode` 
@@ -197,9 +203,9 @@ stateMap(
 
 ## Conclusion
 
-The `stateMap()` function allows us to create attractive maps very efficiently. 
+The `stateMap()` function allows us to create attractive maps with a minimum of effort. 
 When used alongside `MazamaCoreUtils::html_getTable()`, U.S. state data can be 
-procured and visualized in very few lines of code. Additionally, the combination 
+procured and visualized in very few lines of code. The combination 
 of these two functions provides a great deal of flexibility. The `html_getTable()` 
 function opens up an endless source of data from the internet while `stateMap()` 
 can create highly customized visualizations through direct inputs and by 
