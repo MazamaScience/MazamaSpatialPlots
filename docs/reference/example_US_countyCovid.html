@@ -133,10 +133,10 @@ save(example_US_countyCovid, file = &quot;data/example_US_countyCovid.rda&quot;)
       <a href="../articles/articles/Creating_State_Maps.html">Creating State Maps</a>
     </li>
     <li>
-      <a href="../articles/articles/Working_with_Locations.html">Working with Locations</a>
+      <a href="../articles/articles/Customizing_State_Maps.html">Customizing State Maps</a>
     </li>
     <li>
-      <a href="../articles/articles/stateMap_examples.html">Creating State Maps</a>
+      <a href="../articles/articles/Working_with_Locations.html">Working with Locations</a>
     </li>
   </ul>
 </li>
@@ -175,37 +175,37 @@ county dataset to use in code examples. The code for creating it provides an
 example for how to create a dataest that is compatible with <code><a href='countyMap.html'>countyMap()</a></code>.</p>
 <p>This dataset was generated on 2020-06-12 by running:</p>
 <pre>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/MazamaScience/MazamaSpatialUtils'>MazamaSpatialUtils</a></span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://dplyr.tidyverse.org'>dplyr</a></span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://github.com/MazamaScience/MazamaSpatialUtils'>MazamaSpatialUtils</a></span>)
 
-<span class='va'>fileUrl</span> <span class='op'>&lt;-</span> <span class='st'>"https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-counties.csv"</span>
+<span class='kw'>fileUrl</span> <span class='op'>&lt;-</span> <span class='st'>"https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-counties.csv"</span>
 
-<span class='va'>col_names</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"date"</span>, <span class='st'>"countyName"</span>, <span class='st'>"stateName"</span>, <span class='st'>"countyFIPS"</span>, <span class='st'>"cases"</span>, <span class='st'>"deaths"</span><span class='op'>)</span>
-<span class='va'>col_types</span> <span class='op'>=</span> <span class='st'>"Dcccii"</span>
+<span class='kw'>col_names</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"date"</span>, <span class='st'>"countyName"</span>, <span class='st'>"stateName"</span>, <span class='st'>"countyFIPS"</span>, <span class='st'>"cases"</span>, <span class='st'>"deaths"</span>)
+<span class='kw'>col_types</span> <span class='op'>=</span> <span class='st'>"Dcccii"</span>
 
-<span class='va'>outputColumns</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"stateCode"</span>, <span class='st'>"stateName"</span>, <span class='st'>"countyFIPS"</span>, <span class='st'>"countyName"</span>, <span class='st'>"cases"</span>, <span class='st'>"deaths"</span><span class='op'>)</span>
+<span class='kw'>outputColumns</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"stateCode"</span>, <span class='st'>"stateName"</span>, <span class='st'>"countyFIPS"</span>, <span class='st'>"countyName"</span>, <span class='st'>"cases"</span>, <span class='st'>"deaths"</span>)
 
 <span class='co'># After a little trial and error, the following works well:</span>
 
-<span class='va'>example_US_countyCovid</span> <span class='op'>&lt;-</span>
-  <span class='fu'>readr</span><span class='fu'>::</span><span class='fu'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_csv</a></span><span class='op'>(</span>
-    file <span class='op'>=</span> <span class='va'>fileUrl</span>,
-    skip <span class='op'>=</span> <span class='fl'>1</span>,                    <span class='co'># Skip the header line</span>
-    col_names <span class='op'>=</span> <span class='va'>col_names</span>,
-    col_types <span class='op'>=</span> <span class='va'>col_types</span>
-  <span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>
-    stateCode <span class='op'>=</span> <span class='fu'>MazamaSpatialUtils</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/MazamaSpatialUtils/man/US_stateConversion.html'>US_stateNameToCode</a></span><span class='op'>(</span><span class='va'>stateName</span><span class='op'>)</span>,
-  <span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>.data</span><span class='op'>$</span><span class='va'>date</span> <span class='op'>==</span> <span class='fu'>lubridate</span><span class='fu'>::</span><span class='fu'><a href='http://lubridate.tidyverse.org/reference/ymd.html'>ymd</a></span><span class='op'>(</span><span class='st'>"2020-06-01"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='op'>!</span><span class='op'>!</span><span class='va'>outputColumns</span><span class='op'>)</span>
+<span class='kw'>example_US_countyCovid</span> <span class='op'>&lt;-</span>
+  <span class='kw'>readr</span>::<span class='fu'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_csv</a></span>(
+    file = <span class='kw'>fileUrl</span>,
+    skip = <span class='fl'>1</span>,                    <span class='co'># Skip the header line</span>
+    col_names = <span class='kw'>col_names</span>,
+    col_types = <span class='kw'>col_types</span>
+  ) <span class='op'>%&gt;%</span>
+  <span class='kw'>dplyr</span>::<span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(
+    stateCode = <span class='kw'>MazamaSpatialUtils</span>::<span class='fu'><a href='https://rdrr.io/pkg/MazamaSpatialUtils/man/US_stateConversion.html'>US_stateNameToCode</a></span>(<span class='kw'>stateName</span>),
+  ) <span class='op'>%&gt;%</span>
+  <span class='kw'>dplyr</span>::<span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='kw'>.data</span><span class='op'>$</span><span class='kw'>date</span> <span class='op'>==</span> <span class='kw'>lubridate</span>::<span class='fu'><a href='http://lubridate.tidyverse.org/reference/ymd.html'>ymd</a></span>(<span class='st'>"2020-06-01"</span>)) <span class='op'>%&gt;%</span>
+  <span class='kw'>dplyr</span>::<span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='op'>!</span><span class='op'>!</span><span class='kw'>outputColumns</span>)
 
-<span class='fu'><a href='https://rdrr.io/r/base/save.html'>save</a></span><span class='op'>(</span><span class='va'>example_US_countyCovid</span>, file <span class='op'>=</span> <span class='st'>"data/example_US_countyCovid.rda"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/save.html'>save</a></span>(<span class='kw'>example_US_countyCovid</span>, file = <span class='st'>"data/example_US_countyCovid.rda"</span>)
 </pre>
 
     </div>
 
-    <pre class="usage"><span class='va'>example_US_countyCovid</span></pre>
+    <pre class="usage"><span class='kw'>example_US_countyCovid</span></pre>
 
 
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>

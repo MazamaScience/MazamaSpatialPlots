@@ -1,7 +1,7 @@
 ---
 title: "Creating State Maps"
 author: "Rachel Carroll, Mazama Science"
-date: "July 25, 2020"
+date: "October 23, 2020"
 output: rmarkdown::html_document
 ---
 
@@ -12,10 +12,9 @@ knitr::opts_chunk$set(echo = TRUE)
 ## Objective
 
 The goal of this document is to introduce the `stateMap()` function in the 
-**MazamaSpatialPlots** package. This document will serve as a tutorial for 
-collecting data and creating customizable maps of U.S. states and territories. 
+**MazamaSpatialPlots** package. Additionally, this document will provide examples to show the usage of the `stateMap()` function's additional arguments.
 
-## Getting State-level Data
+## Default Plots
 
 The `stateMap()` function requires two forms of state-level data. First is a 
 Spatial Polygons Data Frame (SPDF) containing state level polygons. The SPDF must 
@@ -29,13 +28,13 @@ or generated and loaded using
 The second required form of data is a regular dataframe that contains the 
 variable `stateCode` as well as a variable of interest. The variable of interest 
 from this dataset is indicated using the `parameter` input. It is used to color 
-states in the generated chloropleth map.   
+states in the generated chloropleth map. 
 
 Below, there are three examples of obtaining, summarizing, and mapping 
 state-level data. The first two use example dataframes from the package and the 
 last uses `MazamaCoreUtils::html_getTable()` to easily pull data from a website.
 
-### Using package dataframe `example_US_stateObesity`
+### Using package dataframe `example_US_stateObjesity`
 
 In this example, the package-internal dataframe, `example_US_stateObesity`, 
 is used directly:
@@ -46,6 +45,7 @@ library(MazamaSpatialPlots)
 stateMap(
   data = example_US_stateObesity,
   parameter = 'obesityRate',
+  state_SPDF = "USCensusStates_02", # the default value
   title = "Obesity Rate in U.S. States"
 )
 ```
@@ -100,10 +100,9 @@ stateMap(
 )
 ```
 
-
 ## Customizing with Function Parameters
 
-In the section above examples, the `stateMap()` inputs `data`, `parameter`, 
+In the above examples, the `stateMap()` inputs `data`, `parameter`, 
 `state_SPDF`, and `title` are used to create maps. This section will demonstrate 
 how to use the other input parameters to customize your map. 
 
@@ -153,11 +152,10 @@ stateMap(
 
 ```
 
-
 ### Using conusOnly and stateCode
 
 The `conusOnly` and `stateCode` parameters define which states will be included 
-in the map. If `stateCode` is defined, then `conusOnly" will be ignored. If 
+in the map. If `stateCode` is defined, then `conusOnly` will be ignored. If 
 `stateCode` is not defined, then `conusOnly` specifies if only the continental 
 US will be displayed. When `conusOnly = FALSE`, the continental U.S., Alaska, 
 Hawaii, and U.S. Territories will be included. 
@@ -197,133 +195,6 @@ stateMap(
 
 ```
 
-
-### Using projections
-
-In general, the default projections in `stateMap()` are appropriate for common 
-state groupings. However, the projection parameter can be used to override the 
-default projections as needed. 
-
-Below is an unusual group of states with the default projection.
-
-```{r defaultprojection, warning = FALSE, message = FALSE }
-northernStates <- c("AK", "WA", "ID", "MT", "ND", "MN", "WI", 
-                    "MI", "OH", "PA", "NY", "VT", "NH", "ME")
-
-stateMap(
-  data = example_US_stateObesity,
-  parameter = 'obesityRate',
-  palette = 'YlOrRd',
-  breaks = seq(23, 33, 2),
-  stateCode = northernStates,
-  stateBorderColor = 'black',
-  title = "Obesity Rate in Northern U.S. States"
-)
-
-```
-
-The projection is oddly rotated in this case. To remedy this, a manual projection 
-can be defined: 
-
-```{r manualprojection, warning = FALSE, message = FALSE }
-
-myproj <- "+proj=lcc +lat_1=32.5 +lat_2=71.4 +lat_0=51.9 +lon_0=-102.9 +x_0=0 +y_0=0 +datum=NAD83 +units=m +no_defs"
-stateMap(
-  data = example_US_stateObesity,
-  parameter = 'obesityRate',
-  palette = 'YlOrRd',
-  breaks = seq(23, 33, 2),
-  stateCode = northernStates,
-  projection = myproj,
-  stateBorderColor = 'black',
-  title = "Obesity Rate in Northern U.S. States"
-)
-
-```
-
-
-## Customizing with the **tmap** Package
-
-One benefit of using `stateMap()` is that the output is a _ggplot2_ object. 
-Therefore, maps can be further customized using functionality from the **tmap**
-and **ggplot2** packages. Many visual adjustments including legend and title 
-locations, fonts, and background colors can be made by simply appending your 
-`stateMap()` plot with arguments in `tmap::tm_layout()`. Furthermore,
-`tmap::tm_style()` can be used to leverage built in styles and 
-`tmap::tm_compass()` can be used to add a compass to your map. The three 
-examples below demonstrate how to build customized visualizations using both 
-`stateMap()` parameters and **tmap** functionality.
-
-### Using tmap::tm_layout()
-
-```{r tmapStyling1, warning = FALSE, warning = FALSE, message = FALSE }
-
-stateMap(
-  data = example_US_stateObesity, 
-  parameter = "obesityRate",
-  breaks = seq(20,38,3), #increasing color detail
-  conusOnly = FALSE ,
-  stateBorderColor = 'black',
-) +
-  tmap::tm_layout(
-    frame = TRUE,
-    main.title = 'Obesity Rates in U.S. States and Territories',
-    main.title.position = c("center", "top"),
-    title.fontface = 2,
-    fontfamily = "serif",
-    bg.color = "grey85", 
-    inner.margins  = .05,
-    legend.position = c('right', 'top')
-  ) 
-
-```
-
-### Using tmap style "classic" and a compass
-
-```{r tmapStyling2, warning = FALSE, message = FALSE }
-
-stateMap(
-  data = example_US_stateObesity, 
-  parameter = "obesityRate", 
-  breaks = seq(20,40,4),
-) +
-  tmap::tm_style(
-    'classic'
-  ) +
-  tmap::tm_layout(
-    title = 'Obesity Rate by State',
-    title.position = c("center", "top"),
-    title.size = 1.2,
-    inner.margins  = .08
-  ) +
-  tmap::tm_compass() 
-  
-
-```
-
-### Polishing  New England regional map
-
-```{r tmapStyling3, warning = FALSE, message = FALSE }
-  
-stateMap(
- data = example_US_stateObesity,
- parameter = "obesityRate",
- stateCode = c('ME', 'NH', 'VT', 'MA', 'RI', 'CT'),
- stateBorderColor = 'black',
- title = 'Obesity Rates in New England'
-) +
- tmap::tm_layout(
-   frame = TRUE,
-   frame.double.line = TRUE,
-   title.size = 1.2,
-   title.fontface = 2,
-   fontfamily = "serif",
-   bg.color = "grey85",
-   inner.margins  = .08
- )
-
-```
-
 ## Conclusion
 
 The `stateMap()` function allows us to create attractive maps very efficiently. 
@@ -332,7 +203,7 @@ procured and visualized in very few lines of code. Additionally, the combination
 of these two functions provides a great deal of flexibility. The `html_getTable()` 
 function opens up an endless source of data from the internet while `stateMap()` 
 can create highly customized visualizations through direct inputs and by 
-harnessing the functionality of the **tmap** package. 
+[harnessing the functionality of the **tmap** package](Customizing_State_Maps.html). 
 
 
 

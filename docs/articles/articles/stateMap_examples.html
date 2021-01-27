@@ -60,6 +60,9 @@
       <a href="../../articles/articles/Creating_State_Maps.html">Creating State Maps</a>
     </li>
     <li>
+      <a href="../../articles/articles/Customizing_State_Maps.html">Customizing State Maps</a>
+    </li>
+    <li>
       <a href="../../articles/articles/Working_with_Locations.html">Working with Locations</a>
     </li>
     <li>
@@ -88,8 +91,7 @@
 
       
 
-      </header><script src="stateMap_examples_files/header-attrs-2.5/header-attrs.js"></script><link href="stateMap_examples_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
-<script src="stateMap_examples_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
+      </header><script src="stateMap_examples_files/header-attrs-2.3/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Creating State Maps</h1>
@@ -107,129 +109,155 @@
 <div id="objective" class="section level2">
 <h2 class="hasAnchor">
 <a href="#objective" class="anchor"></a>Objective</h2>
-<p>The goal of this document is to introduce the <code><a href="../../reference/stateMap.html">stateMap()</a></code> function in the <strong>MazamaSpatialPlots</strong> package. This document will serve as a tutorial for collecting data and creating customizable maps of U.S. states and territories.</p>
+<p>The goal of this document is to introduce the <code><a href="../../reference/stateMap.html">stateMap()</a></code> function in the <strong>MazamaSpatialPlots</strong> package. Additionally, this document will provide examples to show the usage of the <code><a href="../../reference/stateMap.html">stateMap()</a></code> function’s additional arguments.</p>
 </div>
-<div id="default-plot" class="section level2">
+<div id="default-plots" class="section level2">
 <h2 class="hasAnchor">
-<a href="#default-plot" class="anchor"></a>Default Plot</h2>
+<a href="#default-plots" class="anchor"></a>Default Plots</h2>
+<p>The <code><a href="../../reference/stateMap.html">stateMap()</a></code> function requires two forms of state-level data. First is a Spatial Polygons Data Frame (SPDF) containing state level polygons. The SPDF must include the variable <code>stateCode</code> in it’s data <code>@slot</code>. The default SPDF is “USCensusStates_02”, which is contained in the package data. Higher or lower resolution US Census state SPDFs can downloaded from <a href="http://data.mazamascience.com/MazamaSpatialUtils/Spatial_0.7/" class="uri">http://data.mazamascience.com/MazamaSpatialUtils/Spatial_0.7/</a> or generated and loaded using <code><a href="https://rdrr.io/pkg/MazamaSpatialUtils/man/convertUSCensusStates.html">MazamaSpatialUtils::convertUSCensusStates()</a></code>.</p>
+<p>The second required form of data is a regular dataframe that contains the variable <code>stateCode</code> as well as a variable of interest. The variable of interest from this dataset is indicated using the <code>parameter</code> input. It is used to color states in the generated chloropleth map.</p>
+<p>Below, there are three examples of obtaining, summarizing, and mapping state-level data. The first two use example dataframes from the package and the last uses <code><a href="https://rdrr.io/pkg/MazamaCoreUtils/man/html_getTables.html">MazamaCoreUtils::html_getTable()</a></code> to easily pull data from a website.</p>
+<div id="using-package-dataframe-example_us_stateobjesity" class="section level3">
+<h3 class="hasAnchor">
+<a href="#using-package-dataframe-example_us_stateobjesity" class="anchor"></a>Using package dataframe <code>example_US_stateObjesity</code>
+</h3>
 <p>In this example, the package-internal dataframe, <code>example_US_stateObesity</code>, is used directly:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/MazamaScience/MazamaSpatialPlots">MazamaSpatialPlots</a></span><span class="op">)</span>
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/MazamaScience/MazamaSpatialPlots">MazamaSpatialPlots</a></span>)
 
-<span class="fu"><a href="../../reference/stateMap.html">stateMap</a></span><span class="op">(</span>
-  data <span class="op">=</span> <span class="va">example_US_stateObesity</span>,
-  parameter <span class="op">=</span> <span class="st">'obesityRate'</span>,
-  title <span class="op">=</span> <span class="st">"Obesity Rate in U.S. States"</span>
-<span class="op">)</span></code></pre></div>
+<span class="fu"><a href="../../reference/stateMap.html">stateMap</a></span>(
+  data = <span class="kw">example_US_stateObesity</span>,
+  parameter = <span class="st">'obesityRate'</span>,
+  state_SPDF = <span class="st">"USCensusStates_02"</span>, <span class="co"># the default value</span>
+  title = <span class="st">"Obesity Rate in U.S. States"</span>
+)
+</pre></div>
 <p><img src="stateMap_examples_files/figure-html/plot_obesity-1.png" width="700"></p>
+</div>
+<div id="using-package-dataframe-example_us_countycovid" class="section level3">
+<h3 class="hasAnchor">
+<a href="#using-package-dataframe-example_us_countycovid" class="anchor"></a>Using package dataframe <code>example_US_countyCovid</code>
+</h3>
+<p>In this example, the county-level package dataframe, <code>example_US_countyCovid</code>, is aggregated by state and then used:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://dplyr.tidyverse.org">dplyr</a></span>)
+
+<span class="kw">example_US_stateCovid</span> <span class="op">&lt;-</span> 
+  <span class="kw">example_US_countyCovid</span> <span class="op">%&gt;%</span>
+  <span class="kw">dplyr</span>::<span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(<span class="kw">stateCode</span>) <span class="op">%&gt;%</span>
+  <span class="kw">dplyr</span>::<span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span>(stateCases = <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(<span class="kw">cases</span>), stateDeaths = <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(<span class="kw">deaths</span>)) <span class="op">%&gt;%</span>
+  <span class="kw">dplyr</span>::<span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(stateDeathRate = <span class="fl">100</span><span class="op">*</span><span class="kw">stateDeaths</span><span class="op">/</span><span class="kw">stateCases</span> ) <span class="op">%&gt;%</span>
+  <span class="kw">dplyr</span>::<span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"stateCode"</span>, <span class="st">"stateCases"</span>, <span class="st">"stateDeaths"</span>, <span class="st">"stateDeathRate"</span>))
+
+<span class="fu"><a href="../../reference/stateMap.html">stateMap</a></span>(
+  data = <span class="kw">example_US_stateCovid</span>,
+  parameter = <span class="st">'stateDeathRate'</span>, 
+  title =  <span class="st">"COVID Fatality Rates (%) on June 12, 2020"</span>
+)
+</pre></div>
+<p><img src="stateMap_examples_files/figure-html/plot_covid-1.png" width="700"></p>
+</div>
+<div id="using-data-found-online" class="section level3">
+<h3 class="hasAnchor">
+<a href="#using-data-found-online" class="anchor"></a>Using data found online</h3>
+<p>State-level data of interest can be found online and easily scraped using <code><a href="https://rdrr.io/pkg/MazamaCoreUtils/man/html_getTables.html">MazamaCoreUtils::html_getTable()</a></code> to parse all table elements from a website. Using <code>html_getTable()</code> in conjunction with <code><a href="../../reference/stateMap.html">stateMap()</a></code> makes it very easy to extract and visualize data from the internet.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit">
+<span class="kw">URL</span> <span class="op">&lt;-</span> <span class="st">"https://www.patriotsoftware.com/blog/accounting/average-cost-living-by-state/"</span>
+<span class="kw">livingCostData</span> <span class="op">&lt;-</span> <span class="kw">MazamaCoreUtils</span>::<span class="fu"><a href="https://rdrr.io/pkg/MazamaCoreUtils/man/html_getTables.html">html_getTable</a></span>(<span class="kw">URL</span>, header = <span class="fl">TRUE</span>)
+
+<span class="kw">livingCostData</span> <span class="op">&lt;-</span> 
+  <span class="kw">livingCostData</span> <span class="op">%&gt;%</span>
+  <span class="kw">dplyr</span>::<span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(
+    stateCode = <span class="kw">MazamaSpatialUtils</span>::<span class="fu"><a href="https://rdrr.io/pkg/MazamaSpatialUtils/man/US_stateConversion.html">US_stateNameToCode</a></span>(<span class="kw">.data</span><span class="op">$</span><span class="st">"State"</span>),
+    avgAnnualWage = <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/grep.html">gsub</a></span>(<span class="st">'[$,]'</span>, <span class="st">''</span>, <span class="kw">.data</span><span class="op">$</span><span class="st">"Annual Mean Wage (All Occupations)"</span>)),
+    avgMonthlyRent = <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/grep.html">gsub</a></span>(<span class="st">'[$,]'</span>, <span class="st">''</span>, <span class="kw">.data</span><span class="op">$</span><span class="st">"Median Monthly Rent"</span>)),
+    rentWagePercent = <span class="fl">100</span><span class="op">*</span><span class="fl">12</span><span class="op">*</span><span class="kw">avgMonthlyRent</span><span class="op">/</span><span class="kw">avgAnnualWage</span>,
+    .keep = <span class="st">"none"</span>
+  ) 
+
+<span class="fu"><a href="../../reference/stateMap.html">stateMap</a></span>(
+  data = <span class="kw">livingCostData</span>,
+  parameter = <span class="st">'rentWagePercent'</span>,
+  title = <span class="st">"Average Percentage of Income Spent on Rent"</span>
+)
+</pre></div>
+<p><img src="stateMap_examples_files/figure-html/html_getTable_and_stateMap-1.png" width="700"></p>
+</div>
 </div>
 <div id="customizing-with-function-parameters" class="section level2">
 <h2 class="hasAnchor">
 <a href="#customizing-with-function-parameters" class="anchor"></a>Customizing with Function Parameters</h2>
-<p>In the section above examples, the <code><a href="../../reference/stateMap.html">stateMap()</a></code> inputs <code>data</code>, <code>parameter</code>, <code>state_SPDF</code>, and <code>title</code> are used to create maps. This section will demonstrate how to use the other input parameters to customize your map.</p>
+<p>In the above examples, the <code><a href="../../reference/stateMap.html">stateMap()</a></code> inputs <code>data</code>, <code>parameter</code>, <code>state_SPDF</code>, and <code>title</code> are used to create maps. This section will demonstrate how to use the other input parameters to customize your map.</p>
 <div id="using-palette-breaks-and-statebordercolor" class="section level3">
 <h3 class="hasAnchor">
 <a href="#using-palette-breaks-and-statebordercolor" class="anchor"></a>Using palette, breaks, and stateBorderColor</h3>
-<p>The <code>palette</code>, <code>breaks</code>, and <code>stateBorderColor</code> parameters dictate the coloring of your map. The shade(s) are defined with <code>palette</code> and the distribution of color across the map is defined with <code>breaks</code>.</p>
+<p>The <code>palette</code>, <code>breaks</code>, and <code>stateBorderColor</code> parameters dictate the coloring of your map. The shade(s) are defined with <code>palette</code> and the distribution of color across the map is defined with <code>breaks</code>. As expected, <code>stateBorderColor</code> defines the state border color.</p>
+<p>To make the most of these parameters, see the following references for R colors and palettes:</p>
+<ul>
+<li><p><a href="http://sape.inf.usi.ch/quick-reference/ggplot2/colour" class="uri">http://sape.inf.usi.ch/quick-reference/ggplot2/colour</a></p></li>
+<li><p><a href="https://www.r-graph-gallery.com/38-rcolorbrewers-palettes.html" class="uri">https://www.r-graph-gallery.com/38-rcolorbrewers-palettes.html</a></p></li>
+</ul>
 <p>In this example, <code>breaks</code> is used to create a coarser coloring scheme and <code>palette</code> is used to customize the exact color for each obesity rate level.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../../reference/stateMap.html">stateMap</a></span><span class="op">(</span>
-  data <span class="op">=</span> <span class="va">example_US_stateObesity</span>,
-  parameter <span class="op">=</span> <span class="st">'obesityRate'</span>,
-  palette <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"lightblue"</span>, <span class="st">"orange"</span>, <span class="st">"red"</span><span class="op">)</span>,
-  breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">27</span>, <span class="fl">34</span>, <span class="fl">40</span><span class="op">)</span>,
-  stateBorderColor <span class="op">=</span> <span class="st">"black"</span>,
-  title <span class="op">=</span> <span class="st">"Obesity Rate in U.S. States"</span>
-<span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit">
+<span class="fu"><a href="../../reference/stateMap.html">stateMap</a></span>(
+  data = <span class="kw">example_US_stateObesity</span>,
+  parameter = <span class="st">'obesityRate'</span>,
+  palette = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"lightblue"</span>, <span class="st">"orange"</span>, <span class="st">"red"</span>),
+  breaks = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">20</span>, <span class="fl">27</span>, <span class="fl">34</span>, <span class="fl">40</span>),
+  stateBorderColor = <span class="st">"black"</span>,
+  title = <span class="st">"Obesity Rate in U.S. States"</span>
+)
+</pre></div>
 <p><img src="stateMap_examples_files/figure-html/plotColors-1.png" width="700"></p>
 <p>In this example, <code>breaks</code> is used to create a more detailed coloring scheme and the blue to purple color palette is chosen.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../../reference/stateMap.html">stateMap</a></span><span class="op">(</span>
-  data <span class="op">=</span> <span class="va">example_US_stateObesity</span>,
-  parameter <span class="op">=</span> <span class="st">'obesityRate'</span>,
-  palette <span class="op">=</span> <span class="st">'BuPu'</span>,
-  breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">38</span>, <span class="fl">3</span><span class="op">)</span>,
-  stateBorderColor <span class="op">=</span> <span class="st">'white'</span>,
-  title <span class="op">=</span> <span class="st">"Obesity Rate in U.S. States"</span>
-<span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit">
+<span class="fu"><a href="../../reference/stateMap.html">stateMap</a></span>(
+  data = <span class="kw">example_US_stateObesity</span>,
+  parameter = <span class="st">'obesityRate'</span>,
+  palette = <span class="st">'BuPu'</span>,
+  breaks = <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="fl">20</span>, <span class="fl">38</span>, <span class="fl">3</span>),
+  stateBorderColor = <span class="st">'white'</span>,
+  title = <span class="st">"Obesity Rate in U.S. States"</span>
+)
+</pre></div>
 <p><img src="stateMap_examples_files/figure-html/plotStates-1.png" width="700"></p>
 </div>
-</div>
-<div id="customizing-with-the-tmap-package" class="section level2">
-<h2 class="hasAnchor">
-<a href="#customizing-with-the-tmap-package" class="anchor"></a>Customizing with the <strong>tmap</strong> Package</h2>
-<p>One benefit of using <code><a href="../../reference/stateMap.html">stateMap()</a></code> is that the output is a <em>ggplot2</em> object. Therefore, maps can be further customized using functionality from the <strong>tmap</strong> and <strong>ggplot2</strong> packages. Many visual adjustments including legend and title locations, fonts, and background colors can be made by simply appending your <code><a href="../../reference/stateMap.html">stateMap()</a></code> plot with arguments in <code><a href="https://rdrr.io/pkg/tmap/man/tm_layout.html">tmap::tm_layout()</a></code>. Furthermore, <code><a href="https://rdrr.io/pkg/tmap/man/tm_layout.html">tmap::tm_style()</a></code> can be used to leverage built-in styles and <code><a href="https://rdrr.io/pkg/tmap/man/tm_compass.html">tmap::tm_compass()</a></code> can be used to add a compass to your map. The three examples below demonstrate how to build customized visualizations using both <code><a href="../../reference/stateMap.html">stateMap()</a></code> parameters and <strong>tmap</strong> functionality.</p>
-<div id="using-tmaptm_layout" class="section level3">
+<div id="using-conusonly-and-statecode" class="section level3">
 <h3 class="hasAnchor">
-<a href="#using-tmaptm_layout" class="anchor"></a>Using tmap::tm_layout()</h3>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../../reference/stateMap.html">stateMap</a></span><span class="op">(</span>
-  data <span class="op">=</span> <span class="va">example_US_stateObesity</span>, 
-  parameter <span class="op">=</span> <span class="st">"obesityRate"</span>,
-  breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">20</span>,<span class="fl">38</span>,<span class="fl">3</span><span class="op">)</span>, <span class="co">#increasing color detail</span>
-  conusOnly <span class="op">=</span> <span class="cn">FALSE</span> ,
-  stateBorderColor <span class="op">=</span> <span class="st">'black'</span>,
-<span class="op">)</span> <span class="op">+</span>
-  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_layout.html">tm_layout</a></span><span class="op">(</span>
-    frame <span class="op">=</span> <span class="cn">TRUE</span>,
-    main.title <span class="op">=</span> <span class="st">'Obesity Rates in U.S. States and Territories'</span>,
-    main.title.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"center"</span>, <span class="st">"top"</span><span class="op">)</span>,
-    title.fontface <span class="op">=</span> <span class="fl">2</span>,
-    fontfamily <span class="op">=</span> <span class="st">"serif"</span>,
-    bg.color <span class="op">=</span> <span class="st">"grey85"</span>, 
-    inner.margins  <span class="op">=</span> <span class="fl">.05</span>,
-    legend.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'right'</span>, <span class="st">'top'</span><span class="op">)</span>
-  <span class="op">)</span> </code></pre></div>
-<p><img src="stateMap_examples_files/figure-html/tmapStyling1-1.png" width="700"></p>
-</div>
-<div id="using-tmap-style-classic-and-a-compass" class="section level3">
-<h3 class="hasAnchor">
-<a href="#using-tmap-style-classic-and-a-compass" class="anchor"></a>Using tmap style “classic” and a compass</h3>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../../reference/stateMap.html">stateMap</a></span><span class="op">(</span>
-  data <span class="op">=</span> <span class="va">example_US_stateObesity</span>, 
-  parameter <span class="op">=</span> <span class="st">"obesityRate"</span>, 
-  breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">20</span>,<span class="fl">40</span>,<span class="fl">4</span><span class="op">)</span>,
-<span class="op">)</span> <span class="op">+</span>
-  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_layout.html">tm_style</a></span><span class="op">(</span>
-    <span class="st">'classic'</span>
-  <span class="op">)</span> <span class="op">+</span>
-  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_layout.html">tm_layout</a></span><span class="op">(</span>
-    title <span class="op">=</span> <span class="st">'Obesity Rate by State'</span>,
-    title.position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"center"</span>, <span class="st">"top"</span><span class="op">)</span>,
-    title.size <span class="op">=</span> <span class="fl">1.2</span>,
-    inner.margins  <span class="op">=</span> <span class="fl">.08</span>
-  <span class="op">)</span> <span class="op">+</span>
-  <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_compass.html">tm_compass</a></span><span class="op">(</span><span class="op">)</span> </code></pre></div>
-<p><img src="stateMap_examples_files/figure-html/tmapStyling2-1.png" width="700"></p>
-</div>
-<div id="polishing-new-england-regional-map" class="section level3">
-<h3 class="hasAnchor">
-<a href="#polishing-new-england-regional-map" class="anchor"></a>Polishing New England regional map</h3>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../../reference/stateMap.html">stateMap</a></span><span class="op">(</span>
- data <span class="op">=</span> <span class="va">example_US_stateObesity</span>,
- parameter <span class="op">=</span> <span class="st">"obesityRate"</span>,
- stateCode <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'ME'</span>, <span class="st">'NH'</span>, <span class="st">'VT'</span>, <span class="st">'MA'</span>, <span class="st">'RI'</span>, <span class="st">'CT'</span><span class="op">)</span>,
- stateBorderColor <span class="op">=</span> <span class="st">'black'</span>,
- title <span class="op">=</span> <span class="st">'Obesity Rates in New England'</span>
-<span class="op">)</span> <span class="op">+</span>
- <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_layout.html">tm_layout</a></span><span class="op">(</span>
-   frame <span class="op">=</span> <span class="cn">TRUE</span>,
-   frame.double.line <span class="op">=</span> <span class="cn">TRUE</span>,
-   title.size <span class="op">=</span> <span class="fl">1.2</span>,
-   title.fontface <span class="op">=</span> <span class="fl">2</span>,
-   fontfamily <span class="op">=</span> <span class="st">"serif"</span>,
-   bg.color <span class="op">=</span> <span class="st">"grey85"</span>,
-   inner.margins  <span class="op">=</span> <span class="fl">.08</span>
- <span class="op">)</span></code></pre></div>
-<p><img src="stateMap_examples_files/figure-html/tmapStyling3-1.png" width="700"></p>
+<a href="#using-conusonly-and-statecode" class="anchor"></a>Using conusOnly and stateCode</h3>
+<p>The <code>conusOnly</code> and <code>stateCode</code> parameters define which states will be included in the map. If <code>stateCode</code> is defined, then <code>conusOnly" will be ignored. If</code>stateCode<code>is not defined, then</code>conusOnly<code>specifies if only the continental  US will be displayed. When</code>conusOnly = FALSE`, the continental U.S., Alaska, Hawaii, and U.S. Territories will be included.</p>
+<p>This example builds upon the previous example and includes <code>stateCode</code> specification to create a map of Western states.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit">
+<span class="fu"><a href="../../reference/stateMap.html">stateMap</a></span>(
+  data = <span class="kw">example_US_stateObesity</span>,
+  parameter = <span class="st">'obesityRate'</span>,
+  palette = <span class="st">'PuBuGn'</span>,
+  breaks = <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="fl">23</span>, <span class="fl">31</span>, <span class="fl">2</span>),
+  stateCode = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"CA"</span>, <span class="st">"NV"</span>, <span class="st">"OR"</span>, <span class="st">"WA"</span>, <span class="st">"ID"</span>),
+  stateBorderColor = <span class="st">'black'</span>,
+  title = <span class="st">"Obesity Rate in Western U.S."</span>
+)
+</pre></div>
+<p><img src="stateMap_examples_files/figure-html/use_stateCode-1.png" width="700"></p>
+<p>The following example uses <code>conusOnly = FALSE</code>.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit">
+<span class="fu"><a href="../../reference/stateMap.html">stateMap</a></span>(
+  data = <span class="kw">example_US_stateObesity</span>,
+  parameter = <span class="st">'obesityRate'</span>,
+  palette = <span class="st">'YlOrRd'</span>,
+  breaks = <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="fl">20</span>, <span class="fl">38</span>, <span class="fl">3</span>),
+  conusOnly = <span class="fl">FALSE</span>,
+  stateBorderColor = <span class="st">'black'</span>,
+  title = <span class="st">"Obesity Rate in U.S."</span>
+)
+</pre></div>
+<p><img src="stateMap_examples_files/figure-html/use_conusOnly-1.png" width="700"></p>
 </div>
 </div>
 <div id="conclusion" class="section level2">
 <h2 class="hasAnchor">
 <a href="#conclusion" class="anchor"></a>Conclusion</h2>
-<p>The <code><a href="../../reference/stateMap.html">stateMap()</a></code> function allows us to create attractive maps very efficiently and with a lot of flexibility. The function creates highly customized visualizations through direct inputs and by harnessing the functionality of the <strong>tmap</strong> package.</p>
+<p>The <code><a href="../../reference/stateMap.html">stateMap()</a></code> function allows us to create attractive maps very efficiently. When used alongside <code><a href="https://rdrr.io/pkg/MazamaCoreUtils/man/html_getTables.html">MazamaCoreUtils::html_getTable()</a></code>, U.S. state data can be procured and visualized in very few lines of code. Additionally, the combination of these two functions provides a great deal of flexibility. The <code>html_getTable()</code> function opens up an endless source of data from the internet while <code><a href="../../reference/stateMap.html">stateMap()</a></code> can create highly customized visualizations through direct inputs and by <a href="Customizing_State_Maps.html">harnessing the functionality of the <strong>tmap</strong> package</a>.</p>
 </div>
   </div>
 
