@@ -22,13 +22,19 @@ knitr::opts_chunk$set(
 
 ## Background
 
-The **MazamaSpatialPlots** package provides plotting functionality to create 
-production-ready maps for US state and county-level data. It builds on the 
-**tmap** package, integrating the data with spatial datasets from 
-**MazamaSpatialUtils**. High-level plotting functions make it easy for users to 
-create beautiful chloropleth maps. Since these high-level functions are built 
-using **ggplot2**,  users familiar with **ggplot2** can easily enhance the
-returned plot objects to create custom plots. 
+Maps colored by state and county (aka "chloropleth maps") are among the most common
+data graphics and are used to convey everything from vote totals to economic and 
+health statistics. Well designed maps involve a careful choice of map projections
+and colors for both the state/county fill and boundary lines. Unfortunately,
+creating beautiful maps in R is still somewhat involved.
+
+The **MazamaSpatialPlots** package provides plotting functionality to make it as
+easy as possible to produce beautiful US state- and county-level maps. It builds
+on the excellent **tmap** package and harnesses datasaets from the 
+**MazamaSpatialUtils** package. High-level plotting functions make it easy for 
+users to create beautiful chloropleth maps. The underlying code uses **ggplot2**
+so users familiar with **ggplot2** can easily enhance the returned plot objects 
+to create highly customized plots.
 
 ## Installation
 
@@ -37,7 +43,7 @@ This package is designed to be used with [R](https://cran.r-project.org)
 installed first.
 
 Users will want to install the **devtools** package to have access to the latest 
-version of the package from GitHub.
+development version of the package from GitHub.
 
 The following packages should be installed by typing the following at the 
 RStudio console:
@@ -50,7 +56,7 @@ install.packages('MazamaSpatialUtils')
 devtools::install_github('MazamaScience/MazamaSpatialPlots')
 ```
 
-**MazamaSpatialPlots**' plotting functions require spatial polygon data to plot 
+**MazamaSpatialPlots** equires spatial polygon data to plot 
 the shapes of states and counties. These spatial datasets are provided by 
 **MazamaSpatialUtils** and can be installed by running the following in the 
 RStudio console:
@@ -65,27 +71,59 @@ installSpatialData()
 ## Features
 
 Currently, **MazamaSpatialPlots** contains high level functions for creating 
-choropleth maps for county or state level data:
+choropleth maps for US counties and states:
 
 * `countyMap()` - plot a choropleth map for county level data. Uses the 
 `USCensusCounties_02` dataset for spatial polygons.
 * `stateMap()` - plot a choropleth map for state level data. Uses the 
 `USCensusStates_02` dataset for spatial polygons.
 
-Additionally, **MazamaSpatialPlots** provides two example datasets formatted to
+Additionally, **MazamaSpatialPlots** provides two example datasets formatted for
 use with the package's functions:
 
 * `example_US_stateObesity` - state level obesity rate
 * `example_US_countyCovid` - county level COVID19 cases and deaths
 
+## Input Data 
+
+The _SpatialPolygonsDataFrame_ used to create a state or county map is provided
+by the **MazamaSpatialUtils** package once that is installed.
+
+### State-level data
+
+User data consists of simple dataframes. For the `stateMap()` function, the 
+input dataframe must have a `stateCode` column containing the 2-character US
+state code. Any other column of data can be used as the `parameter` states will
+be colored by.
+
+The following functions from **MazamaSpatialUtils** can help in creating the
+`stateCode` column if it does not already exist:
+
+* `MazamaSpatialUtils::US_stateNameToCode()`
+* `MazamaSpatialUtils::US_stateFIPSToCode()`
+
+### County-level data
+
+For county maps, the input data must contain a `countyFIPS` column uniquely
+identifying each county. The `MazamaSpatialUtils::US_countyCodes` dataset
+can be used to determine the `countyFIPS` codes.
+
 ## Example Maps
 
 ### Example state map
-In this example, we create a map showing the obesity rate for each state in
-the United States.
+
+Here we create a state map using the package `example_US_stateObesity` dataset
+showing the obesity rate for each state in the United States. A single call to
+the `stateMap()` function is all that is required. Customization is performed
+entirely through function arguments.
+
 ```{r stateMap, warning = FALSE, message = FALSE }
 library(MazamaSpatialPlots)
 
+# Look at input data
+head(example_US_stateObesity)
+
+# Create the map
 stateMap(
   data = example_US_stateObesity,
   parameter = 'obesityRate',
@@ -98,15 +136,19 @@ stateMap(
 ```
 
 ### Example county map
-In this example, we create a map showing COVID19 cases across all of the counties
-in the United States.
-```{r countyMap, warning = FALSE, message = FALSE }
-  countyMap(
-    data = example_US_countyCovid,
-    parameter = "cases",
-    breaks = c(0,100,200,500,1000,2000,5000,10000,20000,50000,1e6),
-    countyBorderColor = "white",
-    title = "COVID19 Cases in U.S. States"
-  )
 
+For the `countyMap()` example, we use COVID19 case data from June 12, 2020.
+
+```{r countyMap, warning = FALSE, message = FALSE }
+# Look at the input data
+head(example_US_countyCovid)
+
+# Create the map
+countyMap(
+  data = example_US_countyCovid,
+  parameter = "cases",
+  breaks = c(0,100,200,500,1000,2000,5000,10000,20000,50000,1e6),
+  countyBorderColor = "white",
+  title = "COVID19 Cases in U.S. States"
+)
 ```

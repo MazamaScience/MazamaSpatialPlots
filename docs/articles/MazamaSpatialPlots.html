@@ -39,7 +39,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -77,7 +77,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/MazamaScience/MazamaSpatialPlots/">
-    <span class="fab fa-github fa-lg"></span>
+    <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -91,7 +91,8 @@
 
       
 
-      </header><script src="MazamaSpatialPlots_files/header-attrs-2.6/header-attrs.js"></script><div class="row">
+      </header><script src="MazamaSpatialPlots_files/header-attrs-2.5/header-attrs.js"></script><link href="MazamaSpatialPlots_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
+<script src="MazamaSpatialPlots_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Introduction to MazamaSpatialPlots</h1>
@@ -109,20 +110,21 @@
 <div id="background" class="section level2">
 <h2 class="hasAnchor">
 <a href="#background" class="anchor"></a>Background</h2>
-<p>The <strong>MazamaSpatialPlots</strong> package provides plotting functionality to create production-ready maps for US state and county-level data. It builds on the <strong>tmap</strong> package, integrating the data with spatial datasets from <strong>MazamaSpatialUtils</strong>. High-level plotting functions make it easy for users to create beautiful chloropleth maps. Since these high-level functions are built using <strong>ggplot2</strong>, users familiar with <strong>ggplot2</strong> can easily enhance the returned plot objects to create custom plots.</p>
+<p>Maps colored by state and county (aka “chloropleth maps”) are among the most common data graphics and are used to convey everything from vote totals to economic and health statistics. Well designed maps involve a careful choice of map projections and colors for both the state/county fill and boundary lines. Unfortunately, creating beautiful maps in R is still somewhat involved.</p>
+<p>The <strong>MazamaSpatialPlots</strong> package provides plotting functionality to make it as easy as possible to produce beautiful US state- and county-level maps. It builds on the excellent <strong>tmap</strong> package and harnesses datasaets from the <strong>MazamaSpatialUtils</strong> package. High-level plotting functions make it easy for users to create beautiful chloropleth maps. The underlying code uses <strong>ggplot2</strong> so users familiar with <strong>ggplot2</strong> can easily enhance the returned plot objects to create highly customized plots.</p>
 </div>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>This package is designed to be used with <a href="https://cran.r-project.org">R</a> (&gt;= 3.5) and <a href="https://www.rstudio.com">RStudio</a> so make sure you have those installed first.</p>
-<p>Users will want to install the <strong>devtools</strong> package to have access to the latest version of the package from GitHub.</p>
+<p>Users will want to install the <strong>devtools</strong> package to have access to the latest development version of the package from GitHub.</p>
 <p>The following packages should be installed by typing the following at the RStudio console:</p>
 <pre><code><a href="https://rdrr.io/r/utils/install.packages.html"># Note that vignettes require knitr and rmarkdown
 install.packages('knitr')
 install.packages('rmarkdown')
 install.packages('MazamaSpatialUtils')
 devtools::install_github('MazamaScience/MazamaSpatialPlots')</a></code></pre>
-<p><strong>MazamaSpatialPlots</strong>’ plotting functions require spatial polygon data to plot the shapes of states and counties. These spatial datasets are provided by <strong>MazamaSpatialUtils</strong> and can be installed by running the following in the RStudio console:</p>
+<p><strong>MazamaSpatialPlots</strong> equires spatial polygon data to plot the shapes of states and counties. These spatial datasets are provided by <strong>MazamaSpatialUtils</strong> and can be installed by running the following in the RStudio console:</p>
 <pre><code><a href="https://github.com/MazamaScience/MazamaSpatialUtils">library(MazamaSpatialUtils)
 dir.create('~/Data/Spatial', recursive = TRUE)
 setSpatialDataDir('~/Data/Spatial')
@@ -131,14 +133,14 @@ installSpatialData()</a></code></pre>
 <div id="features" class="section level2">
 <h2 class="hasAnchor">
 <a href="#features" class="anchor"></a>Features</h2>
-<p>Currently, <strong>MazamaSpatialPlots</strong> contains high level functions for creating choropleth maps for county or state level data:</p>
+<p>Currently, <strong>MazamaSpatialPlots</strong> contains high level functions for creating choropleth maps for US counties and states:</p>
 <ul>
 <li>
 <code><a href="../reference/countyMap.html">countyMap()</a></code> - plot a choropleth map for county level data. Uses the <code>USCensusCounties_02</code> dataset for spatial polygons.</li>
 <li>
 <code><a href="../reference/stateMap.html">stateMap()</a></code> - plot a choropleth map for state level data. Uses the <code>USCensusStates_02</code> dataset for spatial polygons.</li>
 </ul>
-<p>Additionally, <strong>MazamaSpatialPlots</strong> provides two example datasets formatted to use with the package’s functions:</p>
+<p>Additionally, <strong>MazamaSpatialPlots</strong> provides two example datasets formatted for use with the package’s functions:</p>
 <ul>
 <li>
 <code>example_US_stateObesity</code> - state level obesity rate</li>
@@ -146,40 +148,84 @@ installSpatialData()</a></code></pre>
 <code>example_US_countyCovid</code> - county level COVID19 cases and deaths</li>
 </ul>
 </div>
+<div id="input-data" class="section level2">
+<h2 class="hasAnchor">
+<a href="#input-data" class="anchor"></a>Input Data</h2>
+<p>The <em>SpatialPolygonsDataFrame</em> used to create a state or county map is provided by the <strong>MazamaSpatialUtils</strong> package once that is installed.</p>
+<div id="state-level-data" class="section level3">
+<h3 class="hasAnchor">
+<a href="#state-level-data" class="anchor"></a>State-level data</h3>
+<p>User data consists of simple dataframes. For the <code><a href="../reference/stateMap.html">stateMap()</a></code> function, the input dataframe must have a <code>stateCode</code> column containing the 2-character US state code. Any other column of data can be used as the <code>parameter</code> states will be colored by.</p>
+<p>The following functions from <strong>MazamaSpatialUtils</strong> can help in creating the <code>stateCode</code> column if it does not already exist:</p>
+<ul>
+<li><code><a href="https://rdrr.io/pkg/MazamaSpatialUtils/man/US_stateConversion.html">MazamaSpatialUtils::US_stateNameToCode()</a></code></li>
+<li><code><a href="https://rdrr.io/pkg/MazamaSpatialUtils/man/US_stateConversion.html">MazamaSpatialUtils::US_stateFIPSToCode()</a></code></li>
+</ul>
+</div>
+<div id="county-level-data" class="section level3">
+<h3 class="hasAnchor">
+<a href="#county-level-data" class="anchor"></a>County-level data</h3>
+<p>For county maps, the input data must contain a <code>countyFIPS</code> column uniquely identifying each county. The <code><a href="https://rdrr.io/pkg/MazamaSpatialUtils/man/US_countyCodes.html">MazamaSpatialUtils::US_countyCodes</a></code> dataset can be used to determine the <code>countyFIPS</code> codes.</p>
+</div>
+</div>
 <div id="example-maps" class="section level2">
 <h2 class="hasAnchor">
 <a href="#example-maps" class="anchor"></a>Example Maps</h2>
 <div id="example-state-map" class="section level3">
 <h3 class="hasAnchor">
 <a href="#example-state-map" class="anchor"></a>Example state map</h3>
-<p>In this example, we create a map showing the obesity rate for each state in the United States.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/MazamaScience/MazamaSpatialPlots">MazamaSpatialPlots</a></span>)
+<p>Here we create a state map using the package <code>example_US_stateObesity</code> dataset showing the obesity rate for each state in the United States. A single call to the <code><a href="../reference/stateMap.html">stateMap()</a></code> function is all that is required. Customization is performed entirely through function arguments.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/MazamaScience/MazamaSpatialPlots">MazamaSpatialPlots</a></span><span class="op">)</span>
 
-<span class="fu"><a href="../reference/stateMap.html">stateMap</a></span>(
-  data = <span class="kw">example_US_stateObesity</span>,
-  parameter = <span class="st">'obesityRate'</span>,
-  palette = <span class="st">'BuPu'</span>,
-  breaks = <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="fl">20</span>, <span class="fl">38</span>, <span class="fl">3</span>),
-  stateBorderColor = <span class="st">'white'</span>,
-  title = <span class="st">"Obesity Rate in U.S. States"</span>
-)
-</pre></div>
+<span class="co"># Look at input data</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">example_US_stateObesity</span><span class="op">)</span>
+<span class="co">#&gt; # A tibble: 6 x 3</span>
+<span class="co">#&gt;   stateCode stateName  obesityRate</span>
+<span class="co">#&gt;   &lt;chr&gt;     &lt;chr&gt;            &lt;dbl&gt;</span>
+<span class="co">#&gt; 1 TX        Texas             32.4</span>
+<span class="co">#&gt; 2 CA        California        24.2</span>
+<span class="co">#&gt; 3 KY        Kentucky          34.6</span>
+<span class="co">#&gt; 4 GA        Georgia           30.7</span>
+<span class="co">#&gt; 5 WI        Wisconsin         30.7</span>
+<span class="co">#&gt; 6 OR        Oregon            30.1</span>
+
+<span class="co"># Create the map</span>
+<span class="fu"><a href="../reference/stateMap.html">stateMap</a></span><span class="op">(</span>
+  data <span class="op">=</span> <span class="va">example_US_stateObesity</span>,
+  parameter <span class="op">=</span> <span class="st">'obesityRate'</span>,
+  palette <span class="op">=</span> <span class="st">'BuPu'</span>,
+  breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">38</span>, <span class="fl">3</span><span class="op">)</span>,
+  stateBorderColor <span class="op">=</span> <span class="st">'white'</span>,
+  title <span class="op">=</span> <span class="st">"Obesity Rate in U.S. States"</span>
+<span class="op">)</span></code></pre></div>
 <p><img src="MazamaSpatialPlots_files/figure-html/stateMap-1.png" width="672"></p>
 </div>
 <div id="example-county-map" class="section level3">
 <h3 class="hasAnchor">
 <a href="#example-county-map" class="anchor"></a>Example county map</h3>
-<p>In this example, we create a map showing COVID19 cases across all of the counties in the United States.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit">
-  <span class="fu"><a href="../reference/countyMap.html">countyMap</a></span>(
-    data = <span class="kw">example_US_countyCovid</span>,
-    parameter = <span class="st">"cases"</span>,
-    breaks = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>,<span class="fl">100</span>,<span class="fl">200</span>,<span class="fl">500</span>,<span class="fl">1000</span>,<span class="fl">2000</span>,<span class="fl">5000</span>,<span class="fl">10000</span>,<span class="fl">20000</span>,<span class="fl">50000</span>,<span class="fl">1e6</span>),
-    countyBorderColor = <span class="st">"white"</span>,
-    title = <span class="st">"COVID19 Cases in U.S. States"</span>
-  )
-</pre></div>
+<p>For the <code><a href="../reference/countyMap.html">countyMap()</a></code> example, we use COVID19 case data from June 12, 2020.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Look at the input data</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">example_US_countyCovid</span><span class="op">)</span>
+<span class="co">#&gt; # A tibble: 6 x 6</span>
+<span class="co">#&gt;   stateCode stateName countyFIPS countyName cases deaths</span>
+<span class="co">#&gt;   &lt;chr&gt;     &lt;chr&gt;     &lt;chr&gt;      &lt;chr&gt;      &lt;int&gt;  &lt;int&gt;</span>
+<span class="co">#&gt; 1 AL        Alabama   01001      Autauga      234      5</span>
+<span class="co">#&gt; 2 AL        Alabama   01003      Baldwin      306      9</span>
+<span class="co">#&gt; 3 AL        Alabama   01005      Barbour      173      1</span>
+<span class="co">#&gt; 4 AL        Alabama   01007      Bibb          79      1</span>
+<span class="co">#&gt; 5 AL        Alabama   01009      Blount        65      1</span>
+<span class="co">#&gt; 6 AL        Alabama   01011      Bullock      210      6</span>
+
+<span class="co"># Create the map</span>
+<span class="fu"><a href="../reference/countyMap.html">countyMap</a></span><span class="op">(</span>
+  data <span class="op">=</span> <span class="va">example_US_countyCovid</span>,
+  parameter <span class="op">=</span> <span class="st">"cases"</span>,
+  breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">100</span>,<span class="fl">200</span>,<span class="fl">500</span>,<span class="fl">1000</span>,<span class="fl">2000</span>,<span class="fl">5000</span>,<span class="fl">10000</span>,<span class="fl">20000</span>,<span class="fl">50000</span>,<span class="fl">1e6</span><span class="op">)</span>,
+  countyBorderColor <span class="op">=</span> <span class="st">"white"</span>,
+  title <span class="op">=</span> <span class="st">"COVID19 Cases in U.S. States"</span>
+<span class="op">)</span></code></pre></div>
 <p><img src="MazamaSpatialPlots_files/figure-html/countyMap-1.png" width="672"></p>
 </div>
 </div>

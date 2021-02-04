@@ -1,3 +1,13 @@
+# MazamaSpatialPlots 0.1.0
+
+First user-ready release of the package. While still in development, engough 
+functionality exists for outside users to start using the `stateMap()` and
+`countyMap()` functions.
+
+* Some refactoring of information in various articles.
+* Added unit testing for `countyMap()` function.
+* Now requiring **MazamaSpatialUtils** (>= 0.7).
+
 # MazamaSpatialPlots 0.0.10
 
 * Removed dependency on **stringr**.
@@ -43,3 +53,4 @@ and reexport the entire namespace from **MazamaSpatialutils**.
 # MazamaSpatialPlots 0.0.1
 
 * Initial Release
+
