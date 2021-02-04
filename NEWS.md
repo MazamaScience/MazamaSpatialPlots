@@ -53,3 +53,4 @@ and reexport the entire namespace from **MazamaSpatialutils**.
 # MazamaSpatialPlots 0.0.1
 
 * Initial Release
+

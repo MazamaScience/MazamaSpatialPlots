@@ -81,7 +81,7 @@ county level. Input consists of a dataframe with countyFIPS identifiers." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -116,7 +116,7 @@ county level. Input consists of a dataframe with countyFIPS identifiers." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/MazamaScience/MazamaSpatialPlots/">
-    <span class="fab fa-github fa-lg"></span>
+    <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -143,20 +143,20 @@ county level. Input consists of a dataframe with countyFIPS identifiers." />
 county level. Input consists of a dataframe with <code>countyFIPS</code> identifiers.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>countyMap</span>(
-  data = <span class='kw'>NULL</span>,
-  parameter = <span class='kw'>NULL</span>,
-  state_SPDF = <span class='st'>"USCensusStates_02"</span>,
-  county_SPDF = <span class='st'>"USCensusCounties_02"</span>,
-  palette = <span class='st'>"YlOrBr"</span>,
-  breaks = <span class='kw'>NULL</span>,
-  conusOnly = <span class='fl'>TRUE</span>,
-  stateCode = <span class='kw'>NULL</span>,
-  projection = <span class='kw'>NULL</span>,
-  stateBorderColor = <span class='st'>"gray50"</span>,
-  countyBorderColor = <span class='st'>"white"</span>,
-  title = <span class='kw'>NULL</span>
-)</pre>
+    <pre class="usage"><span class='fu'>countyMap</span><span class='op'>(</span>
+  data <span class='op'>=</span> <span class='cn'>NULL</span>,
+  parameter <span class='op'>=</span> <span class='cn'>NULL</span>,
+  state_SPDF <span class='op'>=</span> <span class='st'>"USCensusStates_02"</span>,
+  county_SPDF <span class='op'>=</span> <span class='st'>"USCensusCounties_02"</span>,
+  palette <span class='op'>=</span> <span class='st'>"YlOrBr"</span>,
+  breaks <span class='op'>=</span> <span class='cn'>NULL</span>,
+  conusOnly <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  stateCode <span class='op'>=</span> <span class='cn'>NULL</span>,
+  projection <span class='op'>=</span> <span class='cn'>NULL</span>,
+  stateBorderColor <span class='op'>=</span> <span class='st'>"gray50"</span>,
+  countyBorderColor <span class='op'>=</span> <span class='st'>"white"</span>,
+  title <span class='op'>=</span> <span class='cn'>NULL</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -234,34 +234,34 @@ the following parameters:</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://github.com/MazamaScience/MazamaSpatialPlots'>MazamaSpatialPlots</a></span>)
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/MazamaScience/MazamaSpatialPlots'>MazamaSpatialPlots</a></span><span class='op'>)</span>
 
-<span class='fu'>countyMap</span>(
-  data = <span class='kw'>example_US_countyCovid</span>,
-  parameter = <span class='st'>"cases"</span>,
-  breaks = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>,<span class='fl'>100</span>,<span class='fl'>200</span>,<span class='fl'>500</span>,<span class='fl'>1000</span>,<span class='fl'>2000</span>,<span class='fl'>5000</span>,<span class='fl'>10000</span>,<span class='fl'>20000</span>,<span class='fl'>50000</span>,<span class='fl'>1e6</span>),
-  title = <span class='st'>"COVID-19 Cases by County \n as of June 01 2020"</span>
-)
+<span class='fu'>countyMap</span><span class='op'>(</span>
+  data <span class='op'>=</span> <span class='va'>example_US_countyCovid</span>,
+  parameter <span class='op'>=</span> <span class='st'>"cases"</span>,
+  breaks <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>,<span class='fl'>100</span>,<span class='fl'>200</span>,<span class='fl'>500</span>,<span class='fl'>1000</span>,<span class='fl'>2000</span>,<span class='fl'>5000</span>,<span class='fl'>10000</span>,<span class='fl'>20000</span>,<span class='fl'>50000</span>,<span class='fl'>1e6</span><span class='op'>)</span>,
+  title <span class='op'>=</span> <span class='st'>"COVID-19 Cases by County \n as of June 01 2020"</span>
+<span class='op'>)</span>
 </div><div class='img'><img src='countyMap-1.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='fu'>countyMap</span>(
-  data = <span class='kw'>example_US_countyCovid</span>,
-  parameter = <span class='st'>"deaths"</span>,
-  state_SPDF = <span class='kw'>USCensusStates_02</span>,
-  county_SPDF = <span class='kw'>USCensusCounties_02</span>,
-  palette = <span class='st'>"OrRd"</span>,
-  breaks = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>50</span>, <span class='fl'>100</span>, <span class='fl'>250</span>, <span class='fl'>500</span>, <span class='fl'>1000</span>, <span class='fl'>2500</span>, <span class='fl'>3000</span>),
-  stateCode = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>( <span class='st'>"NY"</span>, <span class='st'>"PA"</span>, <span class='st'>"MD"</span>, <span class='st'>"NJ"</span>, <span class='st'>"DE"</span>),
-  stateBorderColor = <span class='st'>"black"</span>,
-  countyBorderColor = <span class='st'>'grey70'</span>,
-  title = <span class='st'>"COVID-19 Deaths* in the Mid Atlantic"</span>
-) <span class='op'>+</span>
-  <span class='kw'>tmap</span>::<span class='fu'><a href='https://rdrr.io/pkg/tmap/man/tm_layout.html'>tm_layout</a></span>(
-    main.title.size = <span class='fl'>1.2</span>,
-    main.title.color = <span class='st'>"white"</span>,
-    attr.color = <span class='st'>'white'</span>,
-    bg.color = <span class='st'>"dodgerblue4"</span>
-  ) <span class='op'>+</span>
-  <span class='kw'>tmap</span>::<span class='fu'><a href='https://rdrr.io/pkg/tmap/man/tm_credits.html'>tm_credits</a></span>(<span class='st'>"*as of June 01, 2020"</span>, col = <span class='st'>"white"</span>, position = <span class='st'>"left"</span>)
+<span class='fu'>countyMap</span><span class='op'>(</span>
+  data <span class='op'>=</span> <span class='va'>example_US_countyCovid</span>,
+  parameter <span class='op'>=</span> <span class='st'>"deaths"</span>,
+  state_SPDF <span class='op'>=</span> <span class='va'>USCensusStates_02</span>,
+  county_SPDF <span class='op'>=</span> <span class='va'>USCensusCounties_02</span>,
+  palette <span class='op'>=</span> <span class='st'>"OrRd"</span>,
+  breaks <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>50</span>, <span class='fl'>100</span>, <span class='fl'>250</span>, <span class='fl'>500</span>, <span class='fl'>1000</span>, <span class='fl'>2500</span>, <span class='fl'>3000</span><span class='op'>)</span>,
+  stateCode <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span> <span class='st'>"NY"</span>, <span class='st'>"PA"</span>, <span class='st'>"MD"</span>, <span class='st'>"NJ"</span>, <span class='st'>"DE"</span><span class='op'>)</span>,
+  stateBorderColor <span class='op'>=</span> <span class='st'>"black"</span>,
+  countyBorderColor <span class='op'>=</span> <span class='st'>'grey70'</span>,
+  title <span class='op'>=</span> <span class='st'>"COVID-19 Deaths* in the Mid Atlantic"</span>
+<span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>tmap</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/tmap/man/tm_layout.html'>tm_layout</a></span><span class='op'>(</span>
+    main.title.size <span class='op'>=</span> <span class='fl'>1.2</span>,
+    main.title.color <span class='op'>=</span> <span class='st'>"white"</span>,
+    attr.color <span class='op'>=</span> <span class='st'>'white'</span>,
+    bg.color <span class='op'>=</span> <span class='st'>"dodgerblue4"</span>
+  <span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'>tmap</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/tmap/man/tm_credits.html'>tm_credits</a></span><span class='op'>(</span><span class='st'>"*as of June 01, 2020"</span>, col <span class='op'>=</span> <span class='st'>"white"</span>, position <span class='op'>=</span> <span class='st'>"left"</span><span class='op'>)</span>
 </div><div class='img'><img src='countyMap-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># }</span>
 </div></pre>
