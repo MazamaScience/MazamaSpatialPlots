@@ -28,15 +28,15 @@ SPDFs can be installed with:
 
 ```
 library(MazamaSpatialUtils)
-setSpatialDataDir('~/Data/Spatial') # default directory for spatial data
-installSpatialData('USCensusStates_02') # state level polygons
-installSpatialData('USCensusCounties_02') # county level polygons
+setSpatialDataDir('~/Data/Spatial')    # default directory for spatial data
+installSpatialData('USCensusStates')   # state level polygons
+installSpatialData('USCensusCounties') # county level polygons
 ```
 
 The third required form of data is a regular dataframe that contains the 
 variable `countyFIPS` as well as a variable of interest. The variable of interest 
 from this dataset is indicated using the `parameter` argument. This `parameter`
-is used to determine the colors of states in the generated chloropleth map. 
+is used to determine the colors of counties in the generated chloropleth map. 
 
 The next two examples demonstrate obtaining, summarizing, and mapping 
 county-level data. The first uses an example dataframe from the package and the 
@@ -54,6 +54,7 @@ library(MazamaSpatialPlots)
 countyMap(
   data = example_US_countyCovid,
   parameter = 'cases',
+  breaks = c(0,100,200,500,1000,2000,5000,10000,20000,50000,1e6),
   state_SPDF = "USCensusStates_02", # the default value
   county_SPDF = "USCensusCounties_02", # the default value
   title = "Covid cases by county -- June 01, 2020"
@@ -74,6 +75,7 @@ it very easy to extract and visualize data from the internet.
 URL <- "https://healthinequality.org/dl/health_ineq_online_table_12.csv"
 characteristicsData <- read.csv(URL)
 
+# Added required 'stateCode' and 'countyFIPS' variables
 characteristicsData <- 
   characteristicsData %>%
   dplyr::mutate(
@@ -83,6 +85,7 @@ characteristicsData <-
     .keep = "none"
   ) 
 
+# Create map
 countyMap(
   data = characteristicsData,
   parameter = 'pUninsured2010',
