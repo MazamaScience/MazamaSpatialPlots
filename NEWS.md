@@ -7,7 +7,7 @@ functionality exists for outside users to start using the `stateMap()` and
 * Some refactoring of information in various articles.
 * Added unit testing for `countyMap()` function.
 * Now requiring **MazamaSpatialUtils** (>= 0.7).
-* Added "Creating County Maps" article
+* Added "Creating County Maps" article.
 
 # MazamaSpatialPlots 0.0.10
 

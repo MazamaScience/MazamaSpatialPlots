@@ -39,7 +39,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../../index.html">
-    <span class="fas fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -77,7 +77,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/MazamaScience/MazamaSpatialPlots/">
-    <span class="fab fa-github fa-lg"></span>
+    <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -91,7 +91,8 @@
 
       
 
-      </header><script src="Creating_County_Maps_files/header-attrs-2.6/header-attrs.js"></script><div class="row">
+      </header><script src="Creating_County_Maps_files/header-attrs-2.5/header-attrs.js"></script><link href="Creating_County_Maps_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
+<script src="Creating_County_Maps_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Creating County Maps</h1>
@@ -116,53 +117,54 @@
 <a href="#default-plots" class="anchor"></a>Default Plots</h2>
 <p>The <code><a href="../../reference/countyMap.html">countyMap()</a></code> function requires three forms of state-level data. The first two are Spatial Polygons Data Frames (SPDF) containing state and county level polygons. The SPDF containing state level polygons must include the variable <code>stateCode</code> in its <code>@data</code> slot. Similarly, the SPDF containing county level polygons must include the variable <code>countyFIPS</code> in its <code>@data</code> slot. The default state and county level SPDF’s are <code>USCensusStates_02</code> and <code>USCensusCounties_02</code> respectively, and are part of the package data. Higher or lower resolution US Census state and county SPDFs can be installed with:</p>
 <pre><code><a href="https://github.com/MazamaScience/MazamaSpatialUtils">library(MazamaSpatialUtils)
-setSpatialDataDir('~/Data/Spatial') # default directory for spatial data
-installSpatialData('USCensusStates_02') # state level polygons
-installSpatialData('USCensusCounties_02') # county level polygons</a></code></pre>
-<p>The third required form of data is a regular dataframe that contains the variable <code>countyFIPS</code> as well as a variable of interest. The variable of interest from this dataset is indicated using the <code>parameter</code> argument. This <code>parameter</code> is used to determine the colors of states in the generated chloropleth map.</p>
+setSpatialDataDir('~/Data/Spatial')    # default directory for spatial data
+installSpatialData('USCensusStates')   # state level polygons
+installSpatialData('USCensusCounties') # county level polygons</a></code></pre>
+<p>The third required form of data is a regular dataframe that contains the variable <code>countyFIPS</code> as well as a variable of interest. The variable of interest from this dataset is indicated using the <code>parameter</code> argument. This <code>parameter</code> is used to determine the colors of counties in the generated chloropleth map.</p>
 <p>The next two examples demonstrate obtaining, summarizing, and mapping county-level data. The first uses an example dataframe from the package and the second demonstrates using <code><a href="https://rdrr.io/r/utils/read.table.html">read.csv()</a></code> to pull data from the web and filling in missing <code>countyFIPS</code> with <code><a href="https://rdrr.io/pkg/MazamaSpatialUtils/man/US_countyCodes.html">MazamaSpatialUtils::US_countyCodes</a></code>.</p>
 <div id="using-package-dataframe-example_us_countycovid" class="section level3">
 <h3 class="hasAnchor">
 <a href="#using-package-dataframe-example_us_countycovid" class="anchor"></a>Using package dataframe <code>example_US_countyCovid</code>
 </h3>
 <p>In this example, the package-internal dataframe, <code>example_US_countyCovid</code>, is used directly:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/MazamaScience/MazamaSpatialPlots">MazamaSpatialPlots</a></span>)
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/MazamaScience/MazamaSpatialPlots">MazamaSpatialPlots</a></span><span class="op">)</span>
 
-<span class="fu"><a href="../../reference/countyMap.html">countyMap</a></span>(
-  data = <span class="kw">example_US_countyCovid</span>,
-  parameter = <span class="st">'cases'</span>,
-  state_SPDF = <span class="st">"USCensusStates_02"</span>, <span class="co"># the default value</span>
-  county_SPDF = <span class="st">"USCensusCounties_02"</span>, <span class="co"># the default value</span>
-  title = <span class="st">"Covid cases by county -- June 01, 2020"</span>
-)
-</pre></div>
+<span class="fu"><a href="../../reference/countyMap.html">countyMap</a></span><span class="op">(</span>
+  data <span class="op">=</span> <span class="va">example_US_countyCovid</span>,
+  parameter <span class="op">=</span> <span class="st">'cases'</span>,
+  breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">100</span>,<span class="fl">200</span>,<span class="fl">500</span>,<span class="fl">1000</span>,<span class="fl">2000</span>,<span class="fl">5000</span>,<span class="fl">10000</span>,<span class="fl">20000</span>,<span class="fl">50000</span>,<span class="fl">1e6</span><span class="op">)</span>,
+  state_SPDF <span class="op">=</span> <span class="st">"USCensusStates_02"</span>, <span class="co"># the default value</span>
+  county_SPDF <span class="op">=</span> <span class="st">"USCensusCounties_02"</span>, <span class="co"># the default value</span>
+  title <span class="op">=</span> <span class="st">"Covid cases by county -- June 01, 2020"</span>
+<span class="op">)</span></code></pre></div>
 <p><img src="Creating_County_Maps_files/figure-html/plot_obesity-1.png" width="700"></p>
 </div>
 <div id="using-data-found-online" class="section level3">
 <h3 class="hasAnchor">
 <a href="#using-data-found-online" class="anchor"></a>Using data found online</h3>
 <p>County-level data of interest can be found online and easily loaded using <code>read.csv</code> or scraped using <code><a href="https://rdrr.io/pkg/MazamaCoreUtils/man/html_getTables.html">MazamaCoreUtils::html_getTable()</a></code> to parse all table elements from a website. Using these loading/scraping functions in conjunction with <code><a href="../../reference/countyMap.html">countyMap()</a></code> makes it very easy to extract and visualize data from the internet.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="co"># readme for data: https://healthinequality.org/dl/health_ineq_online_table_12_readme.pdf</span>
-<span class="kw">URL</span> <span class="op">&lt;-</span> <span class="st">"https://healthinequality.org/dl/health_ineq_online_table_12.csv"</span>
-<span class="kw">characteristicsData</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span>(<span class="kw">URL</span>)
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># readme for data: https://healthinequality.org/dl/health_ineq_online_table_12_readme.pdf</span>
+<span class="va">URL</span> <span class="op">&lt;-</span> <span class="st">"https://healthinequality.org/dl/health_ineq_online_table_12.csv"</span>
+<span class="va">characteristicsData</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="va">URL</span><span class="op">)</span>
 
-<span class="kw">characteristicsData</span> <span class="op">&lt;-</span> 
-  <span class="kw">characteristicsData</span> <span class="op">%&gt;%</span>
-  <span class="kw">dplyr</span>::<span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(
-    stateCode = <span class="kw">stateabbrv</span>,
-    countyFIPS = <span class="kw">MazamaSpatialUtils</span>::<span class="fu"><a href="https://rdrr.io/pkg/MazamaSpatialUtils/man/US_countyConversion.html">US_countyNameToFIPS</a></span>(<span class="kw">stateCode</span>, <span class="kw">county_name</span>),
-    pUninsured2010 = <span class="kw">puninsured2010</span>,
-    .keep = <span class="st">"none"</span>
-  ) 
+<span class="co"># Added required 'stateCode' and 'countyFIPS' variables</span>
+<span class="va">characteristicsData</span> <span class="op">&lt;-</span> 
+  <span class="va">characteristicsData</span> <span class="op">%&gt;%</span>
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>
+    stateCode <span class="op">=</span> <span class="va">stateabbrv</span>,
+    countyFIPS <span class="op">=</span> <span class="fu">MazamaSpatialUtils</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/MazamaSpatialUtils/man/US_countyConversion.html">US_countyNameToFIPS</a></span><span class="op">(</span><span class="va">stateCode</span>, <span class="va">county_name</span><span class="op">)</span>,
+    pUninsured2010 <span class="op">=</span> <span class="va">puninsured2010</span>,
+    .keep <span class="op">=</span> <span class="st">"none"</span>
+  <span class="op">)</span> 
 
-<span class="fu"><a href="../../reference/countyMap.html">countyMap</a></span>(
-  data = <span class="kw">characteristicsData</span>,
-  parameter = <span class="st">'pUninsured2010'</span>,
-  title = <span class="st">"Percentage of population uninsured in 2010"</span>
-)
-</pre></div>
+<span class="co"># Create map</span>
+<span class="fu"><a href="../../reference/countyMap.html">countyMap</a></span><span class="op">(</span>
+  data <span class="op">=</span> <span class="va">characteristicsData</span>,
+  parameter <span class="op">=</span> <span class="st">'pUninsured2010'</span>,
+  title <span class="op">=</span> <span class="st">"Percentage of population uninsured in 2010"</span>
+<span class="op">)</span></code></pre></div>
 <p><img src="Creating_County_Maps_files/figure-html/readcsv_and_coutymap-1.png" width="700"></p>
 </div>
 </div>
@@ -180,28 +182,26 @@ installSpatialData('USCensusCounties_02') # county level polygons</a></code></pr
 <li><p><a href="https://www.r-graph-gallery.com/38-rcolorbrewers-palettes.html" class="uri">https://www.r-graph-gallery.com/38-rcolorbrewers-palettes.html</a></p></li>
 </ul>
 <p>In this example, <code>breaks</code> is used to create a coarser coloring scheme and <code>palette</code> is used to customize the exact color for each obesity rate level. The vector of <code>breaks</code> will be one longer than the vector of <code>colors</code>.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="fu"><a href="../../reference/countyMap.html">countyMap</a></span>(
-  data = <span class="kw">example_US_countyCovid</span>,
-  parameter = <span class="st">'cases'</span>,
-  palette = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"lightblue"</span>, <span class="st">"orange"</span>, <span class="st">"red"</span>),
-  breaks = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>,<span class="fl">1000</span>,<span class="fl">10000</span>,<span class="fl">50000</span>,<span class="fl">1e6</span>),
-  countyBorderColor = <span class="st">"white"</span>,
-  title = <span class="st">"Covid cases by county -- June 01, 2020"</span>
-)
-</pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../../reference/countyMap.html">countyMap</a></span><span class="op">(</span>
+  data <span class="op">=</span> <span class="va">example_US_countyCovid</span>,
+  parameter <span class="op">=</span> <span class="st">'cases'</span>,
+  palette <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"lightblue"</span>, <span class="st">"orange"</span>, <span class="st">"red"</span><span class="op">)</span>,
+  breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1000</span>,<span class="fl">10000</span>,<span class="fl">50000</span>,<span class="fl">1e6</span><span class="op">)</span>,
+  countyBorderColor <span class="op">=</span> <span class="st">"white"</span>,
+  title <span class="op">=</span> <span class="st">"Covid cases by county -- June 01, 2020"</span>
+<span class="op">)</span></code></pre></div>
 <p><img src="Creating_County_Maps_files/figure-html/plotColors-1.png" width="700"></p>
 <p>In this example, <code>breaks</code> is used to create a more detailed coloring scheme and the <strong>RColorBrewer</strong> blue to purple color palette name is chosen.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit">
-<span class="fu"><a href="../../reference/countyMap.html">countyMap</a></span>(
-  data = <span class="kw">example_US_countyCovid</span>,
-  parameter = <span class="st">'cases'</span>,
-  palette = <span class="st">'BuPu'</span>,
-  breaks = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>,<span class="fl">100</span>,<span class="fl">200</span>,<span class="fl">500</span>,<span class="fl">1000</span>,<span class="fl">2000</span>,<span class="fl">5000</span>,<span class="fl">10000</span>,<span class="fl">20000</span>,<span class="fl">50000</span>,<span class="fl">1e6</span>),
-  countyBorderColor = <span class="st">"white"</span>,
-  title = <span class="st">"Covid cases by county -- June 01, 2020"</span>
-)
-</pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../../reference/countyMap.html">countyMap</a></span><span class="op">(</span>
+  data <span class="op">=</span> <span class="va">example_US_countyCovid</span>,
+  parameter <span class="op">=</span> <span class="st">'cases'</span>,
+  palette <span class="op">=</span> <span class="st">'BuPu'</span>,
+  breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">100</span>,<span class="fl">200</span>,<span class="fl">500</span>,<span class="fl">1000</span>,<span class="fl">2000</span>,<span class="fl">5000</span>,<span class="fl">10000</span>,<span class="fl">20000</span>,<span class="fl">50000</span>,<span class="fl">1e6</span><span class="op">)</span>,
+  countyBorderColor <span class="op">=</span> <span class="st">"white"</span>,
+  title <span class="op">=</span> <span class="st">"Covid cases by county -- June 01, 2020"</span>
+<span class="op">)</span></code></pre></div>
 <p><img src="Creating_County_Maps_files/figure-html/plotStates-1.png" width="700"></p>
 </div>
 <div id="using-conusonly-and-statecode" class="section level3">
@@ -209,17 +209,16 @@ installSpatialData('USCensusCounties_02') # county level polygons</a></code></pr
 <a href="#using-conusonly-and-statecode" class="anchor"></a>Using conusOnly and stateCode</h3>
 <p>The <code>conusOnly</code> and <code>stateCode</code> parameters define which states will be included in the map. If <code>stateCode</code> is defined, then <code>conusOnly</code> will be ignored. If <code>stateCode</code> is not defined, then <code>conusOnly</code> specifies whether the map is limited to the continental US. When <code>conusOnly = FALSE</code>, the continental U.S., Alaska, Hawaii, and U.S. Territories will be included.</p>
 <p>This example builds upon the previous example and includes <code>stateCode</code> specification to create a map of Western states.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit">
-<span class="fu"><a href="../../reference/countyMap.html">countyMap</a></span>(
-  data = <span class="kw">example_US_countyCovid</span>,
-  parameter = <span class="st">'cases'</span>,
-  palette = <span class="st">'BuPu'</span>,
-  breaks = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>,<span class="fl">100</span>,<span class="fl">200</span>,<span class="fl">500</span>,<span class="fl">1000</span>,<span class="fl">2000</span>,<span class="fl">5000</span>,<span class="fl">10000</span>,<span class="fl">20000</span>,<span class="fl">50000</span>,<span class="fl">1e6</span>),
-  countyBorderColor = <span class="st">"white"</span>,
-  stateCode = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"CA"</span>, <span class="st">"NV"</span>, <span class="st">"OR"</span>, <span class="st">"WA"</span>, <span class="st">"ID"</span>),
-  title = <span class="st">"Covid cases by county -- June 01, 2020"</span>
-)
-</pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../../reference/countyMap.html">countyMap</a></span><span class="op">(</span>
+  data <span class="op">=</span> <span class="va">example_US_countyCovid</span>,
+  parameter <span class="op">=</span> <span class="st">'cases'</span>,
+  palette <span class="op">=</span> <span class="st">'BuPu'</span>,
+  breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">100</span>,<span class="fl">200</span>,<span class="fl">500</span>,<span class="fl">1000</span>,<span class="fl">2000</span>,<span class="fl">5000</span>,<span class="fl">10000</span>,<span class="fl">20000</span>,<span class="fl">50000</span>,<span class="fl">1e6</span><span class="op">)</span>,
+  countyBorderColor <span class="op">=</span> <span class="st">"white"</span>,
+  stateCode <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"CA"</span>, <span class="st">"NV"</span>, <span class="st">"OR"</span>, <span class="st">"WA"</span>, <span class="st">"ID"</span><span class="op">)</span>,
+  title <span class="op">=</span> <span class="st">"Covid cases by county -- June 01, 2020"</span>
+<span class="op">)</span></code></pre></div>
 <p><img src="Creating_County_Maps_files/figure-html/use_stateCode-1.png" width="700"></p>
 </div>
 </div>

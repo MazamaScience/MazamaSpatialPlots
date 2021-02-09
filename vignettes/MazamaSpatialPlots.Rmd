@@ -137,7 +137,7 @@ stateMap(
 
 ### Example county map
 
-For the `countyMap()` example, we use COVID19 case data from June 12, 2020.
+For the `countyMap()` example, we use COVID19 case data from June 01, 2020.
 
 ```{r countyMap, warning = FALSE, message = FALSE }
 # Look at the input data
