@@ -98,7 +98,7 @@ save(USCensusStates_02, file = &quot;data/USCensusStates_02.rda&quot;)
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -125,6 +125,9 @@ save(USCensusStates_02, file = &quot;data/USCensusStates_02.rda&quot;)
       <a href="../articles/articles/Customizing_State_Maps.html">Customizing State Maps</a>
     </li>
     <li>
+      <a href="../articles/articles/Opportunity_Insights.html">Opportunity Insights</a>
+    </li>
+    <li>
       <a href="../articles/articles/Working_with_Locations.html">Working with Air Quality Data</a>
     </li>
   </ul>
@@ -136,7 +139,7 @@ save(USCensusStates_02, file = &quot;data/USCensusStates_02.rda&quot;)
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/MazamaScience/MazamaSpatialPlots/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -167,20 +170,20 @@ compatible with <code><a href='stateMap.html'>stateMap()</a></code>. See the Maz
 function convertUSCensusStates() that creates this SPDF.</p>
 <p>This dataset was generated on 2020-07-25 by running:</p>
 <pre>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/MazamaScience/MazamaSpatialUtils'>MazamaSpatialUtils</a></span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://github.com/MazamaScience/MazamaSpatialUtils'>MazamaSpatialUtils</a></span>)
 
-<span class='fu'><a href='https://rdrr.io/pkg/MazamaSpatialUtils/man/setSpatialDataDir.html'>setSpatialDataDir</a></span><span class='op'>(</span><span class='st'>"~/Data/Spatial"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/pkg/MazamaSpatialUtils/man/setSpatialDataDir.html'>setSpatialDataDir</a></span>(<span class='st'>"~/Data/Spatial"</span>)
 
-<span class='fu'>MazamaSpatialUtils</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/MazamaSpatialUtils/man/convertUSCensusStates.html'>convertUSCensusStates</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='kw'>MazamaSpatialUtils</span>::<span class='fu'><a href='https://rdrr.io/pkg/MazamaSpatialUtils/man/convertUSCensusStates.html'>convertUSCensusStates</a></span>()
 
-<span class='fu'>MazamaSpatialUtils</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/MazamaSpatialUtils/man/loadSpatialData.html'>loadSpatialData</a></span><span class='op'>(</span><span class='st'>"USCensusStates_02"</span><span class='op'>)</span>
+<span class='kw'>MazamaSpatialUtils</span>::<span class='fu'><a href='https://rdrr.io/pkg/MazamaSpatialUtils/man/loadSpatialData.html'>loadSpatialData</a></span>(<span class='st'>"USCensusStates_02"</span>)
 
-<span class='fu'><a href='https://rdrr.io/r/base/save.html'>save</a></span><span class='op'>(</span><span class='va'>USCensusStates_02</span>, file <span class='op'>=</span> <span class='st'>"data/USCensusStates_02.rda"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/save.html'>save</a></span>(<span class='kw'>USCensusStates_02</span>, file = <span class='st'>"data/USCensusStates_02.rda"</span>)
 </pre>
 
     </div>
 
-    <pre class="usage"><span class='va'>USCensusStates_02</span></pre>
+    <pre class="usage"><span class='kw'>USCensusStates_02</span></pre>
 
 
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>

@@ -1,0 +1,71 @@
+---
+title: "Opportunity Insights"
+author: "Eli Grosman, Mazama Science"
+date: "February 9, 2020"
+output: rmarkdown::html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+library(MazamaSpatialPlots)
+```
+
+## Objective
+
+The goal of this document is to illustrate how **MazamaSpatialPlots** can be used
+to easily recreate state or county level choropleth maps found on the web.
+
+Throughout this document, we will be using data provided by 
+[Opportunity Insights](https://opportunityinsights.org/); specifically, the data
+used on their [Economic Tracker](https://www.tracktherecovery.org/) web app.
+
+## Obtaining Data
+
+All of the data we will use is easily obtainable from the Oportunity Insights 
+[GitHub repository](https://github.com/OpportunityInsights/EconomicTracker). We
+can use `read.csv()` to load data directly.
+
+```{r loadData}
+# COVID data by US county
+URL <- "https://raw.githubusercontent.com/OpportunityInsights/EconomicTracker/main/data/COVID%20-%20County%20-%20Daily.csv"
+countyCovid <- read.csv(URL, stringsAsFactors = FALSE)
+names(countyCovid)
+head(countyCovid)
+```
+
+## Map 1: COVID Cases in Washington Counties
+
+The first map we will recreate is the map of new cases in Washington state 
+(by county). We define new cases to be a 7-day rolling average of confirmed
+cases of COVID-19 per 100k residents.
+
+
+![](./Opportunity_Insights_files/map1.PNG)
+
+```{r map1_basic, warning = FALSE}
+# column 'new_case_rate' is the confirmed covid cases per 100k residents, 7-day rolling average
+countyCovid_formatted <- countyCovid %>%
+  mutate(
+    date = lubridate::parse_date_time(paste(year, month, day), "y m d", tz = "UTC"),
+    countyFIPS = stringr::str_pad(countyfips, width = 5, pad = "0"),
+    stateCode = US_stateFIPSToCode(substr(countyFIPS, 0, 2)),
+    new_case_rate = as.numeric(new_case_rate)) %>%
+  filter(date == lubridate::today() - lubridate::days(3)) %>%
+  group_by(countyFIPS) %>% 
+  mutate(meanCaseRate = mean(new_case_rate, na.rm = TRUE)) %>%
+  select(countyFIPS, stateCode, meanCaseRate)
+
+countyMap(
+  data = countyCovid_formatted,
+  parameter = "meanCaseRate",
+  stateCode = "WA",
+  breaks = seq(0, 200, 10),
+  palette = "YlOrRd",
+  stateBorderColor = "white"
+)
+```
+
+
+
+

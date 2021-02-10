@@ -1,4 +1,4 @@
-pandoc: 2.10.1
+pandoc: 2.11.2
 pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
@@ -6,6 +6,7 @@ articles:
   articles/Creating_County_Maps: Creating_County_Maps.html
   articles/Creating_State_Maps: Creating_State_Maps.html
   articles/Customizing_State_Maps: Customizing_State_Maps.html
+  articles/Opportunity_Insights: Opportunity_Insights.html
   articles/Working_with_Locations: Working_with_Locations.html
-last_built: 2021-02-05T01:02Z
+last_built: 2021-02-10T06:09Z
 
