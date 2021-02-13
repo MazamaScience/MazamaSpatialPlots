@@ -156,6 +156,8 @@ county level. Input consists of a dataframe with <code>countyFIPS</code> identif
   county_SPDF = <span class='st'>"USCensusCounties_02"</span>,
   palette = <span class='st'>"YlOrBr"</span>,
   breaks = <span class='kw'>NULL</span>,
+  style = <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/NULL.html'>is.null</a></span>(<span class='kw'>breaks</span>), <span class='st'>"pretty"</span>, <span class='st'>"fixed"</span>),
+  legendOrientation = <span class='st'>"vertical"</span>,
   conusOnly = <span class='fl'>TRUE</span>,
   stateCode = <span class='kw'>NULL</span>,
   projection = <span class='kw'>NULL</span>,
@@ -197,6 +199,14 @@ column named <code>stateCode</code> if either <code>conusOnly = TRUE</code> or t
     <tr>
       <th>breaks</th>
       <td><p>Numeric vector of break points.</p></td>
+    </tr>
+    <tr>
+      <th>style</th>
+      <td><p>Method to process the color scale</p></td>
+    </tr>
+    <tr>
+      <th>legendOrientation</th>
+      <td><p>Orientation of the legend. Either 'vertical' or 'horizontal'</p></td>
     </tr>
     <tr>
       <th>conusOnly</th>

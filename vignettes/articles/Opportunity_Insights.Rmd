@@ -9,6 +9,7 @@ output: rmarkdown::html_document
 knitr::opts_chunk$set(echo = TRUE)
 library(dplyr)
 library(MazamaSpatialPlots)
+library(readr)
 ```
 
 ## Objective
@@ -26,12 +27,17 @@ All of the data we will use is easily obtainable from the Oportunity Insights
 [GitHub repository](https://github.com/OpportunityInsights/EconomicTracker). We
 can use `read.csv()` to load data directly.
 
-```{r loadData}
+```{r loadData, warning = FALSE}
 # COVID data by US county
-URL <- "https://raw.githubusercontent.com/OpportunityInsights/EconomicTracker/main/data/COVID%20-%20County%20-%20Daily.csv"
-countyCovid <- read.csv(URL, stringsAsFactors = FALSE)
-names(countyCovid)
+URL1 <- "https://raw.githubusercontent.com/OpportunityInsights/EconomicTracker/main/data/COVID%20-%20County%20-%20Daily.csv"
+URL2 <- "https://raw.githubusercontent.com/OpportunityInsights/EconomicTracker/main/data/Zearn%20-%20County%20-%20Weekly.csv"
+countyCovid <- readr::read_csv(URL1, col_types = cols())
+countyMath <- readr::read_csv(URL2, col_types = cols())
+```
+
+```{r lookAtData}
 head(countyCovid)
+head(countyMath)
 ```
 
 ## Map 1: COVID Cases in Washington Counties
@@ -40,10 +46,16 @@ The first map we will recreate is the map of new cases in Washington state
 (by county). We define new cases to be a 7-day rolling average of confirmed
 cases of COVID-19 per 100k residents.
 
+This is the map displayed on Opportunity Insights' economic tracker:
 
 ![](./Opportunity_Insights_files/map1.PNG)
 
-```{r map1_basic, warning = FALSE}
+Using just the basic functionality **MazamaSpatialPlots**'s `countyMap()` function,
+we can make a map that almost perfectly matches the original map:
+
+```{r map1_basic, warning = FALSE, error = FALSE}
+mapDate <- lubridate::parse_date_time("2021 02 09", "y m d", tz = "UTC")
+
 # column 'new_case_rate' is the confirmed covid cases per 100k residents, 7-day rolling average
 countyCovid_formatted <- countyCovid %>%
   mutate(
@@ -51,7 +63,7 @@ countyCovid_formatted <- countyCovid %>%
     countyFIPS = stringr::str_pad(countyfips, width = 5, pad = "0"),
     stateCode = US_stateFIPSToCode(substr(countyFIPS, 0, 2)),
     new_case_rate = as.numeric(new_case_rate)) %>%
-  filter(date == lubridate::today() - lubridate::days(3)) %>%
+  filter(date == mapDate) %>%
   group_by(countyFIPS) %>% 
   mutate(meanCaseRate = mean(new_case_rate, na.rm = TRUE)) %>%
   select(countyFIPS, stateCode, meanCaseRate)
@@ -60,11 +72,90 @@ countyMap(
   data = countyCovid_formatted,
   parameter = "meanCaseRate",
   stateCode = "WA",
-  breaks = seq(0, 200, 10),
+  breaks = seq(0, 200, 40),
   palette = "YlOrRd",
+  style = "cont", # continuous color scale
+  legendOrientation = "horizontal",
   stateBorderColor = "white"
 )
 ```
+
+Now, the only difference between the map created with `countyMap()` and the original 
+is the position of the legend. We can add adjust this manually using functions 
+provided by **tmap**.
+
+```{r map1_fancy}
+countyMap(
+  data = countyCovid_formatted,
+  parameter = "meanCaseRate",
+  stateCode = "WA",
+  breaks = seq(0, 200, 40),
+  palette = "YlOrRd",
+  style = "cont", 
+  legendOrientation = "horizontal",
+  stateBorderColor = "white"
+) + tmap::tm_layout(
+    legend.position = c("center", "bottom"),
+    legend.outside = TRUE,
+    legend.outside.position = "bottom"
+)
+```
+
+## Map 2: Student Math Engagement in New York Counties
+
+The next map we will recreate is the map of change in student participation
+in Math in the state of New York (by county).
+This is the map displayed on Opportunity Insights' economic tracker:
+
+![](./Opportunity_Insights_files/map2.PNG)
+
+Like before, we can use just the basic functionality **MazamaSpatialPlots**'s 
+`countyMap()` function to make a map that almost perfectly matches the original map:
+
+```{r map2_basic, warning = FALSE, error = FALSE, message = FALSE}
+mapDate <- lubridate::parse_date_time("2021 02 12", "y m d", tz = "UTC")
+
+countyMath_formatted <- countyMath %>%
+  mutate(
+    date = lubridate::parse_date_time(paste(year, month, day_endofweek), "y m d", tz = "UTC"),
+    countyFIPS = stringr::str_pad(countyfips, width = 5, pad = "0"),
+    stateCode = US_stateFIPSToCode(substr(countyFIPS, 0, 2)),
+    engagement = as.numeric(engagement) * 100.0) %>%
+  dplyr::filter(date == max(date))
+
+countyMap(
+  data = countyMath_formatted,
+  parameter = "engagement",
+  stateCode = "NY",
+  breaks = c(seq(-100, 0, 20), seq(40, 200, 40)),
+  palette = "Spectral",
+  style = "cont",
+  legendOrientation = "horizontal",
+  stateBorderColor = "white"
+)
+```
+
+Similarly to the previous example, we can adjust the position of the map manually
+by using **tmap**. We can also add the percent (%) symbol at the end of each label in the legend.
+
+```{r map2_fancy, warning = FALSE, message = FALSE}
+countyMap(
+  data = countyMath_formatted,
+  parameter = "engagement",
+  stateCode = "NY",
+  breaks = c(seq(-100, 0, 20), seq(40, 200, 40)),
+  palette = "Spectral",
+  style = "cont",
+  legendOrientation = "horizontal",
+  stateBorderColor = "white"
+) + tmap::tm_layout(
+    legend.position = c("center", "bottom"),
+    legend.outside = TRUE,
+    legend.outside.position = "bottom",
+    legend.format = list(fun = function(x) paste0(x, "%"))
+)
+```
+
 
 
 

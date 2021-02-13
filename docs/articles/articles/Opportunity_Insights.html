@@ -121,37 +121,49 @@
 <p>All of the data we will use is easily obtainable from the Oportunity Insights <a href="https://github.com/OpportunityInsights/EconomicTracker">GitHub repository</a>. We can use <code><a href="https://rdrr.io/r/utils/read.table.html">read.csv()</a></code> to load data directly.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit">
 <span class="co"># COVID data by US county</span>
-<span class="kw">URL</span> <span class="op">&lt;-</span> <span class="st">"https://raw.githubusercontent.com/OpportunityInsights/EconomicTracker/main/data/COVID%20-%20County%20-%20Daily.csv"</span>
-<span class="kw">countyCovid</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span>(<span class="kw">URL</span>, stringsAsFactors = <span class="fl">FALSE</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span>(<span class="kw">countyCovid</span>)
+<span class="kw">URL1</span> <span class="op">&lt;-</span> <span class="st">"https://raw.githubusercontent.com/OpportunityInsights/EconomicTracker/main/data/COVID%20-%20County%20-%20Daily.csv"</span>
+<span class="kw">URL2</span> <span class="op">&lt;-</span> <span class="st">"https://raw.githubusercontent.com/OpportunityInsights/EconomicTracker/main/data/Zearn%20-%20County%20-%20Weekly.csv"</span>
+<span class="kw">countyCovid</span> <span class="op">&lt;-</span> <span class="kw">readr</span>::<span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span>(<span class="kw">URL1</span>, col_types = <span class="fu">cols</span>())
+<span class="kw">countyMath</span> <span class="op">&lt;-</span> <span class="kw">readr</span>::<span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span>(<span class="kw">URL2</span>, col_types = <span class="fu">cols</span>())
 </pre></div>
-<pre><code>##  [1] "year"            "month"           "day"             "countyfips"     
-##  [5] "case_count"      "death_count"     "case_rate"       "death_rate"     
-##  [9] "new_case_rate"   "new_death_rate"  "new_case_count"  "new_death_count"</code></pre>
-<div class="sourceCode" id="cb3"><pre class="downlit">
+<div class="sourceCode" id="cb2"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="kw">countyCovid</span>)
 </pre></div>
-<pre><code>##   year month day countyfips case_count death_count case_rate death_rate
-## 1 2020     1  21       1001          0           0         0          0
-## 2 2020     1  21       1003          0           0         0          0
-## 3 2020     1  21       1005          0           0         0          0
-## 4 2020     1  21       1007          0           0         0          0
-## 5 2020     1  21       1009          0           0         0          0
-## 6 2020     1  21       1011          0           0         0          0
-##   new_case_rate new_death_rate new_case_count new_death_count
-## 1             .              .              .               .
-## 2             .              .              .               .
-## 3             .              .              .               .
-## 4             .              .              .               .
-## 5             .              .              .               .
-## 6             .              .              .               .</code></pre>
+<pre><code>## # A tibble: 6 x 12
+##    year month   day countyfips case_count death_count case_rate death_rate
+##   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;       &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;
+## 1  2020     1    21       1001          0           0         0          0
+## 2  2020     1    21       1003          0           0         0          0
+## 3  2020     1    21       1005          0           0         0          0
+## 4  2020     1    21       1007          0           0         0          0
+## 5  2020     1    21       1009          0           0         0          0
+## 6  2020     1    21       1011          0           0         0          0
+## # … with 4 more variables: new_case_rate &lt;chr&gt;, new_death_rate &lt;chr&gt;,
+## #   new_case_count &lt;chr&gt;, new_death_count &lt;chr&gt;</code></pre>
+<div class="sourceCode" id="cb4"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="kw">countyMath</span>)
+</pre></div>
+<pre><code>## # A tibble: 6 x 9
+##   countyfips  year month day_endofweek engagement badges break_engagement
+##        &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;         &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;  &lt;chr&gt;           
+## 1       1003  2019     1            13 -.159      -.165  .               
+## 2       1003  2019     1            20 -.191      -.248  .               
+## 3       1003  2019     1            27 -.404      -.458  .               
+## 4       1003  2019     2             3 .388       .125   .               
+## 5       1003  2019     2            10 .35        .395   .               
+## 6       1003  2019     2            17 .354       .609   .               
+## # … with 2 more variables: break_badges &lt;chr&gt;, imputed_from_cz &lt;dbl&gt;</code></pre>
 </div>
 <div id="map-1-covid-cases-in-washington-counties" class="section level2">
 <h2 class="hasAnchor">
 <a href="#map-1-covid-cases-in-washington-counties" class="anchor"></a>Map 1: COVID Cases in Washington Counties</h2>
 <p>The first map we will recreate is the map of new cases in Washington state (by county). We define new cases to be a 7-day rolling average of confirmed cases of COVID-19 per 100k residents.</p>
+<p>This is the map displayed on Opportunity Insights’ economic tracker:</p>
 <p><img src="Opportunity_Insights_files/map1.PNG"></p>
-<div class="sourceCode" id="cb5"><pre class="downlit">
+<p>Using just the basic functionality <strong>MazamaSpatialPlots</strong>’s <code><a href="../../reference/countyMap.html">countyMap()</a></code> function, we can make a map that almost perfectly matches the original map:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit">
+<span class="kw">mapDate</span> <span class="op">&lt;-</span> <span class="kw">lubridate</span>::<span class="fu"><a href="http://lubridate.tidyverse.org/reference/parse_date_time.html">parse_date_time</a></span>(<span class="st">"2021 02 09"</span>, <span class="st">"y m d"</span>, tz = <span class="st">"UTC"</span>)
+
 <span class="co"># column 'new_case_rate' is the confirmed covid cases per 100k residents, 7-day rolling average</span>
 <span class="kw">countyCovid_formatted</span> <span class="op">&lt;-</span> <span class="kw">countyCovid</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(
@@ -159,7 +171,7 @@
     countyFIPS = <span class="kw">stringr</span>::<span class="fu"><a href="https://stringr.tidyverse.org/reference/str_pad.html">str_pad</a></span>(<span class="kw">countyfips</span>, width = <span class="fl">5</span>, pad = <span class="st">"0"</span>),
     stateCode = <span class="fu"><a href="https://rdrr.io/pkg/MazamaSpatialUtils/man/US_stateConversion.html">US_stateFIPSToCode</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/substr.html">substr</a></span>(<span class="kw">countyFIPS</span>, <span class="fl">0</span>, <span class="fl">2</span>)),
     new_case_rate = <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>(<span class="kw">new_case_rate</span>)) <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="kw">date</span> <span class="op">==</span> <span class="kw">lubridate</span>::<span class="fu"><a href="http://lubridate.tidyverse.org/reference/now.html">today</a></span>() <span class="op">-</span> <span class="kw">lubridate</span>::<span class="fu"><a href="http://lubridate.tidyverse.org/reference/period.html">days</a></span>(<span class="fl">3</span>)) <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="kw">date</span> <span class="op">==</span> <span class="kw">mapDate</span>) <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(<span class="kw">countyFIPS</span>) <span class="op">%&gt;%</span> 
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(meanCaseRate = <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span>(<span class="kw">new_case_rate</span>, na.rm = <span class="fl">TRUE</span>)) <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(<span class="kw">countyFIPS</span>, <span class="kw">stateCode</span>, <span class="kw">meanCaseRate</span>)
@@ -168,12 +180,81 @@
   data = <span class="kw">countyCovid_formatted</span>,
   parameter = <span class="st">"meanCaseRate"</span>,
   stateCode = <span class="st">"WA"</span>,
-  breaks = <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="fl">0</span>, <span class="fl">200</span>, <span class="fl">10</span>),
+  breaks = <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="fl">0</span>, <span class="fl">200</span>, <span class="fl">40</span>),
   palette = <span class="st">"YlOrRd"</span>,
+  style = <span class="st">"cont"</span>, <span class="co"># continuous color scale</span>
+  legendOrientation = <span class="st">"horizontal"</span>,
   stateBorderColor = <span class="st">"white"</span>
 )
 </pre></div>
 <p><img src="Opportunity_Insights_files/figure-html/map1_basic-1.png" width="700"></p>
+<p>Now, the only difference between the map created with <code><a href="../../reference/countyMap.html">countyMap()</a></code> and the original is the position of the legend. We can add adjust this manually using functions provided by <strong>tmap</strong>.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit">
+<span class="fu"><a href="../../reference/countyMap.html">countyMap</a></span>(
+  data = <span class="kw">countyCovid_formatted</span>,
+  parameter = <span class="st">"meanCaseRate"</span>,
+  stateCode = <span class="st">"WA"</span>,
+  breaks = <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="fl">0</span>, <span class="fl">200</span>, <span class="fl">40</span>),
+  palette = <span class="st">"YlOrRd"</span>,
+  style = <span class="st">"cont"</span>, 
+  legendOrientation = <span class="st">"horizontal"</span>,
+  stateBorderColor = <span class="st">"white"</span>
+) <span class="op">+</span> <span class="kw">tmap</span>::<span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_layout.html">tm_layout</a></span>(
+    legend.position = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"center"</span>, <span class="st">"bottom"</span>),
+    legend.outside = <span class="fl">TRUE</span>,
+    legend.outside.position = <span class="st">"bottom"</span>
+)
+</pre></div>
+<p><img src="Opportunity_Insights_files/figure-html/map1_fancy-1.png" width="700"></p>
+</div>
+<div id="map-2-student-math-engagement-in-new-york-counties" class="section level2">
+<h2 class="hasAnchor">
+<a href="#map-2-student-math-engagement-in-new-york-counties" class="anchor"></a>Map 2: Student Math Engagement in New York Counties</h2>
+<p>The next map we will recreate is the map of change in student participation in Math in the state of New York (by county). This is the map displayed on Opportunity Insights’ economic tracker:</p>
+<p><img src="Opportunity_Insights_files/map2.PNG"></p>
+<p>Like before, we can use just the basic functionality <strong>MazamaSpatialPlots</strong>’s <code><a href="../../reference/countyMap.html">countyMap()</a></code> function to make a map that almost perfectly matches the original map:</p>
+<div class="sourceCode" id="cb8"><pre class="downlit">
+<span class="kw">mapDate</span> <span class="op">&lt;-</span> <span class="kw">lubridate</span>::<span class="fu"><a href="http://lubridate.tidyverse.org/reference/parse_date_time.html">parse_date_time</a></span>(<span class="st">"2021 02 12"</span>, <span class="st">"y m d"</span>, tz = <span class="st">"UTC"</span>)
+
+<span class="kw">countyMath_formatted</span> <span class="op">&lt;-</span> <span class="kw">countyMath</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(
+    date = <span class="kw">lubridate</span>::<span class="fu"><a href="http://lubridate.tidyverse.org/reference/parse_date_time.html">parse_date_time</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span>(<span class="kw">year</span>, <span class="kw">month</span>, <span class="kw">day_endofweek</span>), <span class="st">"y m d"</span>, tz = <span class="st">"UTC"</span>),
+    countyFIPS = <span class="kw">stringr</span>::<span class="fu"><a href="https://stringr.tidyverse.org/reference/str_pad.html">str_pad</a></span>(<span class="kw">countyfips</span>, width = <span class="fl">5</span>, pad = <span class="st">"0"</span>),
+    stateCode = <span class="fu"><a href="https://rdrr.io/pkg/MazamaSpatialUtils/man/US_stateConversion.html">US_stateFIPSToCode</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/substr.html">substr</a></span>(<span class="kw">countyFIPS</span>, <span class="fl">0</span>, <span class="fl">2</span>)),
+    engagement = <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>(<span class="kw">engagement</span>) <span class="op">*</span> <span class="fl">100.0</span>) <span class="op">%&gt;%</span>
+  <span class="kw">dplyr</span>::<span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="kw">date</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span>(<span class="kw">date</span>))
+
+<span class="fu"><a href="../../reference/countyMap.html">countyMap</a></span>(
+  data = <span class="kw">countyMath_formatted</span>,
+  parameter = <span class="st">"engagement"</span>,
+  stateCode = <span class="st">"NY"</span>,
+  breaks = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="op">-</span><span class="fl">100</span>, <span class="fl">0</span>, <span class="fl">20</span>), <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="fl">40</span>, <span class="fl">200</span>, <span class="fl">40</span>)),
+  palette = <span class="st">"Spectral"</span>,
+  style = <span class="st">"cont"</span>,
+  legendOrientation = <span class="st">"horizontal"</span>,
+  stateBorderColor = <span class="st">"white"</span>
+)
+</pre></div>
+<p><img src="Opportunity_Insights_files/figure-html/map2_basic-1.png" width="700"></p>
+<p>Similarly to the previous example, we can adjust the position of the map manually by using <strong>tmap</strong>. We can also add the percent (%) symbol at the end of each label in the legend.</p>
+<div class="sourceCode" id="cb9"><pre class="downlit">
+<span class="fu"><a href="../../reference/countyMap.html">countyMap</a></span>(
+  data = <span class="kw">countyMath_formatted</span>,
+  parameter = <span class="st">"engagement"</span>,
+  stateCode = <span class="st">"NY"</span>,
+  breaks = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="op">-</span><span class="fl">100</span>, <span class="fl">0</span>, <span class="fl">20</span>), <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="fl">40</span>, <span class="fl">200</span>, <span class="fl">40</span>)),
+  palette = <span class="st">"Spectral"</span>,
+  style = <span class="st">"cont"</span>,
+  legendOrientation = <span class="st">"horizontal"</span>,
+  stateBorderColor = <span class="st">"white"</span>
+) <span class="op">+</span> <span class="kw">tmap</span>::<span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_layout.html">tm_layout</a></span>(
+    legend.position = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"center"</span>, <span class="st">"bottom"</span>),
+    legend.outside = <span class="fl">TRUE</span>,
+    legend.outside.position = <span class="st">"bottom"</span>,
+    legend.format = <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(fun = <span class="fu">function</span>(<span class="kw">x</span>) <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(<span class="kw">x</span>, <span class="st">"%"</span>))
+)
+</pre></div>
+<p><img src="Opportunity_Insights_files/figure-html/map2_fancy-1.png" width="700"></p>
 </div>
   </div>
 
