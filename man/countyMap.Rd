@@ -11,6 +11,8 @@ countyMap(
   county_SPDF = "USCensusCounties_02",
   palette = "YlOrBr",
   breaks = NULL,
+  style = ifelse(is.null(breaks), "pretty", "fixed"),
+  legendOrientation = "vertical",
   conusOnly = TRUE,
   stateCode = NULL,
   projection = NULL,
@@ -38,6 +40,10 @@ column named \code{stateCode} if either \code{conusOnly = TRUE} or the
 \item{palette}{Palette name or a vector of colors based on RColorBrewer.}
 
 \item{breaks}{Numeric vector of break points.}
+
+\item{style}{Method to process the color scale}
+
+\item{legendOrientation}{Orientation of the legend. Either 'vertical' or 'horizontal'}
 
 \item{conusOnly}{Logical specifying Continental US state codes. Ignored when
 the \code{stateCode} argument is specified.}

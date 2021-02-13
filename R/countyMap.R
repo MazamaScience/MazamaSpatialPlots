@@ -23,6 +23,8 @@
 #' \code{stateCode} argument is specified.
 #' @param palette Palette name or a vector of colors based on RColorBrewer.
 #' @param breaks Numeric vector of break points.
+#' @param style Method to process the color scale
+#' @param legendOrientation Orientation of the legend. Either 'vertical' or 'horizontal'
 #' @param conusOnly Logical specifying Continental US state codes. Ignored when
 #' the \code{stateCode} argument is specified.
 #' @param stateCode Vector of state codes to include on the map.
@@ -79,6 +81,8 @@ countyMap <- function(
   county_SPDF = "USCensusCounties_02",
   palette = "YlOrBr",
   breaks = NULL,
+  style = ifelse(is.null(breaks), "pretty", "fixed"),
+  legendOrientation = "vertical",
   conusOnly = TRUE,
   stateCode = NULL,
   projection = NULL,
@@ -184,6 +188,12 @@ countyMap <- function(
       stop(sprintf("Invalid state codes found:  %s",
                    paste0(invalidStateCodes, collapse = ", ")))
     }
+  }
+  
+  if ( tolower(legendOrientation) == "horizontal" ) {
+    legendIsPortrait  = FALSE
+  }  else {
+    legendIsPortrait = TRUE
   }
 
   # Convert projection to a CRS object if necessary
@@ -292,7 +302,9 @@ countyMap <- function(
     tmap::tm_fill(
       col = parameter,
       palette = palette,
-      breaks = breaks
+      breaks = breaks,
+      style = style,
+      legend.is.portrait = legendIsPortrait
     ) +
     tmap::tm_shape(county_SPDF, projection = projection) +
     tmap::tm_polygons(
