@@ -157,7 +157,9 @@ county level. Input consists of a dataframe with <code>countyFIPS</code> identif
   palette = <span class='st'>"YlOrBr"</span>,
   breaks = <span class='kw'>NULL</span>,
   style = <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/NULL.html'>is.null</a></span>(<span class='kw'>breaks</span>), <span class='st'>"pretty"</span>, <span class='st'>"fixed"</span>),
+  showLegend = <span class='fl'>TRUE</span>,
   legendOrientation = <span class='st'>"vertical"</span>,
+  legendTitle = <span class='kw'>NULL</span>,
   conusOnly = <span class='fl'>TRUE</span>,
   stateCode = <span class='kw'>NULL</span>,
   projection = <span class='kw'>NULL</span>,
@@ -194,7 +196,7 @@ column named <code>stateCode</code> if either <code>conusOnly = TRUE</code> or t
     </tr>
     <tr>
       <th>palette</th>
-      <td><p>Palette name or a vector of colors based on RColorBrewer.</p></td>
+      <td><p>Palette name or a vector of colors based on RColorBrewer or Viridis.</p></td>
     </tr>
     <tr>
       <th>breaks</th>
@@ -202,11 +204,19 @@ column named <code>stateCode</code> if either <code>conusOnly = TRUE</code> or t
     </tr>
     <tr>
       <th>style</th>
-      <td><p>Method to process the color scale</p></td>
+      <td><p>Method to process the color scale.</p></td>
+    </tr>
+    <tr>
+      <th>showLegend</th>
+      <td><p>Logical specifying whether or not to draw the legend</p></td>
     </tr>
     <tr>
       <th>legendOrientation</th>
       <td><p>Orientation of the legend. Either 'vertical' or 'horizontal'</p></td>
+    </tr>
+    <tr>
+      <th>legendTitle</th>
+      <td><p>Text string to use as the legend title.</p></td>
     </tr>
     <tr>
       <th>conusOnly</th>
@@ -247,6 +257,10 @@ the following parameters:</p>
 <li><p><code>breaks</code></p></li>
 </ul>
 
+    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
+
+    <p>Color palettes can be chosen from either RColorBrewer or Viridis. See
+<code><a href='https://rdrr.io/pkg/tmaptools/man/palette_explorer.html'>tmaptools::palette_explorer()</a></code> for a list of available palletes.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># \donttest{</span>

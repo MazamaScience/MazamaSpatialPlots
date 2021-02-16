@@ -184,6 +184,7 @@
   palette = <span class="st">"YlOrRd"</span>,
   style = <span class="st">"cont"</span>, <span class="co"># continuous color scale</span>
   legendOrientation = <span class="st">"horizontal"</span>,
+  legendTitle = <span class="st">""</span>,
   stateBorderColor = <span class="st">"white"</span>
 )
 </pre></div>
@@ -198,23 +199,26 @@
   palette = <span class="st">"YlOrRd"</span>,
   style = <span class="st">"cont"</span>, 
   legendOrientation = <span class="st">"horizontal"</span>,
+  legendTitle = <span class="st">""</span>,
   stateBorderColor = <span class="st">"white"</span>
 ) <span class="op">+</span> <span class="kw">tmap</span>::<span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_layout.html">tm_layout</a></span>(
     legend.position = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"center"</span>, <span class="st">"bottom"</span>),
     legend.outside = <span class="fl">TRUE</span>,
-    legend.outside.position = <span class="st">"bottom"</span>
+    legend.outside.position = <span class="st">"bottom"</span>,
+    legend.outside.size = <span class="fl">0.1</span>
 )
 </pre></div>
 <p><img src="Opportunity_Insights_files/figure-html/map1_fancy-1.png" width="700"></p>
+<p>From this map we can see that the average amount of new COVID-19 cases in Washington State appear to be somewhat consistent across the state. However, counties in the south-east tend to have a higher amount of new cases than others.</p>
 </div>
-<div id="map-2-student-math-engagement-in-new-york-counties" class="section level2">
+<div id="map-2-student-math-participation-in-new-york-counties" class="section level2">
 <h2 class="hasAnchor">
-<a href="#map-2-student-math-engagement-in-new-york-counties" class="anchor"></a>Map 2: Student Math Engagement in New York Counties</h2>
-<p>The next map we will recreate is the map of change in student participation in Math in the state of New York (by county). This is the map displayed on Opportunity Insights’ economic tracker:</p>
+<a href="#map-2-student-math-participation-in-new-york-counties" class="anchor"></a>Map 2: Student Math Participation in New York Counties</h2>
+<p>The next map we will recreate is the map of change in student participation in Math in the state of New York (by county) aggregated at the end of the week. This is the map displayed on Opportunity Insights’ economic tracker:</p>
 <p><img src="Opportunity_Insights_files/map2.PNG"></p>
-<p>Like before, we can use just the basic functionality <strong>MazamaSpatialPlots</strong>’s <code><a href="../../reference/countyMap.html">countyMap()</a></code> function to make a map that almost perfectly matches the original map:</p>
+<p>Like before, we can use just the basic functionality <strong>MazamaSpatialPlots</strong>’s <code><a href="../../reference/countyMap.html">countyMap()</a></code> function to make a map that almost perfectly matches the original map. One aspect that <code><a href="../../reference/countyMap.html">countyMap()</a></code> isn’t able to replicate is the color pallete used by Opportunity Insights. It appears to be some darker variation of the Spectral pallete provided by <strong>RColorBrewer</strong> but we were unable to find an exact match.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit">
-<span class="kw">mapDate</span> <span class="op">&lt;-</span> <span class="kw">lubridate</span>::<span class="fu"><a href="http://lubridate.tidyverse.org/reference/parse_date_time.html">parse_date_time</a></span>(<span class="st">"2021 02 12"</span>, <span class="st">"y m d"</span>, tz = <span class="st">"UTC"</span>)
+<span class="kw">mapDate</span> <span class="op">&lt;-</span> <span class="kw">lubridate</span>::<span class="fu"><a href="http://lubridate.tidyverse.org/reference/parse_date_time.html">parse_date_time</a></span>(<span class="st">"2021 02 07"</span>, <span class="st">"y m d"</span>, tz = <span class="st">"UTC"</span>)
 
 <span class="kw">countyMath_formatted</span> <span class="op">&lt;-</span> <span class="kw">countyMath</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(
@@ -222,7 +226,7 @@
     countyFIPS = <span class="kw">stringr</span>::<span class="fu"><a href="https://stringr.tidyverse.org/reference/str_pad.html">str_pad</a></span>(<span class="kw">countyfips</span>, width = <span class="fl">5</span>, pad = <span class="st">"0"</span>),
     stateCode = <span class="fu"><a href="https://rdrr.io/pkg/MazamaSpatialUtils/man/US_stateConversion.html">US_stateFIPSToCode</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/substr.html">substr</a></span>(<span class="kw">countyFIPS</span>, <span class="fl">0</span>, <span class="fl">2</span>)),
     engagement = <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>(<span class="kw">engagement</span>) <span class="op">*</span> <span class="fl">100.0</span>) <span class="op">%&gt;%</span>
-  <span class="kw">dplyr</span>::<span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="kw">date</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span>(<span class="kw">date</span>))
+  <span class="kw">dplyr</span>::<span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="kw">date</span> <span class="op">==</span> <span class="kw">mapDate</span>)
 
 <span class="fu"><a href="../../reference/countyMap.html">countyMap</a></span>(
   data = <span class="kw">countyMath_formatted</span>,
@@ -232,29 +236,35 @@
   palette = <span class="st">"Spectral"</span>,
   style = <span class="st">"cont"</span>,
   legendOrientation = <span class="st">"horizontal"</span>,
+  legendTitle = <span class="st">""</span>,
   stateBorderColor = <span class="st">"white"</span>
 )
 </pre></div>
 <p><img src="Opportunity_Insights_files/figure-html/map2_basic-1.png" width="700"></p>
 <p>Similarly to the previous example, we can adjust the position of the map manually by using <strong>tmap</strong>. We can also add the percent (%) symbol at the end of each label in the legend.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit">
+<span class="kw">breaks</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="op">-</span><span class="fl">100</span>, <span class="fl">0</span>, <span class="fl">20</span>), <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="fl">40</span>, <span class="fl">200</span>, <span class="fl">40</span>))
+
 <span class="fu"><a href="../../reference/countyMap.html">countyMap</a></span>(
   data = <span class="kw">countyMath_formatted</span>,
   parameter = <span class="st">"engagement"</span>,
   stateCode = <span class="st">"NY"</span>,
-  breaks = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="op">-</span><span class="fl">100</span>, <span class="fl">0</span>, <span class="fl">20</span>), <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="fl">40</span>, <span class="fl">200</span>, <span class="fl">40</span>)),
+  breaks = <span class="kw">breaks</span>,
   palette = <span class="st">"Spectral"</span>,
   style = <span class="st">"cont"</span>,
   legendOrientation = <span class="st">"horizontal"</span>,
+  legendTitle = <span class="st">""</span>,
   stateBorderColor = <span class="st">"white"</span>
 ) <span class="op">+</span> <span class="kw">tmap</span>::<span class="fu"><a href="https://rdrr.io/pkg/tmap/man/tm_layout.html">tm_layout</a></span>(
     legend.position = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"center"</span>, <span class="st">"bottom"</span>),
     legend.outside = <span class="fl">TRUE</span>,
     legend.outside.position = <span class="st">"bottom"</span>,
-    legend.format = <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(fun = <span class="fu">function</span>(<span class="kw">x</span>) <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(<span class="kw">x</span>, <span class="st">"%"</span>))
+    legend.format = <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(fun = <span class="fu">function</span>(<span class="kw">x</span>) <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(<span class="kw">x</span>, <span class="st">"%"</span>)),
+    legend.outside.size = <span class="fl">0.1</span>
 )
 </pre></div>
 <p><img src="Opportunity_Insights_files/figure-html/map2_fancy-1.png" width="700"></p>
+<p>From this map one could conclude that in general, the percent change varies across the state but tends to be low. There are some counties that had an slight increase in participation and some that had a slight decrease. However, some counties, especially some in the west, saw a great increase in participation while some others saw a great decrease.</p>
 </div>
   </div>
 

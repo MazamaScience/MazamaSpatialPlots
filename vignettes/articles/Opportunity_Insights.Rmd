@@ -76,6 +76,7 @@ countyMap(
   palette = "YlOrRd",
   style = "cont", # continuous color scale
   legendOrientation = "horizontal",
+  legendTitle = "",
   stateBorderColor = "white"
 )
 ```
@@ -93,27 +94,36 @@ countyMap(
   palette = "YlOrRd",
   style = "cont", 
   legendOrientation = "horizontal",
+  legendTitle = "",
   stateBorderColor = "white"
 ) + tmap::tm_layout(
     legend.position = c("center", "bottom"),
     legend.outside = TRUE,
-    legend.outside.position = "bottom"
+    legend.outside.position = "bottom",
+    legend.outside.size = 0.1
 )
 ```
 
-## Map 2: Student Math Engagement in New York Counties
+From this map we can see that the average amount of new COVID-19 cases in Washington
+State appear to be somewhat consistent across the state. However, counties in the 
+south-east tend to have a higher amount of new cases than others.
+
+## Map 2: Student Math Participation in New York Counties
 
 The next map we will recreate is the map of change in student participation
-in Math in the state of New York (by county).
+in Math in the state of New York (by county) aggregated at the end of the week. 
 This is the map displayed on Opportunity Insights' economic tracker:
 
 ![](./Opportunity_Insights_files/map2.PNG)
 
 Like before, we can use just the basic functionality **MazamaSpatialPlots**'s 
-`countyMap()` function to make a map that almost perfectly matches the original map:
+`countyMap()` function to make a map that almost perfectly matches the original map.
+One aspect that `countyMap()` isn't able to replicate is the color pallete used
+by Opportunity Insights. It appears to be some darker variation of the Spectral
+pallete provided by **RColorBrewer** but we were unable to find an exact match.
 
 ```{r map2_basic, warning = FALSE, error = FALSE, message = FALSE}
-mapDate <- lubridate::parse_date_time("2021 02 12", "y m d", tz = "UTC")
+mapDate <- lubridate::parse_date_time("2021 02 07", "y m d", tz = "UTC")
 
 countyMath_formatted <- countyMath %>%
   mutate(
@@ -121,7 +131,7 @@ countyMath_formatted <- countyMath %>%
     countyFIPS = stringr::str_pad(countyfips, width = 5, pad = "0"),
     stateCode = US_stateFIPSToCode(substr(countyFIPS, 0, 2)),
     engagement = as.numeric(engagement) * 100.0) %>%
-  dplyr::filter(date == max(date))
+  dplyr::filter(date == mapDate)
 
 countyMap(
   data = countyMath_formatted,
@@ -131,6 +141,7 @@ countyMap(
   palette = "Spectral",
   style = "cont",
   legendOrientation = "horizontal",
+  legendTitle = "",
   stateBorderColor = "white"
 )
 ```
@@ -139,22 +150,32 @@ Similarly to the previous example, we can adjust the position of the map manuall
 by using **tmap**. We can also add the percent (%) symbol at the end of each label in the legend.
 
 ```{r map2_fancy, warning = FALSE, message = FALSE}
+breaks = c(seq(-100, 0, 20), seq(40, 200, 40))
+
 countyMap(
   data = countyMath_formatted,
   parameter = "engagement",
   stateCode = "NY",
-  breaks = c(seq(-100, 0, 20), seq(40, 200, 40)),
+  breaks = breaks,
   palette = "Spectral",
   style = "cont",
   legendOrientation = "horizontal",
+  legendTitle = "",
   stateBorderColor = "white"
 ) + tmap::tm_layout(
     legend.position = c("center", "bottom"),
     legend.outside = TRUE,
     legend.outside.position = "bottom",
-    legend.format = list(fun = function(x) paste0(x, "%"))
+    legend.format = list(fun = function(x) paste0(x, "%")),
+    legend.outside.size = 0.1
 )
 ```
+
+From this map one could conclude that in general, the percent change varies across the
+state but tends to be low. There are some counties that had an slight increase in participation 
+and some that had a slight decrease.  However, some counties, especially some in the west, 
+saw a great increase in participation while some others saw a great decrease.
+
 
 
 
