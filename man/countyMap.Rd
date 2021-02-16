@@ -12,7 +12,9 @@ countyMap(
   palette = "YlOrBr",
   breaks = NULL,
   style = ifelse(is.null(breaks), "pretty", "fixed"),
+  showLegend = TRUE,
   legendOrientation = "vertical",
+  legendTitle = NULL,
   conusOnly = TRUE,
   stateCode = NULL,
   projection = NULL,
@@ -37,13 +39,17 @@ coloring the map.}
 column named \code{stateCode} if either \code{conusOnly = TRUE} or the
 \code{stateCode} argument is specified.}
 
-\item{palette}{Palette name or a vector of colors based on RColorBrewer.}
+\item{palette}{Palette name or a vector of colors based on RColorBrewer or Viridis.}
 
 \item{breaks}{Numeric vector of break points.}
 
-\item{style}{Method to process the color scale}
+\item{style}{Method to process the color scale.}
+
+\item{showLegend}{Logical specifying whether or not to draw the legend}
 
 \item{legendOrientation}{Orientation of the legend. Either 'vertical' or 'horizontal'}
+
+\item{legendTitle}{Text string to use as the legend title.}
 
 \item{conusOnly}{Logical specifying Continental US state codes. Ignored when
 the \code{stateCode} argument is specified.}
@@ -73,6 +79,10 @@ the following parameters:
 \item{\code{palette}}
 \item{\code{breaks}}
 }
+}
+\note{
+Color palettes can be chosen from either RColorBrewer or Viridis. See
+\code{tmaptools::palette_explorer()} for a list of available palletes.
 }
 \examples{
 \donttest{

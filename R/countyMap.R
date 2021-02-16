@@ -9,6 +9,9 @@
 #' \item{\code{palette}}
 #' \item{\code{breaks}}
 #' }
+#' 
+#' @note Color palettes can be chosen from either RColorBrewer or Viridis. See
+#' \code{tmaptools::palette_explorer()} for a list of available palletes.
 #'
 #' @param data Dataframe containing values to plot. This dataframe
 #' must contain a column named \code{countyFIPS} with the 5-digit FIPS code.
@@ -21,10 +24,12 @@
 #' \code{@slot} must always contain a column named and \code{countyFIPS} and a
 #' column named \code{stateCode} if either \code{conusOnly = TRUE} or the
 #' \code{stateCode} argument is specified.
-#' @param palette Palette name or a vector of colors based on RColorBrewer.
+#' @param palette Palette name or a vector of colors based on RColorBrewer or Viridis.
 #' @param breaks Numeric vector of break points.
-#' @param style Method to process the color scale
+#' @param style Method to process the color scale.
+#' @param showLegend Logical specifying whether or not to draw the legend
 #' @param legendOrientation Orientation of the legend. Either 'vertical' or 'horizontal'
+#' @param legendTitle Text string to use as the legend title.
 #' @param conusOnly Logical specifying Continental US state codes. Ignored when
 #' the \code{stateCode} argument is specified.
 #' @param stateCode Vector of state codes to include on the map.
@@ -82,7 +87,9 @@ countyMap <- function(
   palette = "YlOrBr",
   breaks = NULL,
   style = ifelse(is.null(breaks), "pretty", "fixed"),
+  showLegend = TRUE,
   legendOrientation = "vertical",
+  legendTitle = NULL,
   conusOnly = TRUE,
   stateCode = NULL,
   projection = NULL,
@@ -195,6 +202,10 @@ countyMap <- function(
   }  else {
     legendIsPortrait = TRUE
   }
+  
+  if ( is.null(legendTitle) ) {
+    legendTitle = parameter
+  }
 
   # Convert projection to a CRS object if necessary
   if ( !is.null(projection) ) {
@@ -304,7 +315,9 @@ countyMap <- function(
       palette = palette,
       breaks = breaks,
       style = style,
-      legend.is.portrait = legendIsPortrait
+      legend.is.portrait = legendIsPortrait,
+      legend.show = showLegend,
+      title = legendTitle
     ) +
     tmap::tm_shape(county_SPDF, projection = projection) +
     tmap::tm_polygons(
@@ -320,7 +333,7 @@ countyMap <- function(
       main.title = title,
       main.title.size = .9,
       main.title.position = c("center", "top"),
-      frame = FALSE
+      frame = FALSE,
     )
 
   # ----- Return ---------------------------------------------------------------
