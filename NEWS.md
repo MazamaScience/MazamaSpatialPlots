@@ -1,3 +1,7 @@
+# MazamaSpatialPlots 0.1.1
+
+* Added "Opportunity Insights" article.
+
 # MazamaSpatialPlots 0.1.0
 
 First user-ready release of the package. While still in development, engough 

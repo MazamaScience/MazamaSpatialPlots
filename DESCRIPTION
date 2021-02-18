@@ -1,6 +1,6 @@
 Type: Package
 Package: MazamaSpatialPlots
-Version: 0.1.0
+Version: 0.1.1
 Title: Thematic plots for MazamaSpatialUtils datasets
 Authors@R: c(
     person("Jonathan", "Callahan", email="jonathan.s.callahan@gmail.com", role=c("aut","cre")),
@@ -8,20 +8,21 @@ Authors@R: c(
     person("Eli", "Grosman", email="eligrosman1@gmail.com", role=c("aut"))
     )
 Author: Jonathan Callahan [aut, cre],
-    Tina Chen [aut]
+    Rachel Carroll [aut],
+    Eli Grosman [aut]
 Maintainer: Jonathan Callahan <jonathan.s.callahan@gmail.com>
-Description: A suite of convenience functions for generating thematic maps using 
-    datasets from the MazamaSpatialUtils package.
+Description: A suite of convenience functions for generating US state and county
+    thematic maps using datasets from the MazamaSpatialUtils package.
 License: GPL-3
 URL: https://github.com/MazamaScience/MazamaSpatialPlots
 BugReports: https://github.com/MazamaScience/MazamaSpatialPlots/issues
 Depends:
     R (>= 3.5.0),
-    MazamaSpatialUtils (>= 0.7)
+    MazamaSpatialUtils (>= 0.7.3)
 Imports:
     dplyr,
     magrittr,
-    MazamaCoreUtils (>= 0.4.5),
+    MazamaCoreUtils (>= 0.4.6),
     rlang,
     sp,
     sf,
