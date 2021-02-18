@@ -38,7 +38,6 @@
 #' @rdname stateMap
 #'
 #' @examples
-#' \donttest{
 #' library(MazamaSpatialPlots)
 #'
 #' stateMap(
@@ -83,7 +82,6 @@
 #'     bg.color = "grey85",
 #'     inner.margins  = .08
 #'   )
-#' }
 #' @export
 #' @importFrom sp CRS
 #' @importFrom rlang .data

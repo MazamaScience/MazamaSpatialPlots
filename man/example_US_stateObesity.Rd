@@ -12,8 +12,8 @@ example_US_stateObesity
 }
 \description{
 The \code{example_US_stateObesity} dataset provides a small
-state dataset to use in code examples. The code for creating it provides an
-example for how to create a dataest that is compatible with \code{stateMap()}.
+state dataset to use in code examples. The code for creating it demonstrates
+creation of a dataest that is compatible with \code{stateMap()}.
 
 This dataset was generated on 2020-06-09 by running:
 

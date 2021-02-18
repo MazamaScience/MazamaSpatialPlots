@@ -73,7 +73,7 @@ following sections.
 
 To simply plot monitor locations without colors, monitor-level calculations are 
 not yet needed. Instead, the metadata of `monitorLatestData` can be used directly. 
-We also introduce a U.S. state Spatial Polygons Data Frame (SPDF) so the monitor 
+We also introduce a U.S. state SpatialPolygonsDataFrame (SPDF) so the monitor 
 locations will appear on a map of U.S. states.
 
 For simplicity, we won't project the data at all.

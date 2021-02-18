@@ -70,7 +70,6 @@ the following parameters:
 }
 }
 \examples{
-\donttest{
 library(MazamaSpatialPlots)
 
 stateMap(
@@ -115,5 +114,4 @@ stateMap(
     bg.color = "grey85",
     inner.margins  = .08
   )
-}
 }

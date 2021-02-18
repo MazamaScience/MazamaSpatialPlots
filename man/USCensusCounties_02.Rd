@@ -5,18 +5,18 @@
 \alias{USCensusCounties_02}
 \title{US Census Counties SpatialPolygonsDataFrame}
 \format{
-A SpatialPolygonsDataFrame(SPDF) with 3169 observations and 9 variables.
+A SpatialPolygonsDataFrame (SPDF) with 3169 observations and 9 variables.
 }
 \usage{
 USCensusCounties_02
 }
 \description{
-The \code{USCensusCounties_02} SPDF provides a SPDF of US counties to 
-use in code examples. It is created from converting a US county borders 
-shapefile to a SpatialPolygonsDataFrame with additional columns of data. The 
-code for creating it provides an example for how to create a SPDF that is 
-compatible with \code{countyMap()}. See the MazamaSpatialUtils package for the 
-function convertUSCensusCounties() that creates this SPDF. 
+The \code{USCensusCounties_02} dataset provides a SPDF of US counties to
+use in code examples. It is created from converting a US county borders
+shapefile to a SpatialPolygonsDataFrame with additional columns of data. The
+code for creating it demonstrates creation of a SPDF that is
+compatible with \code{countyMap()}. See the \pkg{MazamaSpatialUtils} package for the
+function \code{convertUSCensusCounties()} that creates this SPDF.
 
 This dataset was generated on 2020-07-29 by running:
 

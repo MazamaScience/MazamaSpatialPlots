@@ -9,7 +9,7 @@
 #' \item{\code{palette}}
 #' \item{\code{breaks}}
 #' }
-#' 
+#'
 #' @note Color palettes can be chosen from either RColorBrewer or Viridis. See
 #' \code{tmaptools::palette_explorer()} for a list of available palletes.
 #'
@@ -42,14 +42,13 @@
 #' @rdname countyMap
 #'
 #' @examples
-#' \donttest{
 #' library(MazamaSpatialPlots)
 #'
 #' countyMap(
 #'   data = example_US_countyCovid,
 #'   parameter = "cases",
 #'   breaks = c(0,100,200,500,1000,2000,5000,10000,20000,50000,1e6),
-#'   title = "COVID-19 Cases by County \n as of June 01 2020"
+#'   title = "COVID-19 Cases on June 01 2020"
 #' )
 #'
 #' countyMap(
@@ -72,7 +71,6 @@
 #'   ) +
 #'   tmap::tm_credits("*as of June 01, 2020", col = "white", position = "left")
 #'
-#' }
 #' @export
 #' @importFrom sp CRS
 #' @importFrom rlang .data
@@ -196,13 +194,13 @@ countyMap <- function(
                    paste0(invalidStateCodes, collapse = ", ")))
     }
   }
-  
+
   if ( tolower(legendOrientation) == "horizontal" ) {
     legendIsPortrait  = FALSE
   }  else {
     legendIsPortrait = TRUE
   }
-  
+
   if ( is.null(legendTitle) ) {
     legendTitle = parameter
   }

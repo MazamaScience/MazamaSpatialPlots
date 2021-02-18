@@ -12,19 +12,19 @@ from the MazamaSpatialUtils package.
 
 ## Background
 
-Maps colored by state and county "chloropleth maps" are among the most common
+Maps colored by state and county (aka "chloropleth maps") are among the most common
 data graphics and are used to convey everything from vote totals to economic and 
 health statistics. Well designed maps involve a careful choice of map projections
-and colors for both the state/county fill and the boundary lines. Unfortunately,
+and colors for both the state/county fill and boundary lines. Unfortunately,
 creating beautiful maps in R is still somewhat involved.
 
 The **MazamaSpatialPlots** package provides plotting functionality to make it as
-easy as possible to produce beautiful US state- and county-level maps. It builds
+easy as possible to produce beautiful US state and county level maps. It builds
 on the excellent **tmap** package and harnesses datasaets from the 
 **MazamaSpatialUtils** package. High-level plotting functions make it easy for 
 users to create beautiful chloropleth maps. The underlying code uses **ggplot2**
 so users familiar with **ggplot2** can easily enhance the returned plot objects 
-to create custom plots.
+to create highly customized plots.
 
 ----
 

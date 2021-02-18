@@ -17,8 +17,8 @@ using the `stateMap()` function's arguments.
 
 ## Default Plots
 
-The `stateMap()` function requires two forms of state-level data. First is a 
-Spatial Polygons Data Frame (SPDF) containing state level polygons. The SPDF must 
+The `stateMap()` function requires two types of data. First is a 
+SpatialPolygonsDataFrame (SPDF) containing state level polygons. The SPDF must 
 include the variable `stateCode` in it's `@data` slot. The default SPDF is 
 "USCensusStates_02", which part of the package data. Higher or lower 
 resolution US Census state SPDFs can be installed with:
@@ -29,7 +29,7 @@ setSpatialDataDir('~/Data/Spatial') # default directory for spatial data
 installSpatialData('USCensusStates_02')
 ```
 
-The second required form of data is a regular dataframe that contains the 
+The second dataset is a regular dataframe that contains the 
 variable `stateCode` as well as a variable of interest. The variable of interest 
 from this dataset is indicated using the `parameter` argument. This `parameter`
 is used to determine the colors of states in the generated chloropleth map. 

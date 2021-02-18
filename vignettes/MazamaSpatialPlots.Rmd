@@ -29,7 +29,7 @@ and colors for both the state/county fill and boundary lines. Unfortunately,
 creating beautiful maps in R is still somewhat involved.
 
 The **MazamaSpatialPlots** package provides plotting functionality to make it as
-easy as possible to produce beautiful US state- and county-level maps. It builds
+easy as possible to produce beautiful US state and county level maps. It builds
 on the excellent **tmap** package and harnesses datasaets from the 
 **MazamaSpatialUtils** package. High-level plotting functions make it easy for 
 users to create beautiful chloropleth maps. The underlying code uses **ggplot2**
@@ -56,7 +56,7 @@ install.packages('MazamaSpatialUtils')
 devtools::install_github('MazamaScience/MazamaSpatialPlots')
 ```
 
-**MazamaSpatialPlots** equires spatial polygon data to plot 
+**MazamaSpatialPlots** requires spatial polygon data to plot 
 the shapes of states and counties. These spatial datasets are provided by 
 **MazamaSpatialUtils** and can be installed by running the following in the 
 RStudio console:
@@ -65,7 +65,8 @@ RStudio console:
 library(MazamaSpatialUtils)
 dir.create('~/Data/Spatial', recursive = TRUE)
 setSpatialDataDir('~/Data/Spatial')
-installSpatialData()
+installSpatialData("USCensusStates_02")
+installSpatialData("USCensusCounties_02")
 ```
 
 ## Features
@@ -91,10 +92,10 @@ by the **MazamaSpatialUtils** package once that is installed.
 
 ### State-level data
 
-User data consists of simple dataframes. For the `stateMap()` function, the 
-input dataframe must have a `stateCode` column containing the 2-character US
-state code. Any other column of data can be used as the `parameter` states will
-be colored by.
+User provided data must be provided as simple dataframes. For the `stateMap()` function, the 
+`data` input dataframe must have a `stateCode` column containing the 2-character US
+state code. Any other column of data can be used as the `parameter` by which states will
+be colored.
 
 The following functions from **MazamaSpatialUtils** can help in creating the
 `stateCode` column if it does not already exist:
@@ -104,7 +105,7 @@ The following functions from **MazamaSpatialUtils** can help in creating the
 
 ### County-level data
 
-For county maps, the input data must contain a `countyFIPS` column uniquely
+For county maps, the input `data` must contain a `countyFIPS` column uniquely
 identifying each county. The `MazamaSpatialUtils::US_countyCodes` dataset
 can be used to determine the `countyFIPS` codes.
 

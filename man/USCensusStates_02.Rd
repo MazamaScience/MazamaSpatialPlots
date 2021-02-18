@@ -5,18 +5,18 @@
 \alias{USCensusStates_02}
 \title{US Census State SpatialPolygonsDataFrame}
 \format{
-A SpatialPolygonsDataFrame(SPDF) with 52 observations and 8 variables.
+A SpatialPolygonsDataFrame (SPDF) with 52 observations and 8 variables.
 }
 \usage{
 USCensusStates_02
 }
 \description{
-The \code{USCensusStates_02} SPDF provides a SPDF of US states to 
-use in code examples. It is created from converting a US state borders 
-shapefile to a SpatialPolygonsDataFrame with additional columns of data. The 
-code for creating it provides an example for how to create a SPDF that is 
-compatible with \code{stateMap()}. See the MazamaSpatialUtils package for the 
-function convertUSCensusStates() that creates this SPDF. 
+The \code{USCensusStates_02} dataset provides a SPDF of US states to
+use in code examples. It is created by converting a US state borders
+shapefile to a SpatialPolygonsDataFrame with additional columns of data. The
+code for creating it demonstrates creation of a SPDF that is
+compatible with \code{stateMap()}. See the \pkg{MazamaSpatialUtils} package for the
+function \code{convertUSCensusStates()} that creates this SPDF.
 
 This dataset was generated on 2020-07-25 by running:
 

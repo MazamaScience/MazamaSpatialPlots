@@ -7,7 +7,7 @@
 mazama_initialize(spatialDataDir = "~/Data/Spatial")
 }
 \arguments{
-\item{spatialDataDir}{Directory where spatial datasets are found, 
+\item{spatialDataDir}{Directory where spatial datasets are found,
 Default: "~/Data/Spatial"}
 }
 \value{
@@ -32,14 +32,9 @@ library(MazamaSpatialPlots)
 spatialDataDir <- tempdir() # typically "~/Data/Spatial"
 MazamaSpatialUtils::setSpatialDataDir(spatialDataDir)
 
-# TODO:  Restore example when data download functions support new data.
-
-#### Install core spatial datasets (168 MB download)
-###MazamaSpatialUtils::installSpatialData()
-###
-###exists("USCensusStates_02")
-###mazama_initialize(spatialDataDir)
-###exists("USCensusStates_02")
-###class(USCensusStates)
+exists("USCensusStates_02")
+mazama_initialize(spatialDataDir)
+exists("USCensusStates_02")
+class(USCensusStates_02)
 }
 }

@@ -18,4 +18,6 @@ Invisibly returns \code{TRUE} if no error message has been generated.
 Longitude and latitude are validated to be parseable as numeric
 and within the bounds -180:180 and -90:90. If validation fails, an error is
 generated.
+
+This helper function is useful when building automated plot-generation systems.
 }

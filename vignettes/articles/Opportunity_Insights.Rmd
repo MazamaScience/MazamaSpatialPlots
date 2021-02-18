@@ -40,6 +40,11 @@ head(countyCovid)
 head(countyMath)
 ```
 
+> We take a moment here to laud the people making this data available in a format
+> that contains all the information we need and is easily ingestible using standard
+> techniques. This kind of _open access data_ is precisely the kind of data management
+> we hope for in all publicly funded research.
+
 ## Map 1: COVID Cases in Washington Counties
 
 The first map we will recreate is the map of new cases in Washington state 
@@ -50,8 +55,13 @@ This is the map displayed on Opportunity Insights' economic tracker:
 
 ![](./Opportunity_Insights_files/map1.PNG)
 
-Using just the basic functionality **MazamaSpatialPlots**'s `countyMap()` function,
-we can make a map that almost perfectly matches the original map:
+We observe that the tilted map for Washington uses a projection that is appropriate
+for the continental US and any states intersecting longitude -103.75 deg east.
+In contrast, the **MazamaSpatialPlots** functions will chose the most appropriate
+projection for each state or combination of states.
+
+Using just the basic functionality of the `countyMap()` function,
+we can make a map that is a reasonably closes match to the original map:
 
 ```{r map1_basic, warning = FALSE, error = FALSE}
 mapDate <- lubridate::parse_date_time("2021 02 09", "y m d", tz = "UTC")
@@ -73,7 +83,7 @@ countyMap(
   parameter = "meanCaseRate",
   stateCode = "WA",
   breaks = seq(0, 200, 40),
-  palette = "YlOrRd",
+  palette = "YlOrBr",
   style = "cont", # continuous color scale
   legendOrientation = "horizontal",
   legendTitle = "",
@@ -81,7 +91,10 @@ countyMap(
 )
 ```
 
-Now, the only difference between the map created with `countyMap()` and the original 
+We have chosen the **RColorBrewer** palette that seems to be the best match for
+the original palette. It's not perfect but it's close.
+
+The other difference between the map created with `countyMap()` and the original 
 is the position of the legend. We can add adjust this manually using functions 
 provided by **tmap**.
 
@@ -91,7 +104,7 @@ countyMap(
   parameter = "meanCaseRate",
   stateCode = "WA",
   breaks = seq(0, 200, 40),
-  palette = "YlOrRd",
+  palette = "YlOrBr",
   style = "cont", 
   legendOrientation = "horizontal",
   legendTitle = "",
@@ -104,9 +117,8 @@ countyMap(
 )
 ```
 
-From this map we can see that the average amount of new COVID-19 cases in Washington
-State appear to be somewhat consistent across the state. However, counties in the 
-south-east tend to have a higher amount of new cases than others.
+What story does this map tell? We can see that the average number of new COVID-19 cases in Washington
+State continue to be highest in the rural, farming counties of eastern Washington.
 
 ## Map 2: Student Math Participation in New York Counties
 
@@ -116,8 +128,8 @@ This is the map displayed on Opportunity Insights' economic tracker:
 
 ![](./Opportunity_Insights_files/map2.PNG)
 
-Like before, we can use just the basic functionality **MazamaSpatialPlots**'s 
-`countyMap()` function to make a map that almost perfectly matches the original map.
+As before, we can use just the basic functionality **MazamaSpatialPlots**'s 
+`countyMap()` function to make a map that comes close to matching the original map.
 One aspect that `countyMap()` isn't able to replicate is the color pallete used
 by Opportunity Insights. It appears to be some darker variation of the Spectral
 pallete provided by **RColorBrewer** but we were unable to find an exact match.
@@ -146,8 +158,10 @@ countyMap(
 )
 ```
 
-Similarly to the previous example, we can adjust the position of the map manually
+Similarly to the previous example, we can adjust the position of the legend manually
 by using **tmap**. We can also add the percent (%) symbol at the end of each label in the legend.
+Finally, we will take the liberty of choosing a diverging color palette that better
+conveys which counties show increased or decreased engagement.
 
 ```{r map2_fancy, warning = FALSE, message = FALSE}
 breaks = c(seq(-100, 0, 20), seq(40, 200, 40))
@@ -157,7 +171,7 @@ countyMap(
   parameter = "engagement",
   stateCode = "NY",
   breaks = breaks,
-  palette = "Spectral",
+  palette = "RdBu",
   style = "cont",
   legendOrientation = "horizontal",
   legendTitle = "",
@@ -171,10 +185,9 @@ countyMap(
 )
 ```
 
-From this map one could conclude that in general, the percent change varies across the
-state but tends to be low. There are some counties that had an slight increase in participation 
-and some that had a slight decrease.  However, some counties, especially some in the west, 
-saw a great increase in participation while some others saw a great decrease.
+Without additional information, no clear story emerges from this map. But it does
+highlight several counties where additional information might reveal why they 
+had a significnt increase or decrease in student engagement.
 
 
 
