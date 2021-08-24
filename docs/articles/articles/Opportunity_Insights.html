@@ -39,7 +39,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -80,7 +80,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/MazamaScience/MazamaSpatialPlots/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -94,8 +94,7 @@
 
       
 
-      </header><script src="Opportunity_Insights_files/header-attrs-2.5/header-attrs.js"></script><link href="Opportunity_Insights_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
-<script src="Opportunity_Insights_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
+      </header><script src="Opportunity_Insights_files/header-attrs-2.10/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Opportunity Insights</h1>
@@ -129,16 +128,16 @@
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">countyCovid</span><span class="op">)</span></code></pre></div>
 <pre><code>## # A tibble: 6 x 12
-##    year month   day countyfips case_count death_count case_rate death_rate
-##   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;       &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;
-## 1  2020     1    21       1001          0           0         0          0
-## 2  2020     1    21       1003          0           0         0          0
-## 3  2020     1    21       1005          0           0         0          0
-## 4  2020     1    21       1007          0           0         0          0
-## 5  2020     1    21       1009          0           0         0          0
-## 6  2020     1    21       1011          0           0         0          0
-## # … with 4 more variables: new_case_rate &lt;chr&gt;, new_death_rate &lt;chr&gt;,
-## #   new_case_count &lt;chr&gt;, new_death_count &lt;chr&gt;</code></pre>
+##    year month   day countyfips new_case_count new_death_count case_count
+##   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;      &lt;dbl&gt; &lt;chr&gt;          &lt;chr&gt;           &lt;chr&gt;     
+## 1  2020     1    21       1001 .              .               .         
+## 2  2020     1    21       1003 .              .               .         
+## 3  2020     1    21       1005 .              .               .         
+## 4  2020     1    21       1007 .              .               .         
+## 5  2020     1    21       1009 .              .               .         
+## 6  2020     1    21       1011 .              .               .         
+## # … with 5 more variables: death_count &lt;chr&gt;, new_case_rate &lt;chr&gt;,
+## #   case_rate &lt;chr&gt;, new_death_rate &lt;chr&gt;, death_rate &lt;chr&gt;</code></pre>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">countyMath</span><span class="op">)</span></code></pre></div>
 <pre><code>## # A tibble: 6 x 9
