@@ -127,7 +127,7 @@
 <span class="va">countyMath</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="va">URL2</span>, col_types <span class="op">=</span> <span class="fu">cols</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">countyCovid</span><span class="op">)</span></code></pre></div>
-<pre><code>## # A tibble: 6 x 12
+<pre><code>## # A tibble: 6 × 12
 ##    year month   day countyfips new_case_count new_death_count case_count
 ##   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;      &lt;dbl&gt; &lt;chr&gt;          &lt;chr&gt;           &lt;chr&gt;     
 ## 1  2020     1    21       1001 .              .               .         
@@ -140,7 +140,7 @@
 ## #   case_rate &lt;chr&gt;, new_death_rate &lt;chr&gt;, death_rate &lt;chr&gt;</code></pre>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">countyMath</span><span class="op">)</span></code></pre></div>
-<pre><code>## # A tibble: 6 x 9
+<pre><code>## # A tibble: 6 × 9
 ##   countyfips  year month day_endofweek engagement badges break_engagement
 ##        &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;         &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;  &lt;chr&gt;           
 ## 1       1003  2019     1            13 -.159      -.165  .               
