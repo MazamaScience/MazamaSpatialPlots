@@ -1,6 +1,6 @@
-# MazamaSpatialPlots 0.1.1
+# MazamaSpatialPlots 0.1.2
 
-* Putting countyMap example inside `\donttest{}` to pass CRAN checks.
+* Putting `countyMap()` example inside `\donttest{}` to pass CRAN checks.
 
 # MazamaSpatialPlots 0.1.1
 

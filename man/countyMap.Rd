@@ -85,6 +85,7 @@ Color palettes can be chosen from either RColorBrewer or Viridis. See
 \code{tmaptools::palette_explorer()} for a list of available palletes.
 }
 \examples{
+\donttest{
 library(MazamaSpatialPlots)
 
 countyMap(
@@ -113,5 +114,5 @@ countyMap(
     bg.color = "dodgerblue4"
   ) +
   tmap::tm_credits("*as of June 01, 2020", col = "white", position = "left")
-
+}
 }
