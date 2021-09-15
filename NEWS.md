@@ -1,5 +1,9 @@
 # MazamaSpatialPlots 0.1.1
 
+* Putting countyMap example inside `\donttest{}` to pass CRAN checks.
+
+# MazamaSpatialPlots 0.1.1
+
 * Added "Opportunity Insights" article.
 
 # MazamaSpatialPlots 0.1.0

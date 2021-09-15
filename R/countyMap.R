@@ -42,6 +42,7 @@
 #' @rdname countyMap
 #'
 #' @examples
+#' \donttest{
 #' library(MazamaSpatialPlots)
 #'
 #' countyMap(
@@ -70,7 +71,7 @@
 #'     bg.color = "dodgerblue4"
 #'   ) +
 #'   tmap::tm_credits("*as of June 01, 2020", col = "white", position = "left")
-#'
+#' }
 #' @export
 #' @importFrom sp CRS
 #' @importFrom rlang .data
