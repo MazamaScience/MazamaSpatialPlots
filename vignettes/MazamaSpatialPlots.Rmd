@@ -30,7 +30,7 @@ creating beautiful maps in R is still somewhat involved.
 
 The **MazamaSpatialPlots** package provides plotting functionality to make it as
 easy as possible to produce beautiful US state and county level maps. It builds
-on the excellent **tmap** package and harnesses datasaets from the 
+on the excellent **tmap** package and harnesses datasets from the 
 **MazamaSpatialUtils** package. High-level plotting functions make it easy for 
 users to create beautiful chloropleth maps. The underlying code uses **ggplot2**
 so users familiar with **ggplot2** can easily enhance the returned plot objects 

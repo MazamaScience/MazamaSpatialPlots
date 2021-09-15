@@ -4,7 +4,7 @@
 
 # MazamaSpatialPlots 0.1.0
 
-First user-ready release of the package. While still in development, engough 
+First user-ready release of the package. While still in development, enough 
 functionality exists for outside users to start using the `stateMap()` and
 `countyMap()` functions.
 

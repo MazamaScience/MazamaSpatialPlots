@@ -23,13 +23,13 @@ used on their [Economic Tracker](https://www.tracktherecovery.org/) web app.
 
 ## Obtaining Data
 
-All of the data we will use is easily obtainable from the Oportunity Insights 
+All of the data we will use is easily obtainable from the Opportunity Insights 
 [GitHub repository](https://github.com/OpportunityInsights/EconomicTracker). We
 can use `read.csv()` to load data directly.
 
 ```{r loadData, warning = FALSE}
 # COVID data by US county
-URL1 <- "https://raw.githubusercontent.com/OpportunityInsights/EconomicTracker/main/data/COVID%20-%20County%20-%20Daily.csv"
+URL1 <- "https://raw.githubusercontent.com/OpportunityInsights/EconomicTracker/main/data/COVID%20-%20County%20-%20Daily.csv.gz"
 URL2 <- "https://raw.githubusercontent.com/OpportunityInsights/EconomicTracker/main/data/Zearn%20-%20County%20-%20Weekly.csv"
 countyCovid <- readr::read_csv(URL1, col_types = cols())
 countyMath <- readr::read_csv(URL2, col_types = cols())
@@ -130,9 +130,9 @@ This is the map displayed on Opportunity Insights' economic tracker:
 
 As before, we can use just the basic functionality **MazamaSpatialPlots**'s 
 `countyMap()` function to make a map that comes close to matching the original map.
-One aspect that `countyMap()` isn't able to replicate is the color pallete used
+One aspect that `countyMap()` isn't able to replicate is the color palette used
 by Opportunity Insights. It appears to be some darker variation of the Spectral
-pallete provided by **RColorBrewer** but we were unable to find an exact match.
+palette provided by **RColorBrewer** but we were unable to find an exact match.
 
 ```{r map2_basic, warning = FALSE, error = FALSE, message = FALSE}
 mapDate <- lubridate::parse_date_time("2021 02 07", "y m d", tz = "UTC")
@@ -187,7 +187,7 @@ countyMap(
 
 Without additional information, no clear story emerges from this map. But it does
 highlight several counties where additional information might reveal why they 
-had a significnt increase or decrease in student engagement.
+had a significant increase or decrease in student engagement.
 
 
 

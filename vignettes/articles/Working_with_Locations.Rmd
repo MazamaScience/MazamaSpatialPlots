@@ -98,7 +98,7 @@ points(monitorLatestData$meta$longitude, monitorLatestData$meta$latitude)
 
 ```
 
-Another method to map monitor loactions is to use the `monitor_map()` function 
+Another method to map monitor locations is to use the `monitor_map()` function 
 from **PWFSLSmoke**. In fact, this function can also color the monitor location 
 points (by default, the maximum measurement per monitor is used to color the 
 points). This function is very useful when taking a quick look across the 
@@ -245,7 +245,7 @@ selectedStateCodeList <- c('ME', 'NH', 'VT', 'MA', 'RI', 'CT')
 selectedStateSPDF <- subset(stateSPDF, stateCode %in% selectedStateCodeList)
 selectedMonitorSPDF <- subset(monitorSPDF, stateCode %in% selectedStateCodeList)
 
-# Now use different size markers since all are AIRNOW in new england
+# Now use different size markers since all are AIRNOW in New England
 stateMap(
   data = selectedStateSPDF@data,
   parameter = "avgPM25", # color states by average PM Value

@@ -113,7 +113,7 @@
 <h2 class="hasAnchor">
 <a href="#background" class="anchor"></a>Background</h2>
 <p>Maps colored by state and county (aka “chloropleth maps”) are among the most common data graphics and are used to convey everything from vote totals to economic and health statistics. Well designed maps involve a careful choice of map projections and colors for both the state/county fill and boundary lines. Unfortunately, creating beautiful maps in R is still somewhat involved.</p>
-<p>The <strong>MazamaSpatialPlots</strong> package provides plotting functionality to make it as easy as possible to produce beautiful US state and county level maps. It builds on the excellent <strong>tmap</strong> package and harnesses datasaets from the <strong>MazamaSpatialUtils</strong> package. High-level plotting functions make it easy for users to create beautiful chloropleth maps. The underlying code uses <strong>ggplot2</strong> so users familiar with <strong>ggplot2</strong> can easily enhance the returned plot objects to create highly customized plots.</p>
+<p>The <strong>MazamaSpatialPlots</strong> package provides plotting functionality to make it as easy as possible to produce beautiful US state and county level maps. It builds on the excellent <strong>tmap</strong> package and harnesses datasets from the <strong>MazamaSpatialUtils</strong> package. High-level plotting functions make it easy for users to create beautiful chloropleth maps. The underlying code uses <strong>ggplot2</strong> so users familiar with <strong>ggplot2</strong> can easily enhance the returned plot objects to create highly customized plots.</p>
 </div>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
@@ -183,7 +183,7 @@ installSpatialData("USCensusCounties_02")</a></code></pre>
 
 <span class="co"># Look at input data</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">example_US_stateObesity</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 6 x 3</span>
+<span class="co">#&gt; # A tibble: 6 × 3</span>
 <span class="co">#&gt;   stateCode stateName  obesityRate</span>
 <span class="co">#&gt;   &lt;chr&gt;     &lt;chr&gt;            &lt;dbl&gt;</span>
 <span class="co">#&gt; 1 TX        Texas             32.4</span>
@@ -192,7 +192,6 @@ installSpatialData("USCensusCounties_02")</a></code></pre>
 <span class="co">#&gt; 4 GA        Georgia           30.7</span>
 <span class="co">#&gt; 5 WI        Wisconsin         30.7</span>
 <span class="co">#&gt; 6 OR        Oregon            30.1</span>
-
 <span class="co"># Create the map</span>
 <span class="fu"><a href="../reference/stateMap.html">stateMap</a></span><span class="op">(</span>
   data <span class="op">=</span> <span class="va">example_US_stateObesity</span>,
@@ -211,7 +210,7 @@ installSpatialData("USCensusCounties_02")</a></code></pre>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Look at the input data</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">example_US_countyCovid</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 6 x 6</span>
+<span class="co">#&gt; # A tibble: 6 × 6</span>
 <span class="co">#&gt;   stateCode stateName countyFIPS countyName cases deaths</span>
 <span class="co">#&gt;   &lt;chr&gt;     &lt;chr&gt;     &lt;chr&gt;      &lt;chr&gt;      &lt;int&gt;  &lt;int&gt;</span>
 <span class="co">#&gt; 1 AL        Alabama   01001      Autauga      234      5</span>
@@ -220,7 +219,6 @@ installSpatialData("USCensusCounties_02")</a></code></pre>
 <span class="co">#&gt; 4 AL        Alabama   01007      Bibb          79      1</span>
 <span class="co">#&gt; 5 AL        Alabama   01009      Blount        65      1</span>
 <span class="co">#&gt; 6 AL        Alabama   01011      Bullock      210      6</span>
-
 <span class="co"># Create the map</span>
 <span class="fu"><a href="../reference/countyMap.html">countyMap</a></span><span class="op">(</span>
   data <span class="op">=</span> <span class="va">example_US_countyCovid</span>,

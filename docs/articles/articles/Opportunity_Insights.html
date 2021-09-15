@@ -118,16 +118,16 @@
 <div id="obtaining-data" class="section level2">
 <h2 class="hasAnchor">
 <a href="#obtaining-data" class="anchor"></a>Obtaining Data</h2>
-<p>All of the data we will use is easily obtainable from the Oportunity Insights <a href="https://github.com/OpportunityInsights/EconomicTracker">GitHub repository</a>. We can use <code><a href="https://rdrr.io/r/utils/read.table.html">read.csv()</a></code> to load data directly.</p>
+<p>All of the data we will use is easily obtainable from the Opportunity Insights <a href="https://github.com/OpportunityInsights/EconomicTracker">GitHub repository</a>. We can use <code><a href="https://rdrr.io/r/utils/read.table.html">read.csv()</a></code> to load data directly.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># COVID data by US county</span>
-<span class="va">URL1</span> <span class="op">&lt;-</span> <span class="st">"https://raw.githubusercontent.com/OpportunityInsights/EconomicTracker/main/data/COVID%20-%20County%20-%20Daily.csv"</span>
+<span class="va">URL1</span> <span class="op">&lt;-</span> <span class="st">"https://raw.githubusercontent.com/OpportunityInsights/EconomicTracker/main/data/COVID%20-%20County%20-%20Daily.csv.gz"</span>
 <span class="va">URL2</span> <span class="op">&lt;-</span> <span class="st">"https://raw.githubusercontent.com/OpportunityInsights/EconomicTracker/main/data/Zearn%20-%20County%20-%20Weekly.csv"</span>
 <span class="va">countyCovid</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="va">URL1</span>, col_types <span class="op">=</span> <span class="fu">cols</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 <span class="va">countyMath</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="va">URL2</span>, col_types <span class="op">=</span> <span class="fu">cols</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">countyCovid</span><span class="op">)</span></code></pre></div>
-<pre><code>## # A tibble: 6 x 12
+<pre><code>## # A tibble: 6 × 20
 ##    year month   day countyfips new_case_count new_death_count case_count
 ##   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;      &lt;dbl&gt; &lt;chr&gt;          &lt;chr&gt;           &lt;chr&gt;     
 ## 1  2020     1    21       1001 .              .               .         
@@ -136,11 +136,14 @@
 ## 4  2020     1    21       1007 .              .               .         
 ## 5  2020     1    21       1009 .              .               .         
 ## 6  2020     1    21       1011 .              .               .         
-## # … with 5 more variables: death_count &lt;chr&gt;, new_case_rate &lt;chr&gt;,
-## #   case_rate &lt;chr&gt;, new_death_rate &lt;chr&gt;, death_rate &lt;chr&gt;</code></pre>
+## # … with 13 more variables: death_count &lt;chr&gt;, new_case_rate &lt;chr&gt;,
+## #   case_rate &lt;chr&gt;, new_death_rate &lt;chr&gt;, death_rate &lt;chr&gt;,
+## #   fullvaccine_count &lt;chr&gt;, vaccine_count &lt;chr&gt;, new_vaccine_count &lt;chr&gt;,
+## #   new_fullvaccine_count &lt;chr&gt;, new_vaccine_rate &lt;chr&gt;, vaccine_rate &lt;chr&gt;,
+## #   new_fullvaccine_rate &lt;chr&gt;, fullvaccine_rate &lt;chr&gt;</code></pre>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">countyMath</span><span class="op">)</span></code></pre></div>
-<pre><code>## # A tibble: 6 x 9
+<pre><code>## # A tibble: 6 × 9
 ##   countyfips  year month day_endofweek engagement badges break_engagement
 ##        &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;         &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;  &lt;chr&gt;           
 ## 1       1003  2019     1            13 -.159      -.165  .               
@@ -216,7 +219,7 @@
 <a href="#map-2-student-math-participation-in-new-york-counties" class="anchor"></a>Map 2: Student Math Participation in New York Counties</h2>
 <p>The next map we will recreate is the map of change in student participation in Math in the state of New York (by county) aggregated at the end of the week. This is the map displayed on Opportunity Insights’ economic tracker:</p>
 <p><img src="Opportunity_Insights_files/map2.PNG"></p>
-<p>As before, we can use just the basic functionality <strong>MazamaSpatialPlots</strong>’s <code><a href="../../reference/countyMap.html">countyMap()</a></code> function to make a map that comes close to matching the original map. One aspect that <code><a href="../../reference/countyMap.html">countyMap()</a></code> isn’t able to replicate is the color pallete used by Opportunity Insights. It appears to be some darker variation of the Spectral pallete provided by <strong>RColorBrewer</strong> but we were unable to find an exact match.</p>
+<p>As before, we can use just the basic functionality <strong>MazamaSpatialPlots</strong>’s <code><a href="../../reference/countyMap.html">countyMap()</a></code> function to make a map that comes close to matching the original map. One aspect that <code><a href="../../reference/countyMap.html">countyMap()</a></code> isn’t able to replicate is the color palette used by Opportunity Insights. It appears to be some darker variation of the Spectral palette provided by <strong>RColorBrewer</strong> but we were unable to find an exact match.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mapDate</span> <span class="op">&lt;-</span> <span class="fu">lubridate</span><span class="fu">::</span><span class="fu"><a href="http://lubridate.tidyverse.org/reference/parse_date_time.html">parse_date_time</a></span><span class="op">(</span><span class="st">"2021 02 07"</span>, <span class="st">"y m d"</span>, tz <span class="op">=</span> <span class="st">"UTC"</span><span class="op">)</span>
 
@@ -262,7 +265,7 @@
     legend.outside.size <span class="op">=</span> <span class="fl">0.1</span>
 <span class="op">)</span></code></pre></div>
 <p><img src="Opportunity_Insights_files/figure-html/map2_fancy-1.png" width="700"></p>
-<p>Without additional information, no clear story emerges from this map. But it does highlight several counties where additional information might reveal why they had a significnt increase or decrease in student engagement.</p>
+<p>Without additional information, no clear story emerges from this map. But it does highlight several counties where additional information might reveal why they had a significant increase or decrease in student engagement.</p>
 </div>
   </div>
 
