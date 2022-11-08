@@ -3,27 +3,27 @@
 \docType{data}
 \name{USCensusStates_02}
 \alias{USCensusStates_02}
-\title{US Census State SpatialPolygonsDataFrame}
+\title{US Census State simple features data frame}
 \format{
-A SpatialPolygonsDataFrame (SPDF) with 52 observations and 8 variables.
+A simple features data frame (SFDF) with 52 observations and 8 variables.
 }
 \usage{
 USCensusStates_02
 }
 \description{
-The \code{USCensusStates_02} dataset provides a SPDF of US states to
+The \code{USCensusStates_02} dataset provides a SFDF of US states to
 use in code examples. It is created by converting a US state borders
-shapefile to a SpatialPolygonsDataFrame with additional columns of data. The
-code for creating it demonstrates creation of a SPDF that is
+shapefile to a simple features data frame with additional columns of data. The
+code for creating it demonstrates creation of a SFDF that is
 compatible with \code{stateMap()}. See the \pkg{MazamaSpatialUtils} package for the
-function \code{convertUSCensusStates()} that creates this SPDF.
+function \code{convertUSCensusStates()} that creates this SFDF.
 
-This dataset was generated on 2020-07-25 by running:
+This dataset was generated on 2022-11-007 by running:
 
 \preformatted{
 library(MazamaSpatialUtils)
 
-setSpatialDataDir("~/Data/Spatial")
+setSpatialDataDir("~/Data/Spatial_0.8")
 
 MazamaSpatialUtils::convertUSCensusStates()
 

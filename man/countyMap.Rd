@@ -7,8 +7,8 @@
 countyMap(
   data = NULL,
   parameter = NULL,
-  state_SPDF = "USCensusStates_02",
-  county_SPDF = "USCensusCounties_02",
+  state_SFDF = "USCensusStates_02",
+  county_SFDF = "USCensusCounties_02",
   palette = "YlOrBr",
   breaks = NULL,
   style = ifelse(is.null(breaks), "pretty", "fixed"),
@@ -30,11 +30,11 @@ must contain a column named \code{countyFIPS} with the 5-digit FIPS code.}
 \item{parameter}{Name of the column in \code{data} to use for
 coloring the map.}
 
-\item{state_SPDF}{SpatialPolygonsDataFrame with US states. It's data
+\item{state_SFDF}{simple features data frame with US states. It's data
 \code{@slot} must contain a column named \code{stateCode} if either
 \code{conusOnly = TRUE} or the \code{stateCode} argument is specified.}
 
-\item{county_SPDF}{SpatialPolygonsDataFrame with US counties. It's data
+\item{county_SFDF}{simple features data frame with US counties. It's data
 \code{@slot} must always contain a column named and \code{countyFIPS} and a
 column named \code{stateCode} if either \code{conusOnly = TRUE} or the
 \code{stateCode} argument is specified.}
@@ -98,8 +98,8 @@ countyMap(
 countyMap(
   data = example_US_countyCovid,
   parameter = "deaths",
-  state_SPDF = USCensusStates_02,
-  county_SPDF = USCensusCounties_02,
+  state_SFDF = USCensusStates_02,
+  county_SFDF = USCensusCounties_02,
   palette = "OrRd",
   breaks = c(0, 1, 50, 100, 250, 500, 1000, 2500, 3000),
   stateCode = c( "NY", "PA", "MD", "NJ", "DE"),

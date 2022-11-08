@@ -7,7 +7,7 @@
 stateMap(
   data = NULL,
   parameter = NULL,
-  state_SPDF = "USCensusStates_02",
+  state_SFDF = "USCensusStates_02",
   palette = "YlOrBr",
   breaks = NULL,
   conusOnly = TRUE,
@@ -24,7 +24,7 @@ must contain a column named \code{stateCode} with the 2-character state code.}
 
 \item{parameter}{Name of the column in \code{data} to use for coloring the map.}
 
-\item{state_SPDF}{SpatialPolygonsDataFrame with US states. It's data
+\item{state_SFDF}{simple features data frame with US states. It's data
 \code{@slot} must contain a column named \code{stateCode} with the
 2-character state code.}
 

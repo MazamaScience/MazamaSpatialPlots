@@ -78,21 +78,21 @@
 "example_US_countyCovid"
 
 
-#' @title US Census State SpatialPolygonsDataFrame
-#' @format A SpatialPolygonsDataFrame (SPDF) with 52 observations and 8 variables.
-#' @description The \code{USCensusStates_02} dataset provides a SPDF of US states to
+#' @title US Census State simple features data frame
+#' @format A simple features data frame (SFDF) with 52 observations and 8 variables.
+#' @description The \code{USCensusStates_02} dataset provides a SFDF of US states to
 #' use in code examples. It is created by converting a US state borders
-#' shapefile to a SpatialPolygonsDataFrame with additional columns of data. The
-#' code for creating it demonstrates creation of a SPDF that is
+#' shapefile to a simple features data frame with additional columns of data. The
+#' code for creating it demonstrates creation of a SFDF that is
 #' compatible with \code{stateMap()}. See the \pkg{MazamaSpatialUtils} package for the
-#' function \code{convertUSCensusStates()} that creates this SPDF.
+#' function \code{convertUSCensusStates()} that creates this SFDF.
 #'
-#' This dataset was generated on 2020-07-25 by running:
+#' This dataset was generated on 2022-11-007 by running:
 #'
 #' \preformatted{
 #' library(MazamaSpatialUtils)
 #'
-#' setSpatialDataDir("~/Data/Spatial")
+#' setSpatialDataDir("~/Data/Spatial_0.8")
 #'
 #' MazamaSpatialUtils::convertUSCensusStates()
 #'
@@ -104,21 +104,21 @@
 "USCensusStates_02"
 
 
-#' @title US Census Counties SpatialPolygonsDataFrame
-#' @format A SpatialPolygonsDataFrame (SPDF) with 3169 observations and 9 variables.
-#' @description The \code{USCensusCounties_02} dataset provides a SPDF of US counties to
+#' @title US Census Counties simple features data frame
+#' @format A simple features data frame (SFDF) with 3169 observations and 9 variables.
+#' @description The \code{USCensusCounties_02} dataset provides a SFDF of US counties to
 #' use in code examples. It is created from converting a US county borders
-#' shapefile to a SpatialPolygonsDataFrame with additional columns of data. The
-#' code for creating it demonstrates creation of a SPDF that is
+#' shapefile to a simple features data frame with additional columns of data. The
+#' code for creating it demonstrates creation of a SFDF that is
 #' compatible with \code{countyMap()}. See the \pkg{MazamaSpatialUtils} package for the
-#' function \code{convertUSCensusCounties()} that creates this SPDF.
+#' function \code{convertUSCensusCounties()} that creates this SFDF.
 #'
-#' This dataset was generated on 2020-07-29 by running:
+#' This dataset was generated on 2022-11-07 by running:
 #'
 #' \preformatted{
 #' library(MazamaSpatialUtils)
 #'
-#' setSpatialDataDir("~/Data/Spatial")
+#' setSpatialDataDir("~/Data/Spatial_0.8")
 #'
 #' MazamaSpatialUtils::convertUSCensusCounties()
 #'

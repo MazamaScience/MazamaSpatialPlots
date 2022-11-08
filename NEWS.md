@@ -1,3 +1,9 @@
+# MazamaSpatialUtils 0.2.0
+
+Version 0.2.x is a refactoring to accommodate **MazamaSpatialUtils** 0.8 which
+is based on the **sf** package rather than **sp**. As much as
+possible, the suite of functions and arguments will remain the same.
+
 # MazamaSpatialPlots 0.1.2
 
 * Putting `countyMap()` example inside `\donttest{}` to pass CRAN checks.

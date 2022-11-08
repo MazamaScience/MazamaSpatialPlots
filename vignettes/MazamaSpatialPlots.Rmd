@@ -1,7 +1,7 @@
 ---
 title: "Introduction to MazamaSpatialPlots"
 author: "Rachel Carroll, Mazama Science"
-date: "February 3, 2020"
+date: "2022-11-07"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Introduction to MazamaSpatialPlots}

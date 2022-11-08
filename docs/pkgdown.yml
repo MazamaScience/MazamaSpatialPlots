@@ -1,12 +1,11 @@
-pandoc: 2.11.4
-pkgdown: 1.6.1
+pandoc: '2.18'
+pkgdown: 2.0.6
 pkgdown_sha: ~
 articles:
   MazamaSpatialPlots: MazamaSpatialPlots.html
-  articles/Creating_County_Maps: Creating_County_Maps.html
-  articles/Creating_State_Maps: Creating_State_Maps.html
-  articles/Customizing_State_Maps: Customizing_State_Maps.html
-  articles/Opportunity_Insights: Opportunity_Insights.html
-  articles/Working_with_Locations: Working_with_Locations.html
-last_built: 2021-09-15T20:09Z
+  Creating_County_Maps: Creating_County_Maps.html
+  Creating_State_Maps: Creating_State_Maps.html
+  Customizing_State_Maps: Customizing_State_Maps.html
+  Opportunity_Insights: Opportunity_Insights.html
+last_built: 2022-11-08T18:20Z
 

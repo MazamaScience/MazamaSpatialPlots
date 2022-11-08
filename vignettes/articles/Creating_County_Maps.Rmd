@@ -18,17 +18,17 @@ using the `countyMap()` function's arguments.
 ## Default Plots
 
 The `countyMap()` function requires three types of data. The first two 
-are SpatialPolygonsDataFrames (SPDF) containing state and county level polygons. 
-The SPDF containing state level polygons must include the variable `stateCode` 
-in its `@data` slot. Similarly, the SPDF containing county level polygons must include
-the variable `countyFIPS` in its `@data` slot. The default state and county level 
-SPDF's are `USCensusStates_02` and `USCensusCounties_02` respectively, and are
+are simple features data frames (SFDF) containing state and county level polygons. 
+The SFDF containing state level polygons must include the variable `stateCode` 
+in its `` slot. Similarly, the SFDF containing county level polygons must include
+the variable `countyFIPS` in its `` slot. The default state and county level 
+SFDF's are `USCensusStates_02` and `USCensusCounties_02` respectively, and are
 part of the package data. Higher or lower resolution US Census state and county
-SPDFs can be installed with:
+SFDFs can be installed with:
 
 ```
 library(MazamaSpatialUtils)
-setSpatialDataDir('~/Data/Spatial')    # default directory for spatial data
+setSpatialDataDir('~/Data/Spatial_0.8')    # default directory for spatial data
 installSpatialData('USCensusStates')   # state level polygons
 installSpatialData('USCensusCounties') # county level polygons
 ```
@@ -55,8 +55,8 @@ countyMap(
   data = example_US_countyCovid,
   parameter = 'cases',
   breaks = c(0,100,200,500,1000,2000,5000,10000,20000,50000,1e6),
-  state_SPDF = "USCensusStates_02", # the default value
-  county_SPDF = "USCensusCounties_02", # the default value
+  state_SFDF = "USCensusStates_02", # the default value
+  county_SFDF = "USCensusCounties_02", # the default value
   title = "Covid cases by county -- June 01, 2020"
 )
 ```
@@ -96,7 +96,7 @@ countyMap(
 ## Customizing with Function Parameters
 
 In the above examples, the `countyMap()` inputs `data`, `parameter`, 
-`state_SPDF`, `county_SPDF` and `title` are used to create maps. This section 
+`state_SFDF`, `county_SFDF` and `title` are used to create maps. This section 
 will demonstrate how to use the other input parameters to customize your map. 
 
 ### Using palette, breaks, and stateBorderColor

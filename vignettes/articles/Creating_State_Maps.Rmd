@@ -18,14 +18,14 @@ using the `stateMap()` function's arguments.
 ## Default Plots
 
 The `stateMap()` function requires two types of data. First is a 
-SpatialPolygonsDataFrame (SPDF) containing state level polygons. The SPDF must 
-include the variable `stateCode` in it's `@data` slot. The default SPDF is 
+simple features data frame (SFDF) containing state level polygons. The SFDF must 
+include the variable `stateCode` in it's `` slot. The default SFDF is 
 "USCensusStates_02", which part of the package data. Higher or lower 
-resolution US Census state SPDFs can be installed with:
+resolution US Census state SFDFs can be installed with:
 
 ```
 library(MazamaSpatialUtils)
-setSpatialDataDir('~/Data/Spatial') # default directory for spatial data
+setSpatialDataDir('~/Data/Spatial_0.8') # default directory for spatial data
 installSpatialData('USCensusStates_02')
 ```
 
@@ -49,7 +49,7 @@ library(MazamaSpatialPlots)
 stateMap(
   data = example_US_stateObesity,
   parameter = 'obesityRate',
-  state_SPDF = "USCensusStates_02", # the default value
+  state_SFDF = "USCensusStates_02", # the default value
   title = "Obesity Rate in U.S. States"
 )
 ```
@@ -93,7 +93,7 @@ livingCostData <-
   dplyr::mutate(
     stateCode = MazamaSpatialUtils::US_stateNameToCode(.data$"State"),
     avgAnnualWage = as.numeric(gsub('[$,]', '', .data$"Annual Mean Wage (All Occupations)")),
-    avgMonthlyRent = as.numeric(gsub('[$,]', '', .data$"Median Monthly Rent")),
+    avgMonthlyRent = as.numeric(gsub('[$,]', '', .data$"Average Monthly Rent")),
     rentWagePercent = 100*12*avgMonthlyRent/avgAnnualWage,
     .keep = "none"
   ) 
@@ -108,7 +108,7 @@ stateMap(
 ## Customizing with Function Parameters
 
 In the above examples, the `stateMap()` inputs `data`, `parameter`, 
-`state_SPDF`, and `title` are used to create maps. This section will demonstrate 
+`state_SFDF`, and `title` are used to create maps. This section will demonstrate 
 how to use the other input parameters to customize your map. 
 
 ### Using palette, breaks, and stateBorderColor

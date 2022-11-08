@@ -17,10 +17,10 @@
 #' must contain a column named \code{countyFIPS} with the 5-digit FIPS code.
 #' @param parameter Name of the column in \code{data} to use for
 #' coloring the map.
-#' @param state_SPDF SpatialPolygonsDataFrame with US states. It's data
+#' @param state_SFDF simple features data frame with US states. It's data
 #' \code{@slot} must contain a column named \code{stateCode} if either
 #' \code{conusOnly = TRUE} or the \code{stateCode} argument is specified.
-#' @param county_SPDF SpatialPolygonsDataFrame with US counties. It's data
+#' @param county_SFDF simple features data frame with US counties. It's data
 #' \code{@slot} must always contain a column named and \code{countyFIPS} and a
 #' column named \code{stateCode} if either \code{conusOnly = TRUE} or the
 #' \code{stateCode} argument is specified.
@@ -55,8 +55,8 @@
 #' countyMap(
 #'   data = example_US_countyCovid,
 #'   parameter = "deaths",
-#'   state_SPDF = USCensusStates_02,
-#'   county_SPDF = USCensusCounties_02,
+#'   state_SFDF = USCensusStates_02,
+#'   county_SFDF = USCensusCounties_02,
 #'   palette = "OrRd",
 #'   breaks = c(0, 1, 50, 100, 250, 500, 1000, 2500, 3000),
 #'   stateCode = c( "NY", "PA", "MD", "NJ", "DE"),
@@ -73,7 +73,7 @@
 #'   tmap::tm_credits("*as of June 01, 2020", col = "white", position = "left")
 #' }
 #' @export
-#' @importFrom sp CRS
+#' @importFrom sf st_bbox st_crs
 #' @importFrom rlang .data
 #' @importFrom tmap tm_shape tm_fill tm_polygons tm_layout
 #'
@@ -81,8 +81,8 @@
 countyMap <- function(
   data = NULL,
   parameter = NULL,
-  state_SPDF = "USCensusStates_02",
-  county_SPDF = "USCensusCounties_02",
+  state_SFDF = "USCensusStates_02",
+  county_SFDF = "USCensusCounties_02",
   palette = "YlOrBr",
   breaks = NULL,
   style = ifelse(is.null(breaks), "pretty", "fixed"),
@@ -122,57 +122,57 @@ countyMap <- function(
                 paste0(missingFields, collapse = ", ")))
   }
 
-  # * Validate state_SPDF -----
+  # * Validate state_SFDF -----
 
-  # Accept state SPDF as character string or as object
-  if ( is.character(state_SPDF) ) {
-    if ( exists(state_SPDF) ) {
-      state_SPDF <- get(state_SPDF)
+  # Accept state SFDF as character string or as object
+  if ( is.character(state_SFDF) ) {
+    if ( exists(state_SFDF) ) {
+      state_SFDF <- get(state_SFDF)
     } else {
       stop(sprintf("State dataset '%s' is not loaded.
   Please load it with MazamaSpatialtUtils::loadSpatialData()",
-                   state_SPDF
+                   state_SFDF
       ))
     }
   }
 
-  # Does 'state_SPDF' have the required columns?
-  # NOTE: state_SPDF@data does not require stateCode column if conusOnly = FALSE
+  # Does 'state_SFDF' have the required columns?
+  # NOTE: state_SFDF does not require stateCode column if conusOnly = FALSE
   # NOTE: and stateCode argument is not specified
   if ( conusOnly == TRUE | !is.null(stateCode) ){
-    requiredSPDFFields <- c("stateCode")
-    missingSPDFFields <- setdiff(requiredSPDFFields, names(state_SPDF@data))
-    if ( length(missingSPDFFields) > 0 ) {
-      stop(paste0("Missing fields in 'state_SPDF': ",
-                  paste0(missingSPDFFields, collapse = ", ")))
+    requiredSFDFFields <- c("stateCode")
+    missingSFDFFields <- setdiff(requiredSFDFFields, names(state_SFDF))
+    if ( length(missingSFDFFields) > 0 ) {
+      stop(paste0("Missing fields in 'state_SFDF': ",
+                  paste0(missingSFDFFields, collapse = ", ")))
     }
   }
 
-  # * Validate county_SPDF -----
+  # * Validate county_SFDF -----
 
-  # Accept county SPDF as character string or as object
-  if ( is.character(county_SPDF) ) {
-    if ( exists(county_SPDF) ) {
-      county_SPDF <- get(county_SPDF)
+  # Accept county SFDF as character string or as object
+  if ( is.character(county_SFDF) ) {
+    if ( exists(county_SFDF) ) {
+      county_SFDF <- get(county_SFDF)
     } else {
       stop(sprintf("County dataset '%s' is not loaded.
   Please load it with MazamaSpatialtUtils::loadSpatialData()",
-                   county_SPDF
+                   county_SFDF
       ))
     }
   }
 
-  # Does 'county_SPDF' have the required columns?
+  # Does 'county_SFDF' have the required columns?
   if ( conusOnly == TRUE | !is.null(stateCode) ){
-    requiredSPDFFields <- c("countyFIPS", "stateCode")
+    requiredSFDFFields <- c("countyFIPS", "stateCode")
   } else {
-    requiredSPDFFields <- c("countyFIPS")
+    requiredSFDFFields <- c("countyFIPS")
   }
 
-  missingSPDFFields <- setdiff(requiredSPDFFields, names(county_SPDF@data))
-  if ( length(missingSPDFFields) > 0 ) {
-    stop(paste0("Missing fields in 'county_SPDF': ",
-                paste0(missingSPDFFields, collapse = ", ")))
+  missingSFDFFields <- setdiff(requiredSFDFFields, names(county_SFDF))
+  if ( length(missingSFDFFields) > 0 ) {
+    stop(paste0("Missing fields in 'county_SFDF': ",
+                paste0(missingSFDFFields, collapse = ", ")))
   }
 
   # * Validate other -----
@@ -209,34 +209,34 @@ countyMap <- function(
   # Convert projection to a CRS object if necessary
   if ( !is.null(projection) ) {
     if ( is.character(projection) ) {
-      projection <- sp::CRS(projection)
+      projection <- sf::st_crs(projection)
     } else if ( "CRS" %in% class(projection) ) {
       # leave it alone
     } else {
-      stop(paste0("Parameter 'projection' must be a sp::CRS object or a valid ",
+      stop(paste0("Parameter 'projection' must be a sf::st_crs object or a valid ",
                   "projection string."))
     }
   }
 
-  # ----- Subset the SPDF ---------------------------------------------------------
+  # ----- Subset the SFDF ---------------------------------------------------------
 
   if ( !is.null(stateCode) ) {
 
     # NOTE:  Subset doesn't work properly unless we change the name here
     incomingStateCode <- stateCode
-    state_SPDF <- subset(state_SPDF, state_SPDF$stateCode %in% incomingStateCode)
-    county_SPDF <- subset(county_SPDF, county_SPDF$stateCode %in% incomingStateCode)
+    state_SFDF <- subset(state_SFDF, state_SFDF$stateCode %in% incomingStateCode)
+    county_SFDF <- subset(county_SFDF, county_SFDF$stateCode %in% incomingStateCode)
     data <- data %>% dplyr::filter(.data$stateCode %in% incomingStateCode)
 
   } else if ( conusOnly ) {
 
-    state_SPDF <- subset(state_SPDF, state_SPDF$stateCode %in% MazamaSpatialUtils::CONUS)
-    county_SPDF <- subset(county_SPDF, county_SPDF$stateCode %in% MazamaSpatialUtils::CONUS)
+    state_SFDF <- subset(state_SFDF, state_SFDF$stateCode %in% MazamaSpatialUtils::CONUS)
+    county_SFDF <- subset(county_SFDF, county_SFDF$stateCode %in% MazamaSpatialUtils::CONUS)
     data <- data %>% dplyr::filter(.data$stateCode %in% MazamaSpatialUtils::CONUS)
 
   } else {
 
-    # use existing SPDF
+    # use existing SFDF
 
   }
 
@@ -253,8 +253,8 @@ countyMap <- function(
     # NOTE:  Specifying stateCode takes precedence over specifying conusOnly
     if ( !is.null(stateCode) ) {
 
-      # 1) Get boundaries from stateSPDF
-      bbox <- sp::bbox(state_SPDF)
+      # 1) Get boundaries from stateSFDF
+      bbox <- sf::st_bbox(state_SFDF)
 
       # 2) Calculate lat lo/mid/hi and lon mid
       lat_1 <- bbox[2]
@@ -267,11 +267,11 @@ countyMap <- function(
       # 3) Create the proj4string text
       projString <- sprintf("+proj=aea +lat_1=%.1f +lat_2=%.1f +lat_0=%.1f +lon_0=%.1f +x_0=0 +y_0=0 +datum=NAD83 +units=m +no_defs",
                             lat_1, lat_2, lat_0, lon_0)
-      projection <- sp::CRS(projString)
+      projection <- sf::st_crs(projString)
 
     } else if ( conusOnly ) {
 
-      projection <- sp::CRS("+proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=37.5 +lon_0=-96 +x_0=0 +y_0=0 +datum=NAD83 +units=m +no_defs")
+      projection <- sf::st_crs("+proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=37.5 +lon_0=-96 +x_0=0 +y_0=0 +datum=NAD83 +units=m +no_defs")
 
     } else {
 
@@ -280,27 +280,27 @@ countyMap <- function(
       # TODO:  left corner. Jon has seen such a projection in an example but
       # TODO:  can't remember exactly where.
 
-      projection <- sp::CRS("+proj=laea +lat_0=45 +lon_0=-100 +x_0=0 +y_0=0 +a=6370997 +b=6370997 +units=m +no_defs")
+      projection <- sf::st_crs("+proj=laea +lat_0=45 +lon_0=-100 +x_0=0 +y_0=0 +a=6370997 +b=6370997 +units=m +no_defs")
 
     }
 
   } else {
 
-    # Use projection found in SPDF
+    # Use projection found in SFDF
 
   }
 
-  # ----- Merge data with SPDF -------------------------------------------------
+  # ----- Merge data with SFDF -------------------------------------------------
 
   # NOTE:  We can use left_join() because 'countyFIPS' is guaranteed to be in
   # NOTE:  both dataframes. We use "matrix style" subsetting of 'data' to
   # NOTE:  specify that we want all rows and just the columns with "countyFIPS"
   # NOTE:  and the parameter of interest.
 
-  # Add the incoming data$parameter to 'county_SPDF@data'.
-  county_SPDF@data <-
+  # Add the incoming data$parameter to 'county_SFDF'.
+  county_SFDF <-
     dplyr::left_join(
-      county_SPDF@data,
+      county_SFDF,
       data[, c("countyFIPS", parameter)],
       by = "countyFIPS"
     )
@@ -308,7 +308,7 @@ countyMap <- function(
   # ----- Create plot ----------------------------------------------------------
 
   gg <-
-    tmap::tm_shape(county_SPDF, projection = projection) +
+    tmap::tm_shape(county_SFDF, projection = projection) +
     tmap::tm_fill(
       col = parameter,
       palette = palette,
@@ -318,12 +318,12 @@ countyMap <- function(
       legend.show = showLegend,
       title = legendTitle
     ) +
-    tmap::tm_shape(county_SPDF, projection = projection) +
+    tmap::tm_shape(county_SFDF, projection = projection) +
     tmap::tm_polygons(
       alpha = 0,
       border.col = countyBorderColor
     ) +
-    tmap::tm_shape(state_SPDF, projection = projection) +
+    tmap::tm_shape(state_SFDF, projection = projection) +
     tmap::tm_polygons(
       alpha = 0,
       border.col = stateBorderColor
@@ -350,8 +350,8 @@ if ( FALSE ) {
   library(MazamaSpatialPlots)
   mazama_initialize()
 
-  state_SPDF <- USCensusStates_02
-  county_SPDF <- USCensusCounties_02
+  state_SFDF <- USCensusStates_02
+  county_SFDF <- USCensusCounties_02
 
   # Set up required variables so we can walk through the code
   data = example_US_countyCovid
@@ -373,8 +373,8 @@ if ( FALSE ) {
   countyMap(
     data = data,
     parameter = parameter,
-    state_SPDF = state_SPDF,
-    county_SPDF = county_SPDF,
+    state_SFDF = state_SFDF,
+    county_SFDF = county_SFDF,
     palette = palette,
     breaks = breaks,
     conusOnly = conusOnly,
@@ -391,8 +391,8 @@ if ( FALSE ) {
   countyMap(
     data,
     parameter = "cases",
-    state_SPDF = state_SPDF,
-    county_SPDF = county_SPDF
+    state_SFDF = state_SFDF,
+    county_SFDF = county_SFDF
   )
 
   # Not bad be, because we are plotting raw numbers rather than the rate,
@@ -401,8 +401,8 @@ if ( FALSE ) {
   countyMap(
     data,
     parameter = "cases",
-    state_SPDF = state_SPDF,
-    county_SPDF = county_SPDF,
+    state_SFDF = state_SFDF,
+    county_SFDF = county_SFDF,
     breaks = c(0,100,200,500,1000,2000,5000,10000,20000,50000,1e6)
   )
 
@@ -412,8 +412,8 @@ if ( FALSE ) {
   countyMap(
     data,
     parameter = "cases",
-    state_SPDF = state_SPDF,
-    county_SPDF = county_SPDF,
+    state_SFDF = state_SFDF,
+    county_SFDF = county_SFDF,
     breaks = c(0,100,200,500,1000,2000,5000,10000,20000,50000,1e6)
   ) +
     tmap::tm_layout(

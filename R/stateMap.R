@@ -20,7 +20,7 @@
 #' @param data Dataframe containing values to plot. This dataframe
 #' must contain a column named \code{stateCode} with the 2-character state code.
 #' @param parameter Name of the column in \code{data} to use for coloring the map.
-#' @param state_SPDF SpatialPolygonsDataFrame with US states. It's data
+#' @param state_SFDF simple features data frame with US states. It's data
 #' \code{@slot} must contain a column named \code{stateCode} with the
 #' 2-character state code.
 #' @param palette Palette name or a vector of colors based on RColorBrewer.
@@ -83,7 +83,7 @@
 #'     inner.margins  = .08
 #'   )
 #' @export
-#' @importFrom sp CRS
+#' @importFrom sf st_crs st_bbox
 #' @importFrom rlang .data
 #' @importFrom tmap tm_shape tm_fill tm_polygons tm_layout
 #'
@@ -91,7 +91,7 @@
 stateMap <- function(
   data = NULL,
   parameter = NULL,
-  state_SPDF = "USCensusStates_02",
+  state_SFDF = "USCensusStates_02",
   palette = "YlOrBr",
   breaks = NULL,
   conusOnly = TRUE,
@@ -132,30 +132,30 @@ stateMap <- function(
       }
     }
 
-  # * Validate 'SPDF' -----
+  # * Validate 'SFDF' -----
 
-  # Accept state SPDF as character string or as object
-  if ( is.character(state_SPDF) ) {
-    if ( exists(state_SPDF) ) {
-      state_SPDF <- get(state_SPDF)
+  # Accept state SFDF as character string or as object
+  if ( is.character(state_SFDF) ) {
+    if ( exists(state_SFDF) ) {
+      state_SFDF <- get(state_SFDF)
     } else {
       stop(sprintf("State dataset '%s' is not loaded.
   Please load it with MazamaSpatialtUtils::loadSpatialData()",
-                   state_SPDF
+                   state_SFDF
       ))
     }
   }
 
-  # Does 'state_SPDF' have the required columns?
-  requiredSPDFFields <- c("stateCode")
-  missingSPDFFields <- setdiff(requiredSPDFFields, names(state_SPDF@data))
-  if ( length(missingSPDFFields) > 0 ) {
-    if ( "state name" %in% tolower(names(state_SPDF@data)) ) {  # if statecode not found, try to create it
-      columnIndex <- which("state name" == tolower(names(state_SPDF@data)))
-      state_SPDF@data$stateCode <- MazamaSpatialUtils::US_stateNameToCode(state_SPDF@data[, columnIndex])
+  # Does 'state_SFDF' have the required columns?
+  requiredSFDFFields <- c("stateCode")
+  missingSFDFFields <- setdiff(requiredSFDFFields, names(state_SFDF))
+  if ( length(missingSFDFFields) > 0 ) {
+    if ( "state name" %in% tolower(names(state_SFDF)) ) {  # if statecode not found, try to create it
+      columnIndex <- which("state name" == tolower(names(state_SFDF)))
+      state_SFDF$stateCode <- MazamaSpatialUtils::US_stateNameToCode(state_SFDF[, columnIndex])
     } else {
-      stop(paste0("Missing fields in 'state_SPDF': ",
-                  paste0(missingSPDFFields, collapse = ", ")))
+      stop(paste0("Missing fields in 'state_SFDF': ",
+                  paste0(missingSFDFFields, collapse = ", ")))
     }
   }
 
@@ -183,11 +183,11 @@ stateMap <- function(
   # Convert projection to a CRS object if necessary
   if ( !is.null(projection) ) {
     if ( is.character(projection) ) {
-      projection <- sp::CRS(projection)
+      projection <- sf::st_crs(projection)
     } else if ( "CRS" %in% class(projection) ) {
       # leave it alone
     } else {
-      stop(paste0("Parameter 'projection' must be a sp::CRS object or a valid ",
+      stop(paste0("Parameter 'projection' must be a sf::st_crs object or a valid ",
                   "projection string."))
     }
   }
@@ -196,23 +196,23 @@ stateMap <- function(
   if ( !is.null(title) && length(parameter) != length(title) )
     stop("The lengths of 'parameter' and 'title' must be equal.")
 
-  # ----- Subset the SPDF ------------------------------------------------------
+  # ----- Subset the SFDF ------------------------------------------------------
 
   if ( !is.null(stateCode) ) {
 
     # NOTE:  Subset doesn't work properly unless we change the name here
     incomingStateCode <- stateCode
-    state_SPDF <- subset(state_SPDF, state_SPDF$stateCode %in% incomingStateCode)
+    state_SFDF <- subset(state_SFDF, state_SFDF$stateCode %in% incomingStateCode)
     data <- data %>% dplyr::filter(.data$stateCode %in% incomingStateCode)
 
   } else if ( conusOnly ) {
 
-    state_SPDF <- subset(state_SPDF, state_SPDF$stateCode %in% MazamaSpatialUtils::CONUS)
+    state_SFDF <- subset(state_SFDF, state_SFDF$stateCode %in% MazamaSpatialUtils::CONUS)
     data <- data %>% dplyr::filter(.data$stateCode %in% MazamaSpatialUtils::CONUS)
 
   } else {
 
-    # use existing SPDF
+    # use existing SFDF
 
   }
 
@@ -229,8 +229,8 @@ stateMap <- function(
     # NOTE:  Specifying stateCode takes precedence over specifying conusOnly
     if ( !is.null(stateCode) ) {
 
-      # 1) Get boundaries from stateSPDF
-      bbox <- sp::bbox(state_SPDF)
+      # 1) Get boundaries from stateSFDF
+      bbox <- sf::st_bbox(state_SFDF)
 
       # 2) Calculate lat lo/mid/hi and lon mid
       lat_1 <- bbox[2]
@@ -243,11 +243,11 @@ stateMap <- function(
       # 3) Create the proj4string text
       projString <- sprintf("+proj=aea +lat_1=%.1f +lat_2=%.1f +lat_0=%.1f +lon_0=%.1f +x_0=0 +y_0=0 +datum=NAD83 +units=m +no_defs",
                             lat_1, lat_2, lat_0, lon_0)
-      projection <- sp::CRS(projString)
+      projection <- sf::st_crs(projString)
 
     } else if ( conusOnly ) {
 
-      projection <- sp::CRS("+proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=37.5 +lon_0=-96 +x_0=0 +y_0=0 +datum=NAD83 +units=m +no_defs")
+      projection <- sf::st_crs("+proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=37.5 +lon_0=-96 +x_0=0 +y_0=0 +datum=NAD83 +units=m +no_defs")
 
     } else {
 
@@ -256,27 +256,27 @@ stateMap <- function(
       # TODO:  left corner. Jon has seen such a projection in an example but
       # TODO:  can't remember exactly where.
 
-      projection <- sp::CRS("+proj=laea +lat_0=45 +lon_0=-100 +x_0=0 +y_0=0 +a=6370997 +b=6370997 +units=m +no_defs")
+      projection <- sf::st_crs("+proj=laea +lat_0=45 +lon_0=-100 +x_0=0 +y_0=0 +a=6370997 +b=6370997 +units=m +no_defs")
 
     }
 
   } else {
 
-    # Use projection found in SPDF
+    # Use projection found in SFDF
 
   }
 
-  # ----- Merge data with SPDF -------------------------------------------------
+  # ----- Merge data with SFDF -------------------------------------------------
 
   # NOTE:  We can use left_join() because 'stateCode' is guaranteed to be in
   # NOTE:  both dataframes. We use "matrix style" subsetting of 'data' to
   # NOTE:  specify that we want all rows and just the columns with "stateCode"
   # NOTE:  and the parameter of interest.
 
-  # Add the incoming data$parameter to 'state_SPDF@data'.
-  state_SPDF@data <-
+  # Add the incoming data$parameter to 'state_SFDF'.
+  state_SFDF <-
     dplyr::left_join(
-      state_SPDF@data,
+      state_SFDF,
       data[, c("stateCode", parameter)],
       by = "stateCode"
     )
@@ -284,13 +284,13 @@ stateMap <- function(
   # ----- Create plot ----------------------------------------------------------
 
   gg <-
-    tmap::tm_shape(state_SPDF, projection = projection) +
+    tmap::tm_shape(state_SFDF, projection = projection) +
     tmap::tm_fill(
       col = parameter,
       palette = palette,
       breaks = breaks
     ) +
-    tmap::tm_shape(state_SPDF, projection = projection) +
+    tmap::tm_shape(state_SFDF, projection = projection) +
     tmap::tm_polygons(
       alpha = 0,
       border.col = stateBorderColor
@@ -319,7 +319,7 @@ if ( FALSE ) {
   library(MazamaSpatialPlots)
   mazama_initialize()
 
-  state_SPDF <- USCensusStates_02
+  state_SFDF <- USCensusStates_02
 
   # Set up required variables so we can walk through the code
   data = example_US_stateObesity
@@ -340,7 +340,7 @@ if ( FALSE ) {
   stateMap(
     data = data,
     parameter = parameter,
-    state_SPDF = state_SPDF,
+    state_SFDF = state_SFDF,
     palette = palette,
     breaks = breaks,
     conusOnly = conusOnly,
@@ -355,7 +355,7 @@ if ( FALSE ) {
 
   stateMap(
     data,
-    state_SPDF = state_SPDF,
+    state_SFDF = state_SFDF,
     parameter = "obesityRate"
   )
 
@@ -363,7 +363,7 @@ if ( FALSE ) {
 
   stateMap(
     data,
-    state_SPDF = state_SPDF,
+    state_SFDF = state_SFDF,
     parameter = "obesityRate",
     palette = "BuPu",
     stateBorderColor = "black"
@@ -373,7 +373,7 @@ if ( FALSE ) {
 
   stateMap(
     data,
-    state_SPDF = state_SPDF,
+    state_SFDF = state_SFDF,
     parameter = "obesityRate",
     palette = "BuPu",
     stateBorderColor = "black"
