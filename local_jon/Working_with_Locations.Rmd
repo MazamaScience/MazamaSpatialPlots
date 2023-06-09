@@ -1,7 +1,7 @@
 ---
 title: "Working with Air Quality Data"
-author: "Rachel Carroll, Mazama Science"
-date: "August 7, 2020"
+author: "Jonathan Callahan & Rachel Carroll"
+date: "2022-11-13"
 output: html_document
 ---
 
@@ -12,24 +12,25 @@ knitr::opts_chunk$set(echo = TRUE)
 ## Objective
 
 The objective of this article is to demonstrate how to make detailed maps from 
-air quality monitoring data. The **PWFSLSmoke** package is used to extract and 
+air quality monitoring data. The **AirMonitor** package is used to extract and 
 manipulate the air quality monitoring data from AIRNOW, AIRSIS and WRCC. This 
-data contains particulate matter 2.5 (PM2.5) concentrations at the monitor 
+data contains particulate matter (PM2.5) concentrations at the monitor 
 locations over time. In this demonstration, we create maps that display monitor 
 locations, air quality statistics at monitor locations, and average air quality 
 in a given region. 
 
 ## Prepare Monitor Data
 
-There are several functions in the **PWFSLSmoke** package that can be used to load air quality monitoring data:
+There are several functions in the **AirMonitor** package that can be used to load air quality monitoring data:
 
   *  `monitor_load()` - Loads data from a given time range. For example, `monitor_load(20170601, 20171001)` brings in all readings between 06/01/17 and 10/01/17.
   *  `monitor_loadAnnual()` - Loads all data from a given year. For example `monitor_loadAnnual(2018)` pulls in all 2018 data.
   *  `monitor_loadDaily()` - Loads the past 45 days of data, up to midnight of the most recent full day.
   *  `monitor_loadDaily()` - Loads the past 10 days of data, up the current hour.
   
-  
-These functions load in the data as a _ws_monitor_ object, which contains 1) a dataframe with air quality monitor readings over time and 2) the monitor-level metadata with characteristics such as monitor locations. 
+These functions load in the data as a _mts_monitor_ object, which contains 1) a 
+dataframe with air quality monitor readings over time and 2) the monitor-level 
+metadata with characteristics such as monitor locations. 
 
 In the example below, data from the past 10 days is loaded and monitor-level 
 calculations are performed. The data can be summarized in any way deemed relevant 
@@ -42,30 +43,30 @@ daily average for each monitor.
 ```{r prepdata, warning = FALSE, message = FALSE}
 
 library(MazamaSpatialPlots)
-library(PWFSLSmoke)
+library(AirMonitor)
 
 # Load data
-monitorLatestData <- PWFSLSmoke::monitor_loadLatest() # past 10 days of data, up to the current hour
+monitorLatestData <- AirMonitor::monitor_loadLatest() # past 10 days of data, up to the current hour
 
 # Prepare Data: Subset and summarize based on desired information
 # calculating maximum daily average (one record per monitor)
 dailyMax <-
   monitorLatestData %>%
-  PWFSLSmoke::monitor_dailyStatistic(minHours = 2) %>% # daily average
-  PWFSLSmoke::monitor_extractData() %>% 
+  AirMonitor::monitor_dailyStatistic(minHours = 2) %>% # daily average
+  AirMonitor::monitor_getData() %>% 
   tidyr::pivot_longer(-datetime, names_to = "monitorID", values_to = "value") %>%
-  dplyr::group_by(monitorID) %>% 
+  dplyr::group_by(deviceDeploymentID) %>% 
   dplyr::summarise(pm25 = max(value, na.rm = TRUE)) %>% # taking maximum daily average
-  dplyr::left_join(monitorLatestData$meta, by = 'monitorID') %>%
+  dplyr::left_join(monitorLatestData$meta, by = 'deviceDeploymentID') %>%
   dplyr::select(
-    c('monitorID', 'stateCode', 'latitude', 'longitude', 'pwfslDataIngestSource', 'pm25'))
+    c('deviceDeploymenntID', 'stateCode', 'latitude', 'longitude', 'pwfslDataIngestSource', 'pm25'))
 
 # Clean pm25 column by setting -Inf values to NA
 dailyMax$pm25 <- replace(dailyMax$pm25, dailyMax$pm25 == -Inf, NA)
 
 ```
 
-Now the _ws_monitor_ object, `monitorLatestData` and the monitor-level dataframe, 
+Now the _mts_monitor_ object, `monitorLatestData`, and the monitor-level dataframe, 
 `dailyMax`, can be used to create air quality maps as demonstrated in the 
 following sections.
 
@@ -84,7 +85,7 @@ For simplicity, we won't project the data at all.
 stateCodeList <- unique(monitorLatestData$meta$stateCode) 
 stateCodeList <- subset(
   stateCodeList, stateCodeList %in% MazamaSpatialUtils::CONUS
-  )
+)
 # Create subsetted U.S. state SFDF
 stateSFDF <- subset(USCensusStates_02, stateCode %in% stateCodeList)
 
@@ -99,15 +100,15 @@ points(monitorLatestData$meta$longitude, monitorLatestData$meta$latitude)
 ```
 
 Another method to map monitor locations is to use the `monitor_map()` function 
-from **PWFSLSmoke**. In fact, this function can also color the monitor location 
+from **AirMonitor**. In fact, this function can also color the monitor location 
 points (by default, the maximum measurement per monitor is used to color the 
 points). This function is very useful when taking a quick look across the 
 continental U.S. However, the method above allows for some more flexibility in 
 subsetting states and calculating desired monitor-level statistics.     
 
 ``` {r monitor_locs2, warning = FALSE, message = FALSE}
-# method 2 using monitor_map() from PWFSLSmoke
-PWFSLSmoke::monitor_map(
+# method 2 using monitor_map() from AirMonitor
+AirMonitor::monitor_map(
   monitorLatestData, 
   countyCol = NA,
   colors = 'grey50',
@@ -125,7 +126,7 @@ nature, it is a good idea to transform the locations data into a
 _SpatialPointsDataFrame_. This is because SFDFs are compatible with the **tmap** 
 package, which allows us to create attractive maps with high flexibility.
 
-Below, monitor locations are again plotted on a plain continental U.S. map. In this example, however, **tmap** is used so the overall layout, color schemes, legend break points, and point shapes are easily specified.  Notice that AIRNOW monitors are displayed as circles and AIRSIS and WRCC monitors are triangles. This is done by simply defining the shape parameter in `tm_symbols()` with the data source column. This cannot be done using `PWFSLSmoke::monitor_map()` and would require longer messier code to create directly using `plot()` and `points()`.
+Below, monitor locations are again plotted on a plain continental U.S. map. In this example, however, **tmap** is used so the overall layout, color schemes, legend break points, and point shapes are easily specified.  Notice that AIRNOW monitors are displayed as circles and AIRSIS and WRCC monitors are triangles. This is done by simply defining the shape parameter in `tm_symbols()` with the data source column. This cannot be done using `AirMonitor::monitor_map()` and would require longer messier code to create directly using `plot()` and `points()`.
 
 ```{r monitor_vals, warning = FALSE, message = FALSE}
 
@@ -313,7 +314,7 @@ tmap::tm_shape(selectedStateSFDF) +
 ## Conclusion
 
 Using a few key functions from **MazamaSpatialUtls**, **MazamaSpatialPlots**
-and **PWFSLSmoke** makes it easy to create detailed and descriptive maps 
+and **AirMonitor** makes it easy to create detailed and descriptive maps 
 containing both regional averages as well as spatial data point measurements. 
 The examples in this article demonstrate several ways to leverage these functions
 as well as customization capabilities from the **tmap** package.
