@@ -129,8 +129,8 @@ stateMap <- function(
     } else {
       stop(paste0("Missing fields in 'data': ",
                   paste0(missingFields, collapse = ", ")))
-      }
     }
+  }
 
   # * Validate 'SFDF' -----
 
@@ -284,25 +284,31 @@ stateMap <- function(
   # ----- Create plot ----------------------------------------------------------
 
   gg <-
-    tmap::tm_shape(state_SFDF, projection = projection) +
+    tmap::tm_shape(state_SFDF, crs = projection) +
     tmap::tm_fill(
-      col = parameter,
-      palette = palette,
-      breaks = breaks
+      fill = parameter,
+      fill.scale = tmap::tm_scale_intervals(
+        breaks = breaks
+      )
+      #palette = palette
     ) +
-    tmap::tm_shape(state_SFDF, projection = projection) +
     tmap::tm_polygons(
-      alpha = 0,
-      border.col = stateBorderColor
+      fill_alpha = 0,
+      col = stateBorderColor
     ) +
-    tmap::tm_layout(
-      main.title = main.title,
-      title = title,
-      main.title.size = .9,
-      main.title.position = c("center", "top"),
-      title.position = c("center", 'top'),
-      frame = FALSE
+    tmap::tm_title(
+      text = title,
+      size = 0.9,
+      position = tmap::tm_pos_in("center", "top")
     )
+    # tmap::tm_layout(
+    #   main.title = main.title,
+    #   title = title,
+    #   main.title.size = .9,
+    #   main.title.position = c("center", "top"),
+    #   title.position = c("center", 'top'),
+    #   frame = FALSE
+    # )
 
   # ----- Return ---------------------------------------------------------------
 
@@ -330,7 +336,8 @@ if ( FALSE ) {
   stateCode = NULL
   projection = NULL
   stateBorderColor = "white"
-  title <- "Obesity Rate by state"
+  title = "Obesity Rate by state"
+  main.title = NULL
 
   # Run the code above and then start walking through the lines of code in the
   # function.
@@ -377,12 +384,13 @@ if ( FALSE ) {
     parameter = "obesityRate",
     palette = "BuPu",
     stateBorderColor = "black"
-  ) +
-    tmap::tm_layout(
-      title = "Obesity rate by state",
-      title.size = 2,
-      title.fontface = "bold",
-      frame = TRUE
+  # ) +
+  # TODO:  example needs work
+  #   tmap::tm_layout(
+  #     title = "Obesity rate by state",
+  #     title.size = 2,
+  #     title.fontface = "bold",
+  #     frame = TRUE
     )
 
   # Very nice!

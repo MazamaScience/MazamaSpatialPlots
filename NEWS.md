@@ -1,3 +1,7 @@
+# MazamaSpatialUtils 0.3.0
+
+Version 0.3.x is an upgrade to accommodate **tmap 4.0**.
+
 # MazamaSpatialUtils 0.2.0
 
 Version 0.2.x is a refactoring to accommodate **MazamaSpatialUtils** 0.8 which
