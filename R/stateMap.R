@@ -3,14 +3,10 @@
 #' state level. Input consists of a dataframe with \code{stateCode} identifiers.
 #'
 #' Data to plot is specified with \code{parameter} argument. If \code{parameter}
-#' is mult-valued, mutliple plots will be generated and displayed in a
-#' "small multiples" matrix.
+#' is mult-valued, mutliple plots will be generated and displayed as "facets".
 #'
 #' The returned object is a \pkg{tmap} ggplot object which can be further
-#' modified with ggplot options.
-#'
-#' @details See \code{tmap::tm_fill()} for a more detailed description of
-#' the following parameters:
+#' modified with tmap or ggplot options.
 #'
 #' \itemize{
 #' \item{\code{palette}}
@@ -23,16 +19,14 @@
 #' @param state_SFDF simple features data frame with US states. It's data
 #' \code{@slot} must contain a column named \code{stateCode} with the
 #' 2-character state code.
-#' @param palette Palette name or a vector of colors based on RColorBrewer.
 #' @param breaks Numeric vector of break points.
 #' @param conusOnly Logical specifying Continental US state codes. Ignored when
 #' the \code{stateCode} argument is specified.
 #' @param stateCode Vector of state codes to include on the map.
-#' @param projection Specified method to represent surface of Earth.
+#' @param projection Named projection, \emph{e.g.} "EPSG:4326" or "WGS84" or proj4string. (Unused)
 #' @param stateBorderColor Color used for state borders.
 #' @param title Vector of text strings to use as individual plot titles.
 #' This must be the same length as 'parameter'.
-#' @param main.title Text string to use as an overall title for all plots.
 #' @return A ggplot object.
 #'
 #' @rdname stateMap
@@ -58,11 +52,14 @@
 #'   tmap::tm_layout(
 #'     frame = TRUE,
 #'     frame.double.line = TRUE,
-#'     main.title = 'Obesity Rate by State',
-#'     main.title.position = c("center", "top"),
-#'     fontfamily = "serif",
 #'     bg.color = "grey85",
 #'     inner.margins  = .05
+#'   ) +
+#'   tmap::tm_title(
+#'     text = 'Obesity Rate by State',
+#'     size = 1.5,
+#'     position = tmap::tm_pos_in("center", "top"),
+#'     fontfamily = "serif"
 #'   )
 #'
 #' # Example using stateCode
@@ -70,17 +67,23 @@
 #'   data = example_US_stateObesity,
 #'   parameter = "obesityRate",
 #'   stateCode = c('ME', 'NH', 'VT', 'MA', 'RI', 'CT'),
-#'   stateBorderColor = 'black',
-#'   title = 'Obesity Rates in New England'
+#'   stateBorderColor = 'black'
 #' ) +
 #'   tmap::tm_layout(
 #'     frame = TRUE,
 #'     frame.double.line = TRUE,
-#'     title.size = 1.2,
-#'     title.fontface = 2,
-#'     fontfamily = "serif",
 #'     bg.color = "grey85",
 #'     inner.margins  = .08
+#'   ) +
+#'   tmap::tm_title(
+#'     text = 'Obesity Rates in New England',
+#'     size = 1.5,
+#'     fontface = 2,
+#'     fontfamily = "serif",
+#'     position = tmap::tm_pos_in("center", "top")
+#'   ) +
+#'   tmap::tm_legend(
+#'     position = tmap::tm_pos_in("right", "bottom")
 #'   )
 #' @export
 #' @importFrom sf st_crs st_bbox
@@ -262,6 +265,7 @@ stateMap <- function(
 
   } else {
 
+    # TODO:  When do we use the passed in projection?
     # Use projection found in SFDF
 
   }
@@ -301,14 +305,6 @@ stateMap <- function(
       size = 0.9,
       position = tmap::tm_pos_in("center", "top")
     )
-    # tmap::tm_layout(
-    #   main.title = main.title,
-    #   title = title,
-    #   main.title.size = .9,
-    #   main.title.position = c("center", "top"),
-    #   title.position = c("center", 'top'),
-    #   frame = FALSE
-    # )
 
   # ----- Return ---------------------------------------------------------------
 
@@ -407,11 +403,10 @@ if ( FALSE ) {
     tmap::tm_style(
       'classic'
     ) +
-    tmap::tm_layout(
-      title = 'Obesity Rate by State',
-      title.position = c("center", "top"),
-      title.size = 1.2,
-      inner.margins  = .08
+    tmap::tm_title(
+      text = 'Obesity Rate by State',
+      position = tmap::tm_pos_in("center", "top"),
+      size = 1.2
     ) +
     tmap::tm_compass()
 
@@ -425,11 +420,10 @@ if ( FALSE ) {
     tmap::tm_style(
       'cobalt'
     ) +
-    tmap::tm_layout(
-      title = 'Obesity Rate by State',
-      title.position = c("center", "top"),
-      title.size = 1.2,
-      inner.margins  = .08
+    tmap::tm_title(
+      text = 'Obesity Rate by State',
+      position = tmap::tm_pos_in("center", "top"),
+      size = 1.2
     ) +
     tmap::tm_compass()
 
@@ -444,15 +438,26 @@ if ( FALSE ) {
     conusOnly = FALSE ,
     stateBorderColor = 'black',
   ) +
-    tmap::tm_layout(
-      frame = TRUE,
-      main.title = 'Obesity Rates in U.S. States and Territories',
-      main.title.position = c("center", "top"),
-      title.fontface = 2,
-      fontfamily = "serif",
-      bg.color = "grey85",
-      inner.margins  = .05,
-      legend.position = c('right', 'top')
+    tmap::tm_title(
+      text = 'Obesity Rates in U.S. States and Territories',
+      position = tmap::tm_pos_out("center", "top"),
+      size = 2,
+      fontface = 2,
+      fontfamily = "serif"
+    ) +
+    tmap::tm_legend(
+      position = tmap::tm_pos_in("right", "top")
     )
+
+    # tmap::tm_layout(
+    #   frame = TRUE,
+    #   main.title = 'Obesity Rates in U.S. States and Territories',
+    #   main.title.position = c("center", "top"),
+    #   title.fontface = 2,
+    #   fontfamily = "serif",
+    #   bg.color = "grey85",
+    #   inner.margins  = .05,
+    #   legend.position = c('right', 'top')
+    # )
 
 }
