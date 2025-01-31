@@ -57,7 +57,7 @@ testthat::test_that("subsets by stateCode correctly", {
   stateCodeList <- c('WA', 'OR')
   countyList <- USCensusCounties_02[USCensusCounties_02$stateCode %in% stateCodeList,]
 
-  plottedStates <- countyMap(example_US_countyCovid, 'cases', stateCode = stateCodeList)$tm_shape$shp$stateCode
+  plottedStates <- countyMap(example_US_countyCovid, 'cases', stateCode = stateCodeList)[[1]]$shp$stateCode
 
   testthat::expect_equal(length(plottedStates), nrow(countyList))
   testthat::expect_true('WA' %in% plottedStates)

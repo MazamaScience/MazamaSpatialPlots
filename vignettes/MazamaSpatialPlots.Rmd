@@ -128,7 +128,6 @@ head(example_US_stateObesity)
 stateMap(
   data = example_US_stateObesity,
   parameter = 'obesityRate',
-  palette = 'BuPu',
   breaks = seq(20, 38, 3),
   stateBorderColor = 'white',
   title = "Obesity Rate in U.S. States"

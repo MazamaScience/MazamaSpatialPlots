@@ -8,14 +8,16 @@ stateMap(
   data = NULL,
   parameter = NULL,
   state_SFDF = "USCensusStates_02",
-  palette = "YlOrBr",
   breaks = NULL,
   conusOnly = TRUE,
   stateCode = NULL,
   projection = NULL,
   stateBorderColor = "gray50",
   title = NULL,
-  main.title = NULL
+  showLegend = TRUE,
+  legendTitle = NULL,
+  legendOrientation = "portrait",
+  legendPosition = NULL
 )
 }
 \arguments{
@@ -28,8 +30,6 @@ must contain a column named \code{stateCode} with the 2-character state code.}
 \code{@slot} must contain a column named \code{stateCode} with the
 2-character state code.}
 
-\item{palette}{Palette name or a vector of colors based on RColorBrewer.}
-
 \item{breaks}{Numeric vector of break points.}
 
 \item{conusOnly}{Logical specifying Continental US state codes. Ignored when
@@ -37,14 +37,22 @@ the \code{stateCode} argument is specified.}
 
 \item{stateCode}{Vector of state codes to include on the map.}
 
-\item{projection}{Specified method to represent surface of Earth.}
+\item{projection}{Named projection, \emph{e.g.} "EPSG:4326" or "WGS84" or proj4string. (Unused)}
 
 \item{stateBorderColor}{Color used for state borders.}
 
 \item{title}{Vector of text strings to use as individual plot titles.
 This must be the same length as 'parameter'.}
 
-\item{main.title}{Text string to use as an overall title for all plots.}
+\item{showLegend}{Logical specifying whether or not to show the legend.}
+
+\item{legendTitle}{Text string to use as the legend title.}
+
+\item{legendOrientation}{Orientation of the legend. Either "portrait" or "landscape".}
+
+\item{legendPosition}{A \emph{tm_pos} object generated with
+\code{\link[tmap:tm_pos_in]{tmap::tm_pos_in()}} or
+\code{\link[tmap:tm_pos_out]{tmap::tm_pos_out()}}.}
 }
 \value{
 A ggplot object.
@@ -54,20 +62,10 @@ Uses the \pkg{tmap} package to generate a thematic map at the
 state level. Input consists of a dataframe with \code{stateCode} identifiers.
 
 Data to plot is specified with \code{parameter} argument. If \code{parameter}
-is mult-valued, mutliple plots will be generated and displayed in a
-"small multiples" matrix.
+is mult-valued, mutliple plots will be generated and displayed as "facets".
 
 The returned object is a \pkg{tmap} ggplot object which can be further
-modified with ggplot options.
-}
-\details{
-See \code{tmap::tm_fill()} for a more detailed description of
-the following parameters:
-
-\itemize{
-\item{\code{palette}}
-\item{\code{breaks}}
-}
+modified with tmap or ggplot options.
 }
 \examples{
 library(MazamaSpatialPlots)
@@ -75,9 +73,8 @@ library(MazamaSpatialPlots)
 stateMap(
   data = example_US_stateObesity,
   parameter = "obesityRate",
-  palette = "BuPu",
   stateBorderColor = "white",
-  main.title = "2018 Obesity by State"
+  title = "2018 Obesity by State"
 )
 
 # Example of customization using tm_layout and breaks parameter
@@ -90,11 +87,14 @@ stateMap(
   tmap::tm_layout(
     frame = TRUE,
     frame.double.line = TRUE,
-    main.title = 'Obesity Rate by State',
-    main.title.position = c("center", "top"),
-    fontfamily = "serif",
     bg.color = "grey85",
     inner.margins  = .05
+  ) +
+  tmap::tm_title(
+    text = 'Obesity Rate by State',
+    size = 1.5,
+    position = tmap::tm_pos_in("center", "top"),
+    fontfamily = "serif"
   )
 
 # Example using stateCode
@@ -103,15 +103,19 @@ stateMap(
   parameter = "obesityRate",
   stateCode = c('ME', 'NH', 'VT', 'MA', 'RI', 'CT'),
   stateBorderColor = 'black',
-  title = 'Obesity Rates in New England'
+  legendPosition = tmap::tm_pos_in("right", "bottom")
 ) +
   tmap::tm_layout(
     frame = TRUE,
     frame.double.line = TRUE,
-    title.size = 1.2,
-    title.fontface = 2,
-    fontfamily = "serif",
     bg.color = "grey85",
     inner.margins  = .08
+  ) +
+  tmap::tm_title(
+    text = 'Obesity Rates in New England',
+    size = 1.5,
+    fontface = 2,
+    fontfamily = "serif",
+    position = tmap::tm_pos_in("center", "top")
   )
 }

@@ -1,6 +1,8 @@
 # MazamaSpatialUtils 0.3.0
 
-Version 0.3.x is an upgrade to accommodate **tmap 4.0**.
+Version 0.3.x is an upgrade to accommodate **tmap 4.0**. Some arguments to 
+`stateMap()` and `countyMap()` have changed to reflect changes in the **tmap**
+package.
 
 # MazamaSpatialUtils 0.2.0
 

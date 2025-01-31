@@ -2,21 +2,15 @@
 #' @description Uses the \pkg{tmap} package to generate a thematic map at the
 #' county level. Input consists of a dataframe with \code{countyFIPS} identifiers.
 #'
-#' @details See \code{tmap::tm_fill()} for a more detailed description of
-#' the following parameters:
+#' Data to plot is specified with \code{parameter} argument. If \code{parameter}
+#' is mult-valued, mutliple plots will be generated and displayed as "facets".
 #'
-#' \itemize{
-#' \item{\code{palette}}
-#' \item{\code{breaks}}
-#' }
-#'
-#' @note Color palettes can be chosen from either RColorBrewer or Viridis. See
-#' \code{tmaptools::palette_explorer()} for a list of available palletes.
+#' The returned object is a \pkg{tmap} ggplot object which can be further
+#' modified with tmap or ggplot options.
 #'
 #' @param data Dataframe containing values to plot. This dataframe
 #' must contain a column named \code{countyFIPS} with the 5-digit FIPS code.
-#' @param parameter Name of the column in \code{data} to use for
-#' coloring the map.
+#' @param parameter Name of the column in \code{data} to use for coloring the map.
 #' @param state_SFDF simple features data frame with US states. It's data
 #' \code{@slot} must contain a column named \code{stateCode} if either
 #' \code{conusOnly = TRUE} or the \code{stateCode} argument is specified.
@@ -24,19 +18,22 @@
 #' \code{@slot} must always contain a column named and \code{countyFIPS} and a
 #' column named \code{stateCode} if either \code{conusOnly = TRUE} or the
 #' \code{stateCode} argument is specified.
-#' @param palette Palette name or a vector of colors based on RColorBrewer or Viridis.
 #' @param breaks Numeric vector of break points.
-#' @param style Method to process the color scale.
-#' @param showLegend Logical specifying whether or not to draw the legend
-#' @param legendOrientation Orientation of the legend. Either 'vertical' or 'horizontal'
-#' @param legendTitle Text string to use as the legend title.
 #' @param conusOnly Logical specifying Continental US state codes. Ignored when
 #' the \code{stateCode} argument is specified.
 #' @param stateCode Vector of state codes to include on the map.
-#' @param projection Specified method to represent surface of Earth.
+#' @param projection Named projection, \emph{e.g.} "EPSG:4326" or "WGS84" or proj4string. (Unused)
 #' @param stateBorderColor Color used for state borders.
 #' @param countyBorderColor Color used for county borders.
-#' @param title Text string to use as the plot title.
+#' @param title Vector of text strings to use as individual plot titles.
+#' This must be the same length as 'parameter'.
+#' @param showLegend Logical specifying whether or not to show the legend.
+#' @param legendTitle Text string to use as the legend title.
+#' @param legendOrientation Orientation of the legend. Either "portrait" or "landscape".
+#' @param legendPosition A \emph{tm_pos} object generated with
+#' \code{\link[tmap:tm_pos_in]{tmap::tm_pos_in()}} or
+#' \code{\link[tmap:tm_pos_out]{tmap::tm_pos_out()}}.
+#'
 #' @return A ggplot object.
 #'
 #' @rdname countyMap
@@ -44,6 +41,7 @@
 #' @examples
 #' \donttest{
 #' library(MazamaSpatialPlots)
+#' mazama_initialize()
 #'
 #' countyMap(
 #'   data = example_US_countyCovid,
@@ -57,18 +55,19 @@
 #'   parameter = "deaths",
 #'   state_SFDF = USCensusStates_02,
 #'   county_SFDF = USCensusCounties_02,
-#'   palette = "OrRd",
 #'   breaks = c(0, 1, 50, 100, 250, 500, 1000, 2500, 3000),
 #'   stateCode = c( "NY", "PA", "MD", "NJ", "DE"),
 #'   stateBorderColor = "black",
-#'   countyBorderColor = 'grey70',
-#'   title = "COVID-19 Deaths* in the Mid Atlantic"
+#'   countyBorderColor = 'grey70'
 #' ) +
 #'   tmap::tm_layout(
-#'     main.title.size = 1.2,
-#'     main.title.color = "white",
 #'     attr.color = 'white',
 #'     bg.color = "dodgerblue4"
+#'   ) +
+#'   tmap::tm_title(
+#'     text = "COVID-19 Deaths* in the Mid Atlantic",
+#'     size = 2.0,
+#'     color = "white",
 #'   ) +
 #'   tmap::tm_credits("*as of June 01, 2020", col = "white", position = "left")
 #' }
@@ -83,24 +82,25 @@ countyMap <- function(
   parameter = NULL,
   state_SFDF = "USCensusStates_02",
   county_SFDF = "USCensusCounties_02",
-  palette = "YlOrBr",
   breaks = NULL,
-  style = ifelse(is.null(breaks), "pretty", "fixed"),
-  showLegend = TRUE,
-  legendOrientation = "vertical",
-  legendTitle = NULL,
   conusOnly = TRUE,
   stateCode = NULL,
   projection = NULL,
   stateBorderColor = "gray50",
   countyBorderColor = "white",
-  title = NULL
+  title = NULL,
+  showLegend = TRUE,
+  legendTitle = NULL,
+  legendOrientation = c("portrait", "landscape"),
+  legendPosition = NULL
 ) {
 
   # ----- Validate parameters --------------------------------------------------
 
   MazamaCoreUtils::stopIfNull(data)
   MazamaCoreUtils::stopIfNull(parameter)
+
+  legendOrientation <- match.arg(legendOrientation)
 
   # Check if data exists
   if ( !exists("data") ) {
@@ -196,16 +196,6 @@ countyMap <- function(
     }
   }
 
-  if ( tolower(legendOrientation) == "horizontal" ) {
-    legendIsPortrait  = FALSE
-  }  else {
-    legendIsPortrait = TRUE
-  }
-
-  if ( is.null(legendTitle) ) {
-    legendTitle = parameter
-  }
-
   # Convert projection to a CRS object if necessary
   if ( !is.null(projection) ) {
     if ( is.character(projection) ) {
@@ -218,7 +208,14 @@ countyMap <- function(
     }
   }
 
-  # ----- Subset the SFDF ---------------------------------------------------------
+  # Validate legendPosition
+  if ( !is.null(legendPosition) ) {
+    if ( !"tm_pos" %in% class(legendPosition) ) {
+      stop("Parameter 'legendPosition' must be generated with tmap::tmap_pos_in() or tmap::tmap_pos_out()")
+    }
+  }
+
+  # ----- Subset the SFDF ------------------------------------------------------
 
   if ( !is.null(stateCode) ) {
 
@@ -308,31 +305,36 @@ countyMap <- function(
   # ----- Create plot ----------------------------------------------------------
 
   gg <-
-    tmap::tm_shape(county_SFDF, projection = projection) +
+    tmap::tm_shape(county_SFDF, crs = projection) +
     tmap::tm_fill(
-      col = parameter,
-      palette = palette,
-      breaks = breaks,
-      style = style,
-      legend.is.portrait = legendIsPortrait,
-      legend.show = showLegend,
-      title = legendTitle
+      fill = parameter,
+      fill.scale = tmap::tm_scale_intervals(
+        breaks = breaks
+      ),
+      fill.legend = tmap::tm_legend(
+        title = legendTitle,
+        show = showLegend,
+        orientation = legendOrientation,
+        position = legendPosition
+      )
     ) +
-    tmap::tm_shape(county_SFDF, projection = projection) +
+    tmap::tm_shape(county_SFDF, crs = projection) +
     tmap::tm_polygons(
-      alpha = 0,
-      border.col = countyBorderColor
+      fill_alpha = 0,
+      col = countyBorderColor
     ) +
-    tmap::tm_shape(state_SFDF, projection = projection) +
+    tmap::tm_shape(state_SFDF, crs = projection) +
     tmap::tm_polygons(
-      alpha = 0,
-      border.col = stateBorderColor
+      fill_alpha = 0,
+      col = stateBorderColor
     ) +
     tmap::tm_layout(
-      main.title = title,
-      main.title.size = .9,
-      main.title.position = c("center", "top"),
       frame = FALSE,
+    ) +
+    tmap::tm_title(
+      text = title,
+      size = .9,
+      position = tmap::tm_pos_out("center", "top")
     )
 
   # ----- Return ---------------------------------------------------------------
@@ -356,7 +358,6 @@ if ( FALSE ) {
   # Set up required variables so we can walk through the code
   data = example_US_countyCovid
   parameter = "cases"
-  palette = "YlOrBr"
   breaks = NULL
   conusOnly = TRUE
   stateCode = NULL
@@ -364,6 +365,12 @@ if ( FALSE ) {
   stateBorderColor = "white"
   countyBorderColor = "gray90"
   title = "Covid cases by county -- June 01, 2020"
+  showLegend = TRUE
+  legendTitle = NULL
+  legendOrientation = "portrait"
+  legendPosition = NULL
+
+
 
   # Run the code above and then start walking through the lines of code in the
   # function.
@@ -375,7 +382,6 @@ if ( FALSE ) {
     parameter = parameter,
     state_SFDF = state_SFDF,
     county_SFDF = county_SFDF,
-    palette = palette,
     breaks = breaks,
     conusOnly = conusOnly,
     stateCode = stateCode,
@@ -395,7 +401,7 @@ if ( FALSE ) {
     county_SFDF = county_SFDF
   )
 
-  # Not bad be, because we are plotting raw numbers rather than the rate,
+  # Not bad but, because we are plotting raw numbers rather than the rate,
   # we should probably use an exponential set of breaks.
 
   countyMap(
@@ -416,10 +422,10 @@ if ( FALSE ) {
     county_SFDF = county_SFDF,
     breaks = c(0,100,200,500,1000,2000,5000,10000,20000,50000,1e6)
   ) +
-    tmap::tm_layout(
-      title = "Covid cases by county -- June 01, 2020",
-      title.size = 2,
-      title.fontface = "bold"
+    tmap::tm_title(
+      text = "Covid cases by county -- June 01, 2020",
+      size = 2,
+      fontface = "bold"
     )
 
   # Very nice!

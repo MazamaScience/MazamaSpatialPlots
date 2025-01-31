@@ -8,11 +8,6 @@
 #' The returned object is a \pkg{tmap} ggplot object which can be further
 #' modified with tmap or ggplot options.
 #'
-#' \itemize{
-#' \item{\code{palette}}
-#' \item{\code{breaks}}
-#' }
-#'
 #' @param data Dataframe containing values to plot. This dataframe
 #' must contain a column named \code{stateCode} with the 2-character state code.
 #' @param parameter Name of the column in \code{data} to use for coloring the map.
@@ -27,6 +22,13 @@
 #' @param stateBorderColor Color used for state borders.
 #' @param title Vector of text strings to use as individual plot titles.
 #' This must be the same length as 'parameter'.
+#' @param showLegend Logical specifying whether or not to show the legend.
+#' @param legendTitle Text string to use as the legend title.
+#' @param legendOrientation Orientation of the legend. Either "portrait" or "landscape".
+#' @param legendPosition A \emph{tm_pos} object generated with
+#' \code{\link[tmap:tm_pos_in]{tmap::tm_pos_in()}} or
+#' \code{\link[tmap:tm_pos_out]{tmap::tm_pos_out()}}.
+#'
 #' @return A ggplot object.
 #'
 #' @rdname stateMap
@@ -37,9 +39,8 @@
 #' stateMap(
 #'   data = example_US_stateObesity,
 #'   parameter = "obesityRate",
-#'   palette = "BuPu",
 #'   stateBorderColor = "white",
-#'   main.title = "2018 Obesity by State"
+#'   title = "2018 Obesity by State"
 #' )
 #'
 #' # Example of customization using tm_layout and breaks parameter
@@ -67,7 +68,8 @@
 #'   data = example_US_stateObesity,
 #'   parameter = "obesityRate",
 #'   stateCode = c('ME', 'NH', 'VT', 'MA', 'RI', 'CT'),
-#'   stateBorderColor = 'black'
+#'   stateBorderColor = 'black',
+#'   legendPosition = tmap::tm_pos_in("right", "bottom")
 #' ) +
 #'   tmap::tm_layout(
 #'     frame = TRUE,
@@ -81,9 +83,6 @@
 #'     fontface = 2,
 #'     fontfamily = "serif",
 #'     position = tmap::tm_pos_in("center", "top")
-#'   ) +
-#'   tmap::tm_legend(
-#'     position = tmap::tm_pos_in("right", "bottom")
 #'   )
 #' @export
 #' @importFrom sf st_crs st_bbox
@@ -92,17 +91,19 @@
 #'
 
 stateMap <- function(
-  data = NULL,
-  parameter = NULL,
-  state_SFDF = "USCensusStates_02",
-  palette = "YlOrBr",
-  breaks = NULL,
-  conusOnly = TRUE,
-  stateCode = NULL,
-  projection = NULL,
-  stateBorderColor = "gray50",
-  title = NULL,
-  main.title = NULL
+    data = NULL,
+    parameter = NULL,
+    state_SFDF = "USCensusStates_02",
+    breaks = NULL,
+    conusOnly = TRUE,
+    stateCode = NULL,
+    projection = NULL,
+    stateBorderColor = "gray50",
+    title = NULL,
+    showLegend = TRUE,
+    legendTitle = NULL,
+    legendOrientation = "portrait",
+    legendPosition = NULL
 ) {
 
   # ----- Validate parameters --------------------------------------------------
@@ -199,6 +200,13 @@ stateMap <- function(
   if ( !is.null(title) && length(parameter) != length(title) )
     stop("The lengths of 'parameter' and 'title' must be equal.")
 
+  # Validate legendPosition
+  if ( !is.null(legendPosition) ) {
+    if ( !"tm_pos" %in% class(legendPosition) ) {
+      stop("Parameter 'legendPosition' must be generated with tmap::tmap_pos_in() or tmap::tmap_pos_out()")
+    }
+  }
+
   # ----- Subset the SFDF ------------------------------------------------------
 
   if ( !is.null(stateCode) ) {
@@ -293,8 +301,13 @@ stateMap <- function(
       fill = parameter,
       fill.scale = tmap::tm_scale_intervals(
         breaks = breaks
+      ),
+      fill.legend = tmap::tm_legend(
+        title = legendTitle,
+        show = showLegend,
+        orientation = legendOrientation,
+        position = legendPosition
       )
-      #palette = palette
     ) +
     tmap::tm_polygons(
       fill_alpha = 0,
@@ -303,7 +316,7 @@ stateMap <- function(
     tmap::tm_title(
       text = title,
       size = 0.9,
-      position = tmap::tm_pos_in("center", "top")
+      position = tmap::tm_pos_out("center", "top")
     )
 
   # ----- Return ---------------------------------------------------------------
@@ -326,14 +339,13 @@ if ( FALSE ) {
   # Set up required variables so we can walk through the code
   data = example_US_stateObesity
   parameter = "obesityRate"
-  palette = "YlOrBr"
   breaks = NULL
   conusOnly = TRUE
   stateCode = NULL
   projection = NULL
   stateBorderColor = "white"
   title = "Obesity Rate by state"
-  main.title = NULL
+  legendPosition = NULL
 
   # Run the code above and then start walking through the lines of code in the
   # function.
@@ -344,13 +356,13 @@ if ( FALSE ) {
     data = data,
     parameter = parameter,
     state_SFDF = state_SFDF,
-    palette = palette,
     breaks = breaks,
     conusOnly = conusOnly,
     stateCode = stateCode,
     projection = projection,
     stateBorderColor = stateBorderColor,
-    title = title
+    title = title,
+    legendPosition = legendPosition
   )
 
   ##############################################################################
@@ -368,7 +380,6 @@ if ( FALSE ) {
     data,
     state_SFDF = state_SFDF,
     parameter = "obesityRate",
-    palette = "BuPu",
     stateBorderColor = "black"
   )
 
@@ -378,15 +389,16 @@ if ( FALSE ) {
     data,
     state_SFDF = state_SFDF,
     parameter = "obesityRate",
-    palette = "BuPu",
-    stateBorderColor = "black"
-  # ) +
-  # TODO:  example needs work
-  #   tmap::tm_layout(
-  #     title = "Obesity rate by state",
-  #     title.size = 2,
-  #     title.fontface = "bold",
-  #     frame = TRUE
+    stateBorderColor = "black",
+    legendPosition = tmap::tm_pos_in("left", "bottom")
+  ) +
+    tmap::tm_layout(
+      frame = TRUE
+    ) +
+    tmap::tm_title(
+      text = "Obesity rate by state",
+      size = 2,
+      fontface = "bold"
     )
 
   # Very nice!
@@ -414,7 +426,6 @@ if ( FALSE ) {
   stateMap(
     data = example_US_stateObesity,
     parameter = "obesityRate",
-    palette = "BuPu",
     breaks = seq(20,40,4)
   ) +
     tmap::tm_style(
@@ -437,6 +448,7 @@ if ( FALSE ) {
     breaks = seq(20,38,3), #increasing color detail
     conusOnly = FALSE ,
     stateBorderColor = 'black',
+    legendPosition = tmap::tm_pos_in("right", "top")
   ) +
     tmap::tm_title(
       text = 'Obesity Rates in U.S. States and Territories',
@@ -444,20 +456,6 @@ if ( FALSE ) {
       size = 2,
       fontface = 2,
       fontfamily = "serif"
-    ) +
-    tmap::tm_legend(
-      position = tmap::tm_pos_in("right", "top")
     )
-
-    # tmap::tm_layout(
-    #   frame = TRUE,
-    #   main.title = 'Obesity Rates in U.S. States and Territories',
-    #   main.title.position = c("center", "top"),
-    #   title.fontface = 2,
-    #   fontfamily = "serif",
-    #   bg.color = "grey85",
-    #   inner.margins  = .05,
-    #   legend.position = c('right', 'top')
-    # )
 
 }

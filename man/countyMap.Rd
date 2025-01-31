@@ -9,26 +9,24 @@ countyMap(
   parameter = NULL,
   state_SFDF = "USCensusStates_02",
   county_SFDF = "USCensusCounties_02",
-  palette = "YlOrBr",
   breaks = NULL,
-  style = ifelse(is.null(breaks), "pretty", "fixed"),
-  showLegend = TRUE,
-  legendOrientation = "vertical",
-  legendTitle = NULL,
   conusOnly = TRUE,
   stateCode = NULL,
   projection = NULL,
   stateBorderColor = "gray50",
   countyBorderColor = "white",
-  title = NULL
+  title = NULL,
+  showLegend = TRUE,
+  legendTitle = NULL,
+  legendOrientation = c("portrait", "landscape"),
+  legendPosition = NULL
 )
 }
 \arguments{
 \item{data}{Dataframe containing values to plot. This dataframe
 must contain a column named \code{countyFIPS} with the 5-digit FIPS code.}
 
-\item{parameter}{Name of the column in \code{data} to use for
-coloring the map.}
+\item{parameter}{Name of the column in \code{data} to use for coloring the map.}
 
 \item{state_SFDF}{simple features data frame with US states. It's data
 \code{@slot} must contain a column named \code{stateCode} if either
@@ -39,30 +37,31 @@ coloring the map.}
 column named \code{stateCode} if either \code{conusOnly = TRUE} or the
 \code{stateCode} argument is specified.}
 
-\item{palette}{Palette name or a vector of colors based on RColorBrewer or Viridis.}
-
 \item{breaks}{Numeric vector of break points.}
-
-\item{style}{Method to process the color scale.}
-
-\item{showLegend}{Logical specifying whether or not to draw the legend}
-
-\item{legendOrientation}{Orientation of the legend. Either 'vertical' or 'horizontal'}
-
-\item{legendTitle}{Text string to use as the legend title.}
 
 \item{conusOnly}{Logical specifying Continental US state codes. Ignored when
 the \code{stateCode} argument is specified.}
 
 \item{stateCode}{Vector of state codes to include on the map.}
 
-\item{projection}{Specified method to represent surface of Earth.}
+\item{projection}{Named projection, \emph{e.g.} "EPSG:4326" or "WGS84" or proj4string. (Unused)}
 
 \item{stateBorderColor}{Color used for state borders.}
 
 \item{countyBorderColor}{Color used for county borders.}
 
-\item{title}{Text string to use as the plot title.}
+\item{title}{Vector of text strings to use as individual plot titles.
+This must be the same length as 'parameter'.}
+
+\item{showLegend}{Logical specifying whether or not to show the legend.}
+
+\item{legendTitle}{Text string to use as the legend title.}
+
+\item{legendOrientation}{Orientation of the legend. Either "portrait" or "landscape".}
+
+\item{legendPosition}{A \emph{tm_pos} object generated with
+\code{\link[tmap:tm_pos_in]{tmap::tm_pos_in()}} or
+\code{\link[tmap:tm_pos_out]{tmap::tm_pos_out()}}.}
 }
 \value{
 A ggplot object.
@@ -70,23 +69,17 @@ A ggplot object.
 \description{
 Uses the \pkg{tmap} package to generate a thematic map at the
 county level. Input consists of a dataframe with \code{countyFIPS} identifiers.
-}
-\details{
-See \code{tmap::tm_fill()} for a more detailed description of
-the following parameters:
 
-\itemize{
-\item{\code{palette}}
-\item{\code{breaks}}
-}
-}
-\note{
-Color palettes can be chosen from either RColorBrewer or Viridis. See
-\code{tmaptools::palette_explorer()} for a list of available palletes.
+Data to plot is specified with \code{parameter} argument. If \code{parameter}
+is mult-valued, mutliple plots will be generated and displayed as "facets".
+
+The returned object is a \pkg{tmap} ggplot object which can be further
+modified with tmap or ggplot options.
 }
 \examples{
 \donttest{
 library(MazamaSpatialPlots)
+mazama_initialize()
 
 countyMap(
   data = example_US_countyCovid,
@@ -100,18 +93,19 @@ countyMap(
   parameter = "deaths",
   state_SFDF = USCensusStates_02,
   county_SFDF = USCensusCounties_02,
-  palette = "OrRd",
   breaks = c(0, 1, 50, 100, 250, 500, 1000, 2500, 3000),
   stateCode = c( "NY", "PA", "MD", "NJ", "DE"),
   stateBorderColor = "black",
-  countyBorderColor = 'grey70',
-  title = "COVID-19 Deaths* in the Mid Atlantic"
+  countyBorderColor = 'grey70'
 ) +
   tmap::tm_layout(
-    main.title.size = 1.2,
-    main.title.color = "white",
     attr.color = 'white',
     bg.color = "dodgerblue4"
+  ) +
+  tmap::tm_title(
+    text = "COVID-19 Deaths* in the Mid Atlantic",
+    size = 2.0,
+    color = "white",
   ) +
   tmap::tm_credits("*as of June 01, 2020", col = "white", position = "left")
 }

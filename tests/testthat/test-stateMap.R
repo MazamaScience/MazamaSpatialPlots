@@ -54,7 +54,7 @@ testthat::test_that("handles errors correctly", {
 testthat::test_that("subsets by stateCode correctly", {
 
   stateCodeList <- c('WA', 'OR')
-  plottedStates <- stateMap(example_US_stateObesity, 'obesityRate', stateCode = stateCodeList)$tm_shape$shp$stateCode
+  plottedStates <- stateMap(example_US_stateObesity, 'obesityRate', stateCode = stateCodeList)[[1]]$shp$stateCode
 
   testthat::expect_equal(length(plottedStates), length(stateCodeList))
   testthat::expect_true('WA' %in% plottedStates)
