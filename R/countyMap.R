@@ -19,10 +19,12 @@
 #' column named \code{stateCode} if either \code{conusOnly = TRUE} or the
 #' \code{stateCode} argument is specified.
 #' @param breaks Numeric vector of break points.
+#' @param palette A vector of colors or palette name from the \pkg{cols4all} package
+#' (see \code{\link[cols4all:c4a]{cols4all::c4a}}).
 #' @param conusOnly Logical specifying Continental US state codes. Ignored when
 #' the \code{stateCode} argument is specified.
 #' @param stateCode Vector of state codes to include on the map.
-#' @param projection Named projection, \emph{e.g.} "EPSG:4326" or "WGS84" or proj4string. (Unused)
+#' @param projection Named projection, \emph{e.g.} "EPSG:4326" or "WGS84" or proj4string.
 #' @param stateBorderColor Color used for state borders.
 #' @param countyBorderColor Color used for county borders.
 #' @param title Vector of text strings to use as individual plot titles.
@@ -56,6 +58,7 @@
 #'   state_SFDF = USCensusStates_02,
 #'   county_SFDF = USCensusCounties_02,
 #'   breaks = c(0, 1, 50, 100, 250, 500, 1000, 2500, 3000),
+#'   palette = "brewer.or_rd",
 #'   stateCode = c( "NY", "PA", "MD", "NJ", "DE"),
 #'   stateBorderColor = "black",
 #'   countyBorderColor = 'grey70'
@@ -83,6 +86,7 @@ countyMap <- function(
   state_SFDF = "USCensusStates_02",
   county_SFDF = "USCensusCounties_02",
   breaks = NULL,
+  palette = "brewer.blues",
   conusOnly = TRUE,
   stateCode = NULL,
   projection = NULL,
@@ -309,7 +313,8 @@ countyMap <- function(
     tmap::tm_fill(
       fill = parameter,
       fill.scale = tmap::tm_scale_intervals(
-        breaks = breaks
+        breaks = breaks,
+        values = palette
       ),
       fill.legend = tmap::tm_legend(
         title = legendTitle,
@@ -359,6 +364,7 @@ if ( FALSE ) {
   data = example_US_countyCovid
   parameter = "cases"
   breaks = NULL
+  palette = "brewer.blues"
   conusOnly = TRUE
   stateCode = NULL
   projection = NULL
@@ -383,6 +389,7 @@ if ( FALSE ) {
     state_SFDF = state_SFDF,
     county_SFDF = county_SFDF,
     breaks = breaks,
+    palette = palette,
     conusOnly = conusOnly,
     stateCode = stateCode,
     projection = projection,

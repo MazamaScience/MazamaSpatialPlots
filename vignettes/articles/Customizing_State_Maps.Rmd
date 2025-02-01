@@ -30,7 +30,7 @@ northernStates <- c("AK", "WA", "ID", "MT", "ND", "MN", "WI",
 stateMap(
   data = example_US_stateObesity,
   parameter = 'obesityRate',
-  palette = 'YlOrRd',
+  palette = 'brewer.yl_or_rd',
   breaks = seq(23, 33, 2),
   stateCode = northernStates,
   stateBorderColor = 'black',
@@ -48,14 +48,13 @@ myproj <- "+proj=lcc +lat_1=32.5 +lat_2=71.4 +lat_0=51.9 +lon_0=-102.9 +x_0=0 +y
 stateMap(
   data = example_US_stateObesity,
   parameter = 'obesityRate',
-  palette = 'YlOrRd',
+  palette = 'brewer.yl_or_rd',
   breaks = seq(23, 33, 2),
   stateCode = northernStates,
   projection = myproj,
   stateBorderColor = 'black',
   title = "Obesity Rate in Northern U.S. States"
 )
-
 ```
 
 ## Customizing with the **tmap** Package
@@ -80,17 +79,18 @@ stateMap(
   breaks = seq(20,38,3), #increasing color detail
   conusOnly = FALSE ,
   stateBorderColor = 'black',
+  legendPosition = tmap::tm_pos_in('right', 'top')
 ) +
   tmap::tm_layout(
     frame = TRUE,
-    main.title = 'Obesity Rates in U.S. States and Territories',
-    main.title.position = c("center", "top"),
-    title.fontface = 2,
-    fontfamily = "serif",
     bg.color = "grey85", 
     inner.margins  = .05,
-    legend.position = c('right', 'top')
-  ) 
+  ) +
+  tmap::tm_title_out(
+    text = 'Obesity Rates in U.S. States and Territories',
+    fontface = 2,
+    fontfamily = "serif"
+  )
 
 ```
 
@@ -107,11 +107,12 @@ stateMap(
     'classic'
   ) +
   tmap::tm_layout(
-    title = 'Obesity Rate by State',
-    title.position = c("center", "top"),
-    title.size = 1.2,
     inner.margins  = .08
   ) +
+  tmap::tm_title_out(
+    text = 'Obesity Rate by State',
+    size = 1.2
+  )
   tmap::tm_compass() 
   
 
@@ -122,21 +123,23 @@ stateMap(
 ```{r tmapStyling3, warning = FALSE, message = FALSE }
   
 stateMap(
- data = example_US_stateObesity,
- parameter = "obesityRate",
- stateCode = c('ME', 'NH', 'VT', 'MA', 'RI', 'CT'),
- stateBorderColor = 'black',
- title = 'Obesity Rates in New England'
+  data = example_US_stateObesity,
+  parameter = "obesityRate",
+  stateCode = c('ME', 'NH', 'VT', 'MA', 'RI', 'CT'),
+  stateBorderColor = 'black',
 ) +
- tmap::tm_layout(
-   frame = TRUE,
-   frame.double.line = TRUE,
-   title.size = 1.2,
-   title.fontface = 2,
-   fontfamily = "serif",
-   bg.color = "grey85",
-   inner.margins  = .08
- )
+  tmap::tm_layout(
+    frame = TRUE,
+    frame.double.line = TRUE,
+    bg.color = "grey85",
+    inner.margins  = .08
+  ) +
+  tmap::tm_title_out(
+    text = 'Obesity Rates in New England',
+    size = 1.2,
+    fontface = 2,
+    fontfamily = "serif"
+  )
 
 ```
 

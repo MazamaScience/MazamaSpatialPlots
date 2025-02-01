@@ -10,6 +10,7 @@ countyMap(
   state_SFDF = "USCensusStates_02",
   county_SFDF = "USCensusCounties_02",
   breaks = NULL,
+  palette = "brewer.blues",
   conusOnly = TRUE,
   stateCode = NULL,
   projection = NULL,
@@ -39,12 +40,15 @@ column named \code{stateCode} if either \code{conusOnly = TRUE} or the
 
 \item{breaks}{Numeric vector of break points.}
 
+\item{palette}{A vector of colors or palette name from the \pkg{cols4all} package
+(see \code{\link[cols4all:c4a]{cols4all::c4a}}).}
+
 \item{conusOnly}{Logical specifying Continental US state codes. Ignored when
 the \code{stateCode} argument is specified.}
 
 \item{stateCode}{Vector of state codes to include on the map.}
 
-\item{projection}{Named projection, \emph{e.g.} "EPSG:4326" or "WGS84" or proj4string. (Unused)}
+\item{projection}{Named projection, \emph{e.g.} "EPSG:4326" or "WGS84" or proj4string.}
 
 \item{stateBorderColor}{Color used for state borders.}
 
@@ -94,6 +98,7 @@ countyMap(
   state_SFDF = USCensusStates_02,
   county_SFDF = USCensusCounties_02,
   breaks = c(0, 1, 50, 100, 250, 500, 1000, 2500, 3000),
+  palette = "brewer.or_rd",
   stateCode = c( "NY", "PA", "MD", "NJ", "DE"),
   stateBorderColor = "black",
   countyBorderColor = 'grey70'

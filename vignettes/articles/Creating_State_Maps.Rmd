@@ -150,7 +150,7 @@ the **RColorBrewer** blue to purple color palette name is chosen.
 stateMap(
   data = example_US_stateObesity,
   parameter = 'obesityRate',
-  palette = 'BuPu',
+  palette = 'brewer.bu_pu',
   breaks = seq(20, 38, 3),
   stateBorderColor = 'white',
   title = "Obesity Rate in U.S. States"
@@ -174,7 +174,7 @@ specification to create a map of Western states.
 stateMap(
   data = example_US_stateObesity,
   parameter = 'obesityRate',
-  palette = 'PuBuGn',
+  palette = 'brewer.pu_bu_gn',
   breaks = seq(23, 31, 2),
   stateCode = c("CA", "NV", "OR", "WA", "ID"),
   stateBorderColor = 'black',
@@ -191,11 +191,12 @@ The following example uses `conusOnly = FALSE`.
 stateMap(
   data = example_US_stateObesity,
   parameter = 'obesityRate',
-  palette = 'YlOrRd',
+  palette = 'brewer.yl_or_rd',
   breaks = seq(20, 38, 3),
   conusOnly = FALSE,
   stateBorderColor = 'black',
-  title = "Obesity Rate in U.S."
+  title = "Obesity Rate in U.S.",
+  legendPosition = tmap::tm_pos_in("right", "top")
 )
 
 

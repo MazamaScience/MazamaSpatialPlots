@@ -9,6 +9,7 @@ stateMap(
   parameter = NULL,
   state_SFDF = "USCensusStates_02",
   breaks = NULL,
+  palette = "brewer.blues",
   conusOnly = TRUE,
   stateCode = NULL,
   projection = NULL,
@@ -32,12 +33,15 @@ must contain a column named \code{stateCode} with the 2-character state code.}
 
 \item{breaks}{Numeric vector of break points.}
 
+\item{palette}{A vector of colors or palette name from the \pkg{cols4all} package
+(see \code{\link[cols4all:c4a]{cols4all::c4a}}).}
+
 \item{conusOnly}{Logical specifying Continental US state codes. Ignored when
 the \code{stateCode} argument is specified.}
 
 \item{stateCode}{Vector of state codes to include on the map.}
 
-\item{projection}{Named projection, \emph{e.g.} "EPSG:4326" or "WGS84" or proj4string. (Unused)}
+\item{projection}{Named projection, \emph{e.g.} "EPSG:4326" or "WGS84" or proj4string.}
 
 \item{stateBorderColor}{Color used for state borders.}
 

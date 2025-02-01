@@ -15,10 +15,12 @@
 #' \code{@slot} must contain a column named \code{stateCode} with the
 #' 2-character state code.
 #' @param breaks Numeric vector of break points.
+#' @param palette A vector of colors or palette name from the \pkg{cols4all} package
+#' (see \code{\link[cols4all:c4a]{cols4all::c4a}}).
 #' @param conusOnly Logical specifying Continental US state codes. Ignored when
 #' the \code{stateCode} argument is specified.
 #' @param stateCode Vector of state codes to include on the map.
-#' @param projection Named projection, \emph{e.g.} "EPSG:4326" or "WGS84" or proj4string. (Unused)
+#' @param projection Named projection, \emph{e.g.} "EPSG:4326" or "WGS84" or proj4string.
 #' @param stateBorderColor Color used for state borders.
 #' @param title Vector of text strings to use as individual plot titles.
 #' This must be the same length as 'parameter'.
@@ -95,6 +97,7 @@ stateMap <- function(
     parameter = NULL,
     state_SFDF = "USCensusStates_02",
     breaks = NULL,
+    palette = "brewer.blues",
     conusOnly = TRUE,
     stateCode = NULL,
     projection = NULL,
@@ -300,7 +303,8 @@ stateMap <- function(
     tmap::tm_fill(
       fill = parameter,
       fill.scale = tmap::tm_scale_intervals(
-        breaks = breaks
+        breaks = breaks,
+        values = palette
       ),
       fill.legend = tmap::tm_legend(
         title = legendTitle,
@@ -340,11 +344,15 @@ if ( FALSE ) {
   data = example_US_stateObesity
   parameter = "obesityRate"
   breaks = NULL
+  palette = "brewer.blues"
   conusOnly = TRUE
   stateCode = NULL
   projection = NULL
   stateBorderColor = "white"
   title = "Obesity Rate by state"
+  showLegend = TRUE
+  legendTitle = NULL
+  legendOrientation = "portrait"
   legendPosition = NULL
 
   # Run the code above and then start walking through the lines of code in the
@@ -357,6 +365,7 @@ if ( FALSE ) {
     parameter = parameter,
     state_SFDF = state_SFDF,
     breaks = breaks,
+    palette = palette,
     conusOnly = conusOnly,
     stateCode = stateCode,
     projection = projection,
