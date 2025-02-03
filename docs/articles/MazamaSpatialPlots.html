@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Introduction to MazamaSpatialPlots • MazamaSpatialPlots</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MazamaSpatialPlots</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0</span>
       </span>
     </div>
 
@@ -60,9 +60,6 @@
     </li>
     <li>
       <a href="../articles/Customizing_State_Maps.html">Customizing State Maps</a>
-    </li>
-    <li>
-      <a href="../articles/Opportunity_Insights.html">Opportunity Insights</a>
     </li>
   </ul>
 </li>
@@ -125,7 +122,7 @@ create highly customized plots.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>This package is designed to be used with <a href="https://cran.r-project.org" class="external-link">R</a> (&gt;= 3.5) and <a href="https://www.rstudio.com" class="external-link">RStudio</a> so make sure you have those
+<p>This package is designed to be used with <a href="https://cran.r-project.org" class="external-link">R</a> (&gt;= 3.5) and <a href="https://posit.co" class="external-link">RStudio</a> so make sure you have those
 installed first.</p>
 <p>Users will want to install the <strong>devtools</strong> package to
 have access to the latest development version of the package from
@@ -219,22 +216,21 @@ is performed entirely through function arguments.</p>
 <span></span>
 <span><span class="co"># Look at input data</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">example_US_stateObesity</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 3</span></span></span>
-<span><span class="co">#&gt;   stateCode stateName  obesityRate</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> TX        Texas             32.4</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> CA        California        24.2</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> KY        Kentucky          34.6</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> GA        Georgia           30.7</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> WI        Wisconsin         30.7</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> OR        Oregon            30.1</span></span>
-<span></span>
+<span><span class="co">#&gt;   stateCode  stateName obesityRate</span></span>
+<span><span class="co">#&gt; 1        TX      Texas        32.4</span></span>
+<span><span class="co">#&gt; 2        CA California        24.2</span></span>
+<span><span class="co">#&gt; 3        KY   Kentucky        34.6</span></span>
+<span><span class="co">#&gt; 4        GA    Georgia        30.7</span></span>
+<span><span class="co">#&gt; 5        WI  Wisconsin        30.7</span></span>
+<span><span class="co">#&gt; 6        OR     Oregon        30.1</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
 <span><span class="co"># Create the map</span></span>
 <span><span class="fu"><a href="../reference/stateMap.html">stateMap</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">example_US_stateObesity</span>,</span>
 <span>  parameter <span class="op">=</span> <span class="st">'obesityRate'</span>,</span>
-<span>  palette <span class="op">=</span> <span class="st">'BuPu'</span>,</span>
 <span>  breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">38</span>, <span class="fl">3</span><span class="op">)</span>,</span>
+<span>  palette <span class="op">=</span> <span class="st">'brewer.bu_pu'</span>,</span>
 <span>  stateBorderColor <span class="op">=</span> <span class="st">'white'</span>,</span>
 <span>  title <span class="op">=</span> <span class="st">"Obesity Rate in U.S. States"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -245,7 +241,7 @@ is performed entirely through function arguments.</p>
 </h3>
 <p>For the <code><a href="../reference/countyMap.html">countyMap()</a></code> example, we use COVID19 case data
 from June 01, 2020.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Look at the input data</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">example_US_countyCovid</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 6</span></span></span>
@@ -256,8 +252,9 @@ from June 01, 2020.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> AL        Alabama   01005      Barbour      173      1</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> AL        Alabama   01007      Bibb          79      1</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> AL        Alabama   01009      Blount        65      1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> AL        Alabama   01011      Bullock      210      6</span></span>
-<span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> AL        Alabama   01011      Bullock      210      6</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
 <span><span class="co"># Create the map</span></span>
 <span><span class="fu"><a href="../reference/countyMap.html">countyMap</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">example_US_countyCovid</span>,</span>
@@ -288,7 +285,7 @@ from June 01, 2020.</p>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
 </div>
 
       </footer>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Creating State Maps • MazamaSpatialPlots</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MazamaSpatialPlots</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0</span>
       </span>
     </div>
 
@@ -60,9 +60,6 @@
     </li>
     <li>
       <a href="../articles/Customizing_State_Maps.html">Customizing State Maps</a>
-    </li>
-    <li>
-      <a href="../articles/Opportunity_Insights.html">Opportunity Insights</a>
     </li>
   </ul>
 </li>
@@ -245,7 +242,7 @@ purple color palette name is chosen.</p>
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/stateMap.html">stateMap</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">example_US_stateObesity</span>,</span>
 <span>  parameter <span class="op">=</span> <span class="st">'obesityRate'</span>,</span>
-<span>  palette <span class="op">=</span> <span class="st">'BuPu'</span>,</span>
+<span>  palette <span class="op">=</span> <span class="st">'brewer.bu_pu'</span>,</span>
 <span>  breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">38</span>, <span class="fl">3</span><span class="op">)</span>,</span>
 <span>  stateBorderColor <span class="op">=</span> <span class="st">'white'</span>,</span>
 <span>  title <span class="op">=</span> <span class="st">"Obesity Rate in U.S. States"</span></span>
@@ -269,7 +266,7 @@ states.</p>
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/stateMap.html">stateMap</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">example_US_stateObesity</span>,</span>
 <span>  parameter <span class="op">=</span> <span class="st">'obesityRate'</span>,</span>
-<span>  palette <span class="op">=</span> <span class="st">'PuBuGn'</span>,</span>
+<span>  palette <span class="op">=</span> <span class="st">'brewer.pu_bu_gn'</span>,</span>
 <span>  breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">23</span>, <span class="fl">31</span>, <span class="fl">2</span><span class="op">)</span>,</span>
 <span>  stateCode <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"CA"</span>, <span class="st">"NV"</span>, <span class="st">"OR"</span>, <span class="st">"WA"</span>, <span class="st">"ID"</span><span class="op">)</span>,</span>
 <span>  stateBorderColor <span class="op">=</span> <span class="st">'black'</span>,</span>
@@ -281,11 +278,12 @@ states.</p>
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/stateMap.html">stateMap</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">example_US_stateObesity</span>,</span>
 <span>  parameter <span class="op">=</span> <span class="st">'obesityRate'</span>,</span>
-<span>  palette <span class="op">=</span> <span class="st">'YlOrRd'</span>,</span>
+<span>  palette <span class="op">=</span> <span class="st">'brewer.yl_or_rd'</span>,</span>
 <span>  breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">38</span>, <span class="fl">3</span><span class="op">)</span>,</span>
 <span>  conusOnly <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  stateBorderColor <span class="op">=</span> <span class="st">'black'</span>,</span>
-<span>  title <span class="op">=</span> <span class="st">"Obesity Rate in U.S."</span></span>
+<span>  title <span class="op">=</span> <span class="st">"Obesity Rate in U.S."</span>,</span>
+<span>  legendPosition <span class="op">=</span> <span class="fu">tmap</span><span class="fu">::</span><span class="fu"><a href="https://r-tmap.github.io/tmap/reference/tm_pos.html" class="external-link">tm_pos_in</a></span><span class="op">(</span><span class="st">"right"</span>, <span class="st">"top"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="Creating_State_Maps_files/figure-html/use_conusOnly-1.png" width="700"></p>
 </div>
@@ -322,7 +320,7 @@ customized visualizations through direct inputs and by <a href="Customizing_Stat
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
 </div>
 
       </footer>
