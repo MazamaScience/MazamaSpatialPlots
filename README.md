@@ -1,9 +1,8 @@
 [![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/MazamaSpatialPlots)](https://cran.r-project.org/package=MazamaSpatialPlots)
 [![Downloads](https://cranlogs.r-pkg.org/badges/MazamaSpatialPlots)](https://cran.r-project.org/package=MazamaSpatialPlots)
 
-A dedicated Slack channel has been created for announcements, support and to help 
-build a community of practice around this open source package. You may request an 
-invitation to join from jonathan.callahan@dri.edu.
+Please visit [Discussions](https://github.com/MazamaScience/MazamaSpatialPlots/discussions)
+for announcements, support and to help  build a community of practice around this open source package.
 
 # MazamaSpatialPlots
 
